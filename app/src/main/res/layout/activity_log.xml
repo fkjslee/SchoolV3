@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="0dip"
+    android:paddingLeft="0dip"
+    android:paddingRight="0dip"
+    android:id="@+id/relativeLayout"
+    android:paddingTop="0dip"
+    tools:context=".activity.LogActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/linearLayout">
+
+    </LinearLayout>
+
+    <!--输入账号密码用的网格布局, 一共4个控件-->
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:layout_marginLeft="40dp"
+        android:id="@+id/gridLayout">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/stu_ID"
+            android:id="@+id/textView"
+            android:layout_row="0"
+            android:layout_column="0"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/plz_input_stu_ID"
+            android:ems="10"
+            android:id="@+id/et_stu_ID"
+            android:layout_row="0"
+            android:layout_column="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/pwd"
+            android:id="@+id/textView2"
+            android:layout_row="1"
+            android:layout_column="0"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/plz_input_pwd"
+            android:ems="10"
+            android:id="@+id/et_pwd"
+            android:layout_row="1"
+            android:layout_column="1"/>
+
+    </GridLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/blue">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quit"
+            android:id="@+id/btn_quit"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/btn_azure"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/set"
+            android:id="@+id/btn_set"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_azure"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/log_your_account"
+            android:id="@+id/textView3"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+    <!--登录按钮, 左右各留出20dp; 背景颜色蓝色-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:id="@+id/btn_log"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/gridLayout"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:background="@drawable/btn_azure"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fgt_pwd"
+        android:id="@+id/btn_fgt_pwd"
+        android:layout_below="@id/btn_log"
+        android:layout_alignLeft="@id/btn_log"
+        android:layout_alignStart="@id/btn_log"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/powderblue"
+        android:background="@drawable/btn_gray"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bind"
+        android:id="@+id/btn_bind"
+        android:layout_alignBottom="@id/btn_fgt_pwd"
+        android:layout_alignRight="@id/btn_log"
+        android:layout_alignEnd="@id/btn_log"
+        android:textColor="@color/powderblue"
+        android:background="@drawable/btn_gray"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/tv_lat"
+        android:layout_below="@+id/btn_fgt_pwd"
+        android:layout_alignLeft="@+id/btn_fgt_pwd"
+        android:layout_alignStart="@+id/btn_fgt_pwd"
+        android:layout_marginTop="43dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/tv_lng"
+        android:layout_alignTop="@+id/tv_lat"
+        android:layout_alignRight="@+id/gridLayout"
+        android:layout_alignEnd="@+id/gridLayout"/>
+
+</RelativeLayout>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.ClassDetailActivity">
+
+    <!--top bar-->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rtn"
+            android:id="@+id/btn_rtn"/>
+    </LinearLayout>
+
+    <!--详细的课程信息-->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:rowCount="5">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="60dp"
+            android:textSize="30sp"
+            android:text="@string/name"
+            android:id="@+id/textView15"
+            android:layout_row="0"
+            android:layout_column="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textSize="30sp"
+            android:text="New Text"
+            android:id="@+id/tvName"
+            android:layout_row="0"
+            android:layout_column="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textSize="30sp"
+            android:text="@string/position"
+            android:id="@+id/textView17"
+            android:layout_row="1"
+            android:layout_column="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textSize="30sp"
+            android:text="New Text"
+            android:id="@+id/tvPosition"
+            android:layout_row="1"
+            android:layout_column="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textSize="30sp"
+            android:text="@string/teacher"
+            android:id="@+id/textView19"
+            android:layout_row="2"
+            android:layout_column="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textSize="30sp"
+            android:text="New Text"
+            android:id="@+id/tvTeacher"
+            android:layout_row="2"
+            android:layout_column="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textSize="30sp"
+            android:text="@string/number"
+            android:id="@+id/textView21"
+            android:layout_row="3"
+            android:layout_column="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textSize="30sp"
+            android:text="New Text"
+            android:id="@+id/tvNumber"
+            android:layout_row="3"
+            android:layout_column="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textSize="30sp"
+            android:text="@string/weeks"
+            android:id="@+id/textView23"
+            android:layout_row="4"
+            android:layout_column="0"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textSize="30sp"
+            android:text="New Text"
+            android:id="@+id/tvWeeks"
+            android:layout_row="4"
+            android:layout_column="1"/>
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textSize="20sp"
+            android:background="@drawable/btn_azure"
+            android:text="@string/oneKeySign"
+            android:id="@+id/btn_sign"
+            android:layout_gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/homework"
+                android:id="@+id/btn_homework"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/notice"
+                android:id="@+id/btn_notice"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/test"
+                    android:id="@+id/btn_test"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_weight="1"
+                    android:text="@string/test"
+                    android:id="@+id/button"/>
+            </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

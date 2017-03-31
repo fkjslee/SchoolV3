@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9">
+        <fragment
+            android:id="@+id/fragment_schedule"
+            android:name="com.fkjslee.schoolv3.fragment.Fragment_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_schedule"/>
+    </FrameLayout>
+
+    <fragment
+        android:id="@+id/fragment_tab"
+        android:name="com.fkjslee.schoolv3.fragment.Fragment_tab"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_tab"/>
+
+</LinearLayout>
