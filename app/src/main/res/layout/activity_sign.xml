@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:text="@string/rtn"
         android:id="@+id/btn_rtn"
-        android:onClick="onClick"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
@@ -20,7 +19,6 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onClick"
         android:text="@string/submit"
         android:id="@+id/btn_submit"
         android:layout_marginBottom="98dp"
@@ -60,7 +58,6 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="onClick"
                     android:text="@string/submit_photo"
                     android:id="@+id/btn_submitPhoto"
                     android:layout_gravity="center_horizontal"/>
@@ -69,7 +66,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/showPhoto"
-                    android:onClick="onClick"
                     android:id="@+id/btn_showPhoto"/>
 
             </LinearLayout>
@@ -99,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/now_position"
-                android:id="@+id/textView24"
+                android:id="@+id/tv_showPosition"
                 android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>

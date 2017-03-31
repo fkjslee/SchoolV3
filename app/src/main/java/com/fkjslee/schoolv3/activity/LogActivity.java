@@ -39,8 +39,6 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_log);
         testTime = 0;
 
-        GouldMapLocation gouldMapLocation = new GouldMapLocation(getApplicationContext());
-        gouldMapLocation.startLocation();
         initView();
     }
 
