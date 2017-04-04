@@ -77,11 +77,12 @@ public class HttpThread implements Runnable{
 
     public String getResult(){
         try{
-            Thread.sleep(1000);
+            Thread.sleep(5000);
             int exception = 1/this.result.length();
-        } catch(Exception e){
-            System.out.println("请求超时");
-            return "请求超时";
+        } catch(ArithmeticException e){
+            return "除0异常";
+        } catch (InterruptedException e) {
+            return "打断异常";
         }
         return this.result;
     }

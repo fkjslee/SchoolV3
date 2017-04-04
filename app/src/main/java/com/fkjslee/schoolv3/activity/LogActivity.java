@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
@@ -23,6 +24,9 @@ import com.fkjslee.schoolv3.function.TimeCount;
 
 public class LogActivity extends AppCompatActivity implements View.OnClickListener{
 
+    public static String logAccount = "20140497";
+    public static String logPwd = "021292";
+
     private int testTime = 0;
     private long mExitTime = -2005;
 
@@ -31,6 +35,8 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     private Button btnFgtPwd;
     private Button btnBind;
     private Button btnSet;
+    private EditText etStuId;
+    private EditText etPwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +75,11 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
      * 正确则进入主界面, 错误给出提醒, 3次以上罚时, 罚时等于2^(x-3)秒
      * */
     private void clickBtnLog() {
-        EditText stu_ID = (EditText) findViewById(R.id.et_stu_ID);
-        EditText pwd = (EditText) findViewById(R.id.et_pwd);
-        if (checkPWD(stu_ID.getText().toString(), pwd.getText().toString()))
+        if (checkPWD(etStuId.getText().toString(), etPwd.getText().toString())) {
+            logAccount = etStuId.getText().toString();
+            logPwd = etPwd.getText().toString();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }
         else {
             Toast.makeText(getApplicationContext(), "密码错误",
                     Toast.LENGTH_SHORT).show();
@@ -113,7 +120,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
      * 参数, String, 学生的学号, String, 学生的密码
      * */
     private boolean checkPWD(String stu_ID, String pwd) {
-        return stu_ID.length() == 0 && pwd.length() == 0;
+        return true;
     }
 
     /**
@@ -138,6 +145,11 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         btnFgtPwd = (Button)findViewById(R.id.btn_fgt_pwd);
         btnBind = (Button)findViewById(R.id.btn_bind);
         btnSet = (Button)findViewById(R.id.btn_set);
+        etStuId = (EditText)findViewById(R.id.et_stu_ID);
+        etPwd = (EditText)findViewById(R.id.et_pwd);
+
+        etStuId.setText("20140497");
+        etPwd.setText("021292");
 
         btnLog.setOnClickListener(this);
         btnQuit.setOnClickListener(this);
