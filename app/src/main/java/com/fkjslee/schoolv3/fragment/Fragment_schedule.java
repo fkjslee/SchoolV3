@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -66,8 +67,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         spinner.setOnItemSelectedListener(this);
         spinner.setDropDownVerticalOffset(30);
 
-        setSchedulePosition();
-
         return view;
     }
 
@@ -75,8 +74,10 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     * 设置学生的课表信息*/
     @TargetApi(Build.VERSION_CODES.M)
     public void setSchedulePosition() {
+        recordMsgLength = 0;
         View view = parentView;
         RelativeLayout layout_schedule = (RelativeLayout)view.findViewById(R.id.layout_schedule);
+        layout_schedule.removeAllViews();
 
         int interval = 5;
         WindowManager wm = (WindowManager)view.getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -120,17 +121,18 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         //真正的课表区域
         SharedPreferences read = parentView.getContext().getSharedPreferences("lock", parentView.getContext().MODE_WORLD_READABLE);
         String value = read.getString("code", "");
+        Log.i("record", value);
         try{
             JSONArray bbs = new JSONArray(value);
-            for(int i=0;i<bbs.length();i++) {
+            for(int i = 0;i < bbs.length(); i++) {
                 String myTemp1 = bbs.getString(i);
                 JSONObject jasonObject = new JSONObject(myTemp1);
                 String classTeacher = jasonObject.getString("teacher");
                 String classPosition = jasonObject.getString("classroom");
                 String className = jasonObject.getString("name");
                 Integer classWeekday = Integer.parseInt(jasonObject.getString("weekday"));
-                Integer classLength = Integer.parseInt(jasonObject.getString("periodlength"));
-                Integer classBeginTime = Integer.parseInt(jasonObject.getString("periodbegin"));
+                Integer classLength = Integer.parseInt(jasonObject.getString("courseLength"));
+                Integer classBeginTime = Integer.parseInt(jasonObject.getString("courseBegin"));
                 String[] temp = jasonObject.getString("week").split(" ");
                 Integer[] classWeeks = new Integer[temp.length];
                 for(int fkjslee_i = 0; fkjslee_i < temp.length; ++fkjslee_i) classWeeks[fkjslee_i] = Integer.parseInt(temp[fkjslee_i]);
@@ -140,25 +142,81 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         } catch(Exception e){
             e.printStackTrace();
         }
+
+        Integer posLength = 0;
+        ClassPositionMsg[][] posMsg = new ClassPositionMsg[8][20];
+        for(Integer i = 0; i < 8; ++i) {
+            posMsg[i] = new ClassPositionMsg[20];
+            for(Integer j = 0; j < 20; ++j)
+                posMsg[i][j] = new ClassPositionMsg();
+        }
+
         for(Integer i = 0; i < recordMsgLength; ++i) {
             MsgClass msg = recordMsg[i];
-            ClassMsgButton btn = new ClassMsgButton(view.getContext());
-            btn.setX(blankWidth+interval + (msg.getWeekday()-1) * (itemWidth+interval));
-            btn.setY(blankHeight+interval + (msg.getStartTime()-1) * (itemHeight+interval));
-            btn.setLayoutParams(new ViewGroup.LayoutParams(itemWidth,
-                    itemHeight * msg.getLength()));
-            btn.setText(msg.getName() + msg.getPosition());
-            btn.setLines(msg.getLength()*3-1);
-            @android.support.annotation.IdRes int id = i;
-            btn.setId(id);
-            btn.setOnClickListener(this);
-            layout_schedule.addView(btn);
-            Integer [] weeks = msg.getWeeks();
-            boolean hasClass = false;
-            for(Integer tempClass : weeks) if(tempClass.equals(spinnerWeek)) hasClass = true;
-            if(hasClass) btn.setBackgroundResource(R.drawable.btn_azure);
-            else btn.setBackgroundResource(R.drawable.btn_alpha);
+            Integer[] weeks = msg.getWeeks();
+            Integer weekDay = msg.getWeekday();
+
+            for(Integer eachWeek : weeks) {
+                //蓝色的课表信息
+                if(eachWeek.equals(spinnerWeek)) {
+                    Integer maxColor = 0;
+                    for(int j = msg.getStartTime(), cnt = 0; cnt < msg.getLength(); ++j, ++cnt) {
+                        maxColor = Math.max(maxColor, posMsg[weekDay][j].color);
+                    }
+                    //清除颜色
+                    if(maxColor != 2) {
+                        for(int j = msg.getStartTime(), cnt = 0; cnt < msg.getLength(); ++j, ++cnt) {
+                            if(posMsg[weekDay][j].color == 1) {
+                                for(int k = posMsg[weekDay][j].startPos, cnt2 = 0; cnt2 < posMsg[weekDay][j].length; ++k, ++cnt2) {
+                                    posMsg[weekDay][k].color = 0;
+                                }
+                            }
+                        }
+                        //设置颜色
+                        for(int j = msg.getStartTime(), cnt = 0; cnt < msg.getLength(); ++j, ++cnt) {
+                            ClassPositionMsg temp = posMsg[msg.getWeekday()][j];
+                            temp.color = 2;
+                            temp.id = i;
+                            temp.startPos = msg.getStartTime();
+                            temp.length = msg.getLength();
+                        }
+                    }
+                }
+            }
+            Integer maxColor = 0;
+            for(int j = msg.getStartTime(), cnt = 0; cnt < msg.getLength(); ++j, ++cnt) {
+                maxColor = Math.max(maxColor, posMsg[weekDay][j].color);
+            }
+            if(maxColor == 0) {
+                //设置颜色
+                for(int j = msg.getStartTime(), cnt = 0; cnt < msg.getLength(); ++j, ++cnt) {
+                    ClassPositionMsg temp = posMsg[msg.getWeekday()][j];
+                    temp.color = 1;
+                    temp.id = i;
+                    temp.startPos = msg.getStartTime();
+                    temp.length = msg.getLength();
+                }
+            }
         }
+
+        for(Integer i = 1; i < 8; ++i)
+            for(Integer j = 1; j < 20; ++j) {
+                if(posMsg[i][j].startPos != j || posMsg[i][j].color == 0) continue;
+                ClassMsgButton btn = new ClassMsgButton(view.getContext());
+                btn.setX(blankWidth+interval + (i-1) * (itemWidth+interval));
+                btn.setY(blankHeight+interval + (j-1) * (itemHeight+interval));
+                btn.setLayoutParams(new ViewGroup.LayoutParams(itemWidth,
+                        itemHeight * posMsg[i][j].length));
+                btn.setLines(j*3-1);
+                btn.setOnClickListener(this);
+                layout_schedule.addView(btn);
+                btn.setBackgroundResource(0);
+                if(posMsg[i][j].color == 1) btn.setBackgroundResource(R.drawable.btn_alpha);
+                else btn.setBackgroundResource(R.drawable.btn_azure);
+                @android.support.annotation.IdRes int id = posMsg[i][j].id;
+                btn.setText(recordMsg[id].getName() + recordMsg[id].getPosition());
+                btn.setId(id);
+            }
     }
 
     /**
@@ -202,6 +260,16 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         public ClassMsgButton(Context context) {
             super(context);
             setEllipsize(TextUtils.TruncateAt.valueOf("END"));
+        }
+    }
+
+    public class ClassPositionMsg {
+        Integer startPos;
+        Integer length;
+        Integer color;
+        Integer id;
+        ClassPositionMsg() {
+            color = 0;
         }
     }
 }
