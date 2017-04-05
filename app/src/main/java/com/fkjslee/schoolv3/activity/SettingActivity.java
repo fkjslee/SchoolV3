@@ -52,8 +52,9 @@ public class SettingActivity extends AppCompatActivity {
 
 
         //从服务器获得的数据
-        String url = "http://10.19.175.132:8080/MyServlet/MainServlet";
+        String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
         String param = "type=class&name=" + LogActivity.logAccount + "&password=" + LogActivity.logPwd;
+        //String param = "type=picture&msg=" + picture;
         HttpThread httpThread = new HttpThread(url, param);
         new Thread(httpThread).start();
         String schedule = httpThread.getResult();
