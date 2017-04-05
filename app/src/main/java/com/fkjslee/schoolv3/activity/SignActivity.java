@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,7 +28,9 @@ import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.data.MsgClass;
 import com.fkjslee.schoolv3.function.CheckPermissionsActivity;
 import com.fkjslee.schoolv3.function.Utils;
+import com.fkjslee.schoolv3.network.HttpThread;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 
@@ -42,6 +47,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     private Button btnShowPhoto;
     private Button btnSubmit;
     private TextView tvShowPosition;
+    private Bitmap photo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +79,36 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
                 takePhoto();
                 break;
             case R.id.btn_showPhoto:
-                showPhoto();
+                //showPhoto();
+                break;
+            case R.id.btn_submit:
+                submit();
                 break;
         }
+    }
+
+    // 回调方法，从第二个页面回来的时候会执行这个方法
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 根据上面发送过去的请求吗来区别
+        switch (requestCode) {
+            case 0:
+                showPhoto();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void submit() {
+        if(photo == null) {
+            Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
+        String param = "type=picture&msg=" + bitmapToString(photo);
+        HttpThread httpThread = new HttpThread(url, param);
+        new Thread(httpThread).start();
     }
 
     private void takePhoto() {
@@ -97,12 +130,85 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void showPhoto() {
-        Log.i("SignActivity", "showPhoto");
         ImageView view = (ImageView) findViewById(R.id.showPhoto);
         String pathString = Environment.getExternalStorageDirectory()
                 .toString() + "/camera.jpg";
-        Bitmap b = BitmapFactory.decodeFile(pathString);
-        view.setImageBitmap(b);
+        photo = BitmapFactory.decodeFile(pathString);
+        if(photo == null) {
+            Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        compressPhoto();
+        String strPicture = bitmapToString(photo);
+        view.setImageBitmap(stringToBitmap(strPicture));
+    }
+
+    private void compressPhoto() {
+        //图片允许最大空间   单位：KB
+        Double maxSize = 5000.00;
+        //将bitmap放至数组中，意在bitmap的大小（与实际读取的原文件要大）
+        int size;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
+            size = photo.getByteCount();
+        else
+            size = photo.getRowBytes() * photo.getHeight();
+        //判断bitmap占用空间是否大于允许最大空间  如果大于则压缩 小于则不压缩
+        if (size / 1024 > maxSize) {
+            //获取bitmap大小 是允许最大大小的多少倍
+            double i = size / 1024 / maxSize;
+            //开始压缩  此处用到平方根 将宽带和高度压缩掉对应的平方根倍 （1.保持刻度和高度和原bitmap比率一致，压缩后也达到了最大大小占用空间的大小）
+            photo = zoomImage(photo, photo.getWidth() / Math.sqrt(i),
+                    photo.getHeight() / Math.sqrt(i));
+        }
+    }
+
+    private Bitmap stringToBitmap(String string){
+        //将字符串转换成Bitmap类型
+        Bitmap bitmap=null;
+        try {
+            byte[]bitmapArray;
+            bitmapArray=Base64.decode(string, Base64.DEFAULT);
+            bitmap=BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    private String bitmapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] bytePicture = baos.toByteArray();
+        return Base64.encodeToString(bytePicture, Base64.DEFAULT);
+    }
+
+    /***
+     * 图片的缩放方法
+     *
+     * @param bgimage
+     *            ：源图片资源
+     * @param newWidth
+     *            ：缩放后宽度
+     * @param newHeight
+     *            ：缩放后高度
+     * @return
+     */
+    private static Bitmap zoomImage(Bitmap bgimage, double newWidth,
+                                   double newHeight) {
+        // 获取这个图片的宽和高
+        float width = bgimage.getWidth();
+        float height = bgimage.getHeight();
+        // 创建操作图片用的matrix对象
+        Matrix matrix = new Matrix();
+        // 计算宽高缩放率
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // 缩放图片动作
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width,
+                (int) height, matrix, true);
+        return bitmap;
     }
 
     private boolean hasSign() {
