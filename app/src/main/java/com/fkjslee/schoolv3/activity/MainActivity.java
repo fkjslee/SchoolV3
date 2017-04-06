@@ -51,9 +51,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 transaction3.replace(R.id.top_layout, fragment_discuss);
                 transaction3.commit();
                 break;
-            case R.id.btn_getSchedule:
-                fragment_schedule.setSchedulePosition();
-                break;
         }
     }
 
@@ -75,13 +72,4 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         /*toDetailActivity(position);*/
     }
-/* useless
-        private void toDetailActivity(int position) {
-        Intent intent = new Intent();
-        intent.setClass(MainActivity.this, ClassDetailActivity.class);
-        intent.putExtra("position", position);
-        startActivity(intent);
-        MainActivity.this.finish();
-    }*/
-
 }

@@ -50,4 +50,6 @@
     <string name="showPhoto">显示照片</string>
     <string name="upload_photo">上传照片</string>
     <string name="getPosition">查看位置</string>
+    <string name="reGetSchedule">重获课表</string>
+    <string name="setNowWeek">设为当前周</string>
 </resources>

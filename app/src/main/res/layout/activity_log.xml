@@ -146,23 +146,4 @@
         android:textColor="@color/powderblue"
         android:background="@drawable/btn_gray"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tv_lat"
-        android:layout_below="@+id/btn_fgt_pwd"
-        android:layout_alignLeft="@+id/btn_fgt_pwd"
-        android:layout_alignStart="@+id/btn_fgt_pwd"
-        android:layout_marginTop="43dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/tv_lng"
-        android:layout_alignTop="@+id/tv_lat"
-        android:layout_alignRight="@+id/gridLayout"
-        android:layout_alignEnd="@+id/gridLayout"/>
-
 </RelativeLayout>
