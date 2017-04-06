@@ -35,9 +35,6 @@ public class SettingActivity extends AppCompatActivity {
             case (R.id.btn_uploadPhoto) :
                 clickBtnUploadPhoto();
                 break;
-            case (R.id.btn_getSchedule):
-                clickBtnGetSchedule();
-                break;
         }
     }
 
@@ -60,7 +57,7 @@ public class SettingActivity extends AppCompatActivity {
         String schedule = httpThread.getResult();
         editor.putString("code", schedule);
         editor.commit();
-        Toast.makeText(getApplicationContext(), "获取课表 : " + schedule, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "获取课表 : " + schedule, Toast.LENGTH_SHORT).show();
     }
 
     private void clickBtnRtn() { finish(); }

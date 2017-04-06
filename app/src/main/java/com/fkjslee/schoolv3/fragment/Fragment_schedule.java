@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,10 +21,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.activity.ClassDetailActivity;
 import com.fkjslee.schoolv3.data.MsgClass;
+import com.fkjslee.schoolv3.function.GetSchedule;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,31 +44,23 @@ import java.util.List;
 public class Fragment_schedule extends Fragment implements AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener, View.OnClickListener {
 
+    private Button btnRegetSchedule;
+    private Button btnSetNowWeek;
+    private Spinner spinner;
+
     private View parentView = null;
     private Integer spinnerWeek = 1;
     private ArrayAdapter<String> weekAdapter = null;
 
     private MsgClass[] recordMsg = new MsgClass[120];
-    private Integer recordMsgLength = 0;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
-        //选择周数 spinner
-        List<String> list = new ArrayList<>();
-        int maxWeek = getMaxWeek();
-        for(int i = 1; i <= maxWeek; ++i) {
-            list.add(Integer.toString(i));
-        }
         parentView = view;
-        weekAdapter = new ArrayAdapter<>(view.getContext(),
-                android.R.layout.simple_spinner_item, list);
-        Spinner spinner = (Spinner)view.findViewById(R.id.spinner);
-        spinner.setAdapter(weekAdapter);
-        spinner.setOnItemSelectedListener(this);
-        spinner.setDropDownVerticalOffset(30);
+        initView();
 
         return view;
     }
@@ -74,7 +69,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     * 设置学生的课表信息*/
     @TargetApi(Build.VERSION_CODES.M)
     public void setSchedulePosition() {
-        recordMsgLength = 0;
+        Integer recordMsgLength = 0;
         View view = parentView;
         RelativeLayout layout_schedule = (RelativeLayout)view.findViewById(R.id.layout_schedule);
         layout_schedule.removeAllViews();
@@ -121,7 +116,11 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         //真正的课表区域
         SharedPreferences read = parentView.getContext().getSharedPreferences("lock", parentView.getContext().MODE_WORLD_READABLE);
         String value = read.getString("code", "");
-        Log.i("record", value);
+        if(value.length() == 0) {
+            GetSchedule.getSchedule(this.getActivity());
+            read = parentView.getContext().getSharedPreferences("lock", parentView.getContext().MODE_WORLD_READABLE);
+            value = read.getString("code", "");
+        }
         try{
             JSONArray bbs = new JSONArray(value);
             for(int i = 0;i < bbs.length(); i++) {
@@ -135,7 +134,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
                 Integer classBeginTime = Integer.parseInt(jasonObject.getString("courseBegin"));
                 String[] temp = jasonObject.getString("week").split(" ");
                 Integer[] classWeeks = new Integer[temp.length];
-                for(int fkjslee_i = 0; fkjslee_i < temp.length; ++fkjslee_i) classWeeks[fkjslee_i] = Integer.parseInt(temp[fkjslee_i]);
+                for(int j = 0; j < temp.length; ++j) classWeeks[j] = Integer.parseInt(temp[j]);
                 recordMsg[recordMsgLength++] = new MsgClass(className, classTeacher, classPosition,
                         classLength, classBeginTime, classWeekday, classWeeks);
             }
@@ -143,7 +142,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
             e.printStackTrace();
         }
 
-        Integer posLength = 0;
         ClassPositionMsg[][] posMsg = new ClassPositionMsg[8][20];
         for(Integer i = 0; i < 8; ++i) {
             posMsg[i] = new ClassPositionMsg[20];
@@ -219,6 +217,29 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
             }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void initView() {
+        btnRegetSchedule = (Button)parentView.findViewById(R.id.btn_reGetSchedule);
+        btnSetNowWeek = (Button)parentView.findViewById(R.id.btn_setNowWeek);
+
+        btnRegetSchedule.setOnClickListener(this);
+        btnSetNowWeek.setOnClickListener(this);
+
+
+        //选择周数 spinner
+        List<String> list = new ArrayList<>();
+        int maxWeek = getMaxWeek();
+        for(int i = 1; i <= maxWeek; ++i) {
+            list.add(Integer.toString(i));
+        }
+        weekAdapter = new ArrayAdapter<>(parentView.getContext(),
+                android.R.layout.simple_spinner_item, list);
+        spinner = (Spinner)parentView.findViewById(R.id.spinner);
+        spinner.setAdapter(weekAdapter);
+        spinner.setOnItemSelectedListener(this);
+        spinner.setDropDownVerticalOffset(30);
+    }
+
     /**
      * 功能: 得到一个学生有多少周有课
     * */
@@ -245,8 +266,11 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btn_getSchedule) {
-            Log.i("here", "here192");
+        if(v.getId() == R.id.btn_reGetSchedule) {
+            GetSchedule.getSchedule(getActivity());
+            return;
+        } else if(v.getId() == R.id.btn_setNowWeek) {
+            Integer passedDays;
             return;
         }
         Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
