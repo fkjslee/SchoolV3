@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -31,8 +32,15 @@ import com.fkjslee.schoolv3.function.GetSchedule;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 
 /**
@@ -234,8 +242,14 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         }
         weekAdapter = new ArrayAdapter<>(parentView.getContext(),
                 android.R.layout.simple_spinner_item, list);
+        Integer nowWeek = getSpinnerWeek();
         spinner = (Spinner)parentView.findViewById(R.id.spinner);
         spinner.setAdapter(weekAdapter);
+        if(nowWeek != null) {
+            spinner.setSelection(nowWeek - 1, true);
+            spinnerWeek = nowWeek;
+            setSchedulePosition();
+        }
         spinner.setOnItemSelectedListener(this);
         spinner.setDropDownVerticalOffset(30);
     }
@@ -264,13 +278,18 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) { }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_reGetSchedule) {
+            if(true == true) {
+                initView();
+                return;
+            }
             GetSchedule.getSchedule(getActivity());
             return;
         } else if(v.getId() == R.id.btn_setNowWeek) {
-            Integer passedDays;
+            setSpinnerWeek();
             return;
         }
         Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
@@ -295,5 +314,66 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         ClassPositionMsg() {
             color = 0;
         }
+    }
+
+    private Integer getSpinnerWeek() {
+        SharedPreferences read = parentView.getContext().getSharedPreferences("lock", parentView.getContext().MODE_WORLD_READABLE);
+        String strFirstDay = read.getString("spinnerWeek", "");
+        if(strFirstDay.length() == 0) {
+            return null;
+        }
+        Calendar calFirstDay = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = simpleDateFormat.parse(strFirstDay);
+            calFirstDay.setTime(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calToday = Calendar.getInstance();
+        EditText etMonth = (EditText)parentView.findViewById(R.id.et_month);
+        EditText etDay = (EditText)parentView.findViewById(R.id.et_day);
+        String strMonth = etMonth.getText().toString();
+        if(strMonth.length() != 0) {
+            Integer month = Integer.valueOf(strMonth);
+            Integer day = Integer.valueOf(etDay.getText().toString());
+            try {
+                Date date = simpleDateFormat.parse("2017-"+month.toString()+"-"+day.toString());
+                calToday.setTime(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        Integer nowWeek = (calToday.get(Calendar.DAY_OF_YEAR) - calFirstDay.get(Calendar.DAY_OF_YEAR)) / 7 + 1;
+        return nowWeek;
+    }
+
+    private void setSpinnerWeek() {
+        Integer weekday = getWeekday();
+        Integer disToFirstDay = (spinnerWeek - 1) * 7 + (weekday - 1);
+        Calendar calFirstDay = Calendar.getInstance();
+        calFirstDay.add(Calendar.DAY_OF_MONTH, -disToFirstDay);
+        String strFirstDay = String.valueOf(calFirstDay.get(Calendar.YEAR)) + "-" +
+                String.valueOf(calFirstDay.get(Calendar.MONTH) + 1) + "-" +
+                String.valueOf(calFirstDay.get(Calendar.DAY_OF_MONTH));
+
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences("lock",
+                MODE_WORLD_WRITEABLE).edit();
+        editor.putString("spinnerWeek",  strFirstDay);
+        editor.apply();
+   }
+
+    /**
+     * @return 这个时间的当前周是第几天
+     * */
+    private Integer getWeekday() {
+        Calendar calendar = Calendar.getInstance();
+        Integer weekday = calendar.get(Calendar.DAY_OF_WEEK);
+        if(calendar.getFirstDayOfWeek() == Calendar.SUNDAY) {
+            weekday--;
+            if(weekday == 0)
+                weekday = 7;
+        }
+        return weekday;
     }
 }
