@@ -27,7 +27,7 @@ public class GetSchedule {
         new Thread(httpThread).start();
         String schedule = httpThread.getResult();
         editor.putString("code", schedule);
-        editor.commit();
+        editor.apply();
         Toast.makeText(activity.getApplicationContext(),
                 "获取课表 : " + schedule.length(), Toast.LENGTH_SHORT).show();
     }
