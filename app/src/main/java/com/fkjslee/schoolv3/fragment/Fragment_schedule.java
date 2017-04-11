@@ -294,10 +294,12 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
                 return;
             }
             GetSchedule.getSchedule(getActivity());
-            return;
-        } else if(v.getId() == R.id.btn_setNowWeek) {
-            setSpinnerWeek();
-            return;
+        } else {
+            Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
+            MsgClass msg = recordMsg[v.getId()];
+            intent.putExtra("classMsg", msg);
+            intent.putExtra("spinnerWeek", spinnerWeek);
+            startActivity(intent);
         }
        /* Intent intent = new Intent(getActivity(), ClassDetailActivity.class);*/
         Intent intent = new Intent(getActivity(), CourseSignActivity.class);
@@ -348,34 +350,5 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         Calendar calToday = Calendar.getInstance();
         Integer nowWeek = (calToday.get(Calendar.DAY_OF_YEAR) - calFirstDay.get(Calendar.DAY_OF_YEAR)) / 7 + 1;
         return nowWeek;
-    }
-
-    private void setSpinnerWeek() {
-        Integer weekday = getWeekday();
-        Integer disToFirstDay = (spinnerWeek - 1) * 7 + (weekday - 1);
-        Calendar calFirstDay = Calendar.getInstance();
-        calFirstDay.add(Calendar.DAY_OF_MONTH, -disToFirstDay);
-        String strFirstDay = String.valueOf(calFirstDay.get(Calendar.YEAR)) + "-" +
-                String.valueOf(calFirstDay.get(Calendar.MONTH) + 1) + "-" +
-                String.valueOf(calFirstDay.get(Calendar.DAY_OF_MONTH));
-
-        SharedPreferences.Editor editor = getActivity().getSharedPreferences("lock",
-                MODE_WORLD_WRITEABLE).edit();
-        editor.putString("spinnerWeek",  strFirstDay);
-        editor.apply();
-   }
-
-    /**
-     * @return 这个时间的当前周是第几天
-     * */
-    private Integer getWeekday() {
-        Calendar calendar = Calendar.getInstance();
-        Integer weekday = calendar.get(Calendar.DAY_OF_WEEK);
-        if(calendar.getFirstDayOfWeek() == Calendar.SUNDAY) {
-            weekday--;
-            if(weekday == 0)
-                weekday = 7;
-        }
-        return weekday;
     }
 }

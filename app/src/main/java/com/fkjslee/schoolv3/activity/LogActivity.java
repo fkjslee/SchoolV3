@@ -20,6 +20,11 @@ import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.function.TimeCount;
 import com.fkjslee.schoolv3.teacher.TeacherActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 /**
  * 1. 点击登录 成功则进入主界面, 失败3次有罚时
@@ -32,6 +37,10 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
 
     public static String logAccount = "20140497";
     public static String logPwd = "021292";
+//    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
+    public static String url = "http://10.92.3.208:8080/MyServlet/MainServlet";
+    public static Calendar calFirstDay;
+
     public static String loginIdentity="学生";
     private int testTime = 0;
     private long mExitTime = -2005;
@@ -149,16 +158,25 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     }
     //控件初始化
     private void initView() {
-        btnLog = (Button) findViewById(R.id.btn_log);
-        btnQuit = (Button) findViewById(R.id.btn_quit);
-        btnFgtPwd = (Button) findViewById(R.id.btn_fgt_pwd);
-        btnBind = (Button) findViewById(R.id.btn_bind);
-        btnSet = (Button) findViewById(R.id.btn_set);
-        etStuId = (EditText) findViewById(R.id.et_stu_ID);
-        etPwd = (EditText) findViewById(R.id.et_pwd);
+        calFirstDay = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = simpleDateFormat.parse("2017-2-20");
+            calFirstDay.setTime(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        etStuId.setText("20140497");
-        etPwd.setText("021292");
+        btnLog = (Button)findViewById(R.id.btn_log);
+        btnQuit = (Button)findViewById(R.id.btn_quit);
+        btnFgtPwd = (Button)findViewById(R.id.btn_fgt_pwd);
+        btnBind = (Button)findViewById(R.id.btn_bind);
+        btnSet = (Button)findViewById(R.id.btn_set);
+        etStuId = (EditText)findViewById(R.id.et_stu_ID);
+        etPwd = (EditText)findViewById(R.id.et_pwd);
+
+        etStuId.setText(LogActivity.logAccount);
+        etPwd.setText(LogActivity.logPwd);
 
         btnLog.setOnClickListener(this);
         btnQuit.setOnClickListener(this);
