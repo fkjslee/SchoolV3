@@ -3,7 +3,6 @@ package com.fkjslee.schoolv3.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -25,7 +24,6 @@ public class HomeworkActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homework);
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 
         initView();
 
