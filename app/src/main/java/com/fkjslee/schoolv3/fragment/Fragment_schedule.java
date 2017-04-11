@@ -10,8 +10,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +17,13 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.activity.ClassDetailActivity;
+import com.fkjslee.schoolv3.activity.LogActivity;
 import com.fkjslee.schoolv3.data.MsgClass;
 import com.fkjslee.schoolv3.function.GetSchedule;
 import com.fkjslee.schoolv3.teacher.CourseSignActivity;
@@ -34,15 +31,9 @@ import com.fkjslee.schoolv3.teacher.CourseSignActivity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 
 /**
@@ -55,7 +46,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         AdapterView.OnItemClickListener, View.OnClickListener {
 
     private Button btnRegetSchedule;
-    private Button btnSetNowWeek;
     private Spinner spinner;
 
     private View parentView = null;
@@ -127,11 +117,11 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         }
 
         //真正的课表区域
-        SharedPreferences read = parentView.getContext().getSharedPreferences("lock", parentView.getContext().MODE_WORLD_READABLE);
+        SharedPreferences read = parentView.getContext().getSharedPreferences("lock", Context.MODE_WORLD_READABLE);
         String value = read.getString("code", "");
         if(value.length() == 0) {
             GetSchedule.getSchedule(this.getActivity());
-            read = parentView.getContext().getSharedPreferences("lock", parentView.getContext().MODE_WORLD_READABLE);
+            read = parentView.getContext().getSharedPreferences("lock", Context.MODE_WORLD_READABLE);
             value = read.getString("code", "");
         }
         try{
@@ -235,10 +225,8 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void initView() {
         btnRegetSchedule = (Button)parentView.findViewById(R.id.btn_reGetSchedule);
-        btnSetNowWeek = (Button)parentView.findViewById(R.id.btn_setNowWeek);
 
         btnRegetSchedule.setOnClickListener(this);
-        btnSetNowWeek.setOnClickListener(this);
 
 
         //选择周数 spinner
@@ -252,11 +240,9 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         Integer nowWeek = getSpinnerWeek();
         spinner = (Spinner)parentView.findViewById(R.id.spinner);
         spinner.setAdapter(weekAdapter);
-        if(nowWeek != null) {
-            spinner.setSelection(nowWeek - 1, true);
-            spinnerWeek = nowWeek;
-            setSchedulePosition();
-        }
+        spinner.setSelection(nowWeek - 1, true);
+        spinnerWeek = nowWeek;
+        setSchedulePosition();
         spinner.setOnItemSelectedListener(this);
         spinner.setDropDownVerticalOffset(30);
     }
@@ -289,10 +275,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_reGetSchedule) {
-            if(true == true) {
-                initView();
-                return;
-            }
             GetSchedule.getSchedule(getActivity());
         } else {
             Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
@@ -302,18 +284,10 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
             startActivity(intent);
         }
        /* Intent intent = new Intent(getActivity(), ClassDetailActivity.class);*/
-        Intent intent = new Intent(getActivity(), CourseSignActivity.class);
-        MsgClass msg = recordMsg[v.getId()];
-        intent.putExtra("classMsg", msg);
-        startActivity(intent);
-    }
-
-    public class ClassMsgButton extends Button {
-
-        public ClassMsgButton(Context context) {
-            super(context);
-            setEllipsize(TextUtils.TruncateAt.valueOf("END"));
-        }
+//        Intent intent = new Intent(getActivity(), CourseSignActivity.class);
+//        MsgClass msg = recordMsg[v.getId()];
+//        intent.putExtra("classMsg", msg);
+//        startActivity(intent);
     }
 
     public class ClassMsgView extends TextView{
@@ -334,21 +308,8 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     }
 
     private Integer getSpinnerWeek() {
-        SharedPreferences read = parentView.getContext().getSharedPreferences("lock", parentView.getContext().MODE_WORLD_READABLE);
-        String strFirstDay = read.getString("spinnerWeek", "");
-        if(strFirstDay.length() == 0) {
-            return null;
-        }
-        Calendar calFirstDay = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date date = simpleDateFormat.parse(strFirstDay);
-            calFirstDay.setTime(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Calendar calFirstDay = LogActivity.calFirstDay;
         Calendar calToday = Calendar.getInstance();
-        Integer nowWeek = (calToday.get(Calendar.DAY_OF_YEAR) - calFirstDay.get(Calendar.DAY_OF_YEAR)) / 7 + 1;
-        return nowWeek;
+        return (calToday.get(Calendar.DAY_OF_YEAR) - calFirstDay.get(Calendar.DAY_OF_YEAR)) / 7 + 1;
     }
 }

@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.activity.LogActivity;
+import com.fkjslee.schoolv3.data.MsgClass;
 import com.fkjslee.schoolv3.network.HttpThread;
+
+import java.util.Calendar;
 
 import static android.content.Context.MODE_WORLD_WRITEABLE;
 

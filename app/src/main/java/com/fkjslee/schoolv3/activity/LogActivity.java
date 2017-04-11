@@ -6,15 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.ArrayAdapter;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.TextView;
 import android.widget.Toast;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.function.TimeCount;
@@ -27,9 +23,9 @@ import java.util.Date;
 
 
 /**
- * 1. 点击登录 成功则进入主界面, 失败3次有罚时
- * 2. 点击退出, 退出应用
- * 3. 点击忘记密码, 跳到忘记密码界面
+ * 1. 点击登录 成功则进入主界面, 失败3次有罚时<br>
+ * 2. 点击退出, 退出应用<br>
+ * 3. 点击忘记密码, 跳到忘记密码界面<br>
  * 4. 点击绑定手机, 跳到绑定手机界面
  * */
 
@@ -66,11 +62,8 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     /**
-     * 点击事件
-     * 1. 点击登录
-     * 2. 点击退出
-     * 3. 点击忘记密码
-     * 4. 点击绑定手机
+     * 点击事件:<br>1:登录<br>2:退出<br>3:忘记密码<br>4:绑定手机
+     * @param v 控件
      */
     public void onClick(View v) {
         Class<? extends android.app.Activity> activityClass = null;
@@ -86,18 +79,16 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     /**
-     * 功能: 点击"登录"后的具体实现逻辑
-     * 返回值: 无
-     * 参数: 无
-     * 正确则进入主界面, 错误给出提醒, 3次以上罚时, 罚时等于2^(x-3)秒
+     * 功能: 点击"登录"后的具体实现逻辑<br>
+     * 正确则进入主界面, 错误给出提醒, 3次以上罚时, 罚时等于60秒
      */
     private void clickBtnLog() {
         if (checkPWD(etStuId.getText().toString(), etPwd.getText().toString())) {
             logAccount = etStuId.getText().toString();
             logPwd = etPwd.getText().toString();
             loginIdentity=spinner1.getSelectedItem().toString();
-            System.out.println(loginIdentity);
-            startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
+//            startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         } else {
             Toast.makeText(getApplicationContext(), "密码错误",
                     Toast.LENGTH_SHORT).show();
@@ -156,6 +147,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         }
         return super.onKeyDown(keyCode, event);
     }
+
     //控件初始化
     private void initView() {
         calFirstDay = Calendar.getInstance();
