@@ -8,14 +8,21 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.fragment.Fragment_discuss;
 import com.fkjslee.schoolv3.fragment.Fragment_leave;
 import com.fkjslee.schoolv3.fragment.Fragment_schedule;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+
+    private Spinner spinnerMenu;
 
     Fragment_schedule fragment_schedule = new Fragment_schedule();
     Fragment_leave fragment_leave = new Fragment_leave();
@@ -24,9 +31,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+        initView();
     }
 
     public void onClick(View v) {
@@ -62,6 +70,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             clickBtnRtn();
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void initView() {
+        spinnerMenu = (Spinner)findViewById(R.id.spinner_menu);
+//
+//        List<String> list = new ArrayList<>();
+//        for(int i = 1; i <= maxWeek; ++i) {
+//            list.add(Integer.toString(i));
+//        }
+//        weekAdapter = new ArrayAdapter<>(parentView.getContext(),
+//                android.R.layout.simple_spinner_item, list);
+//        Integer nowWeek = getSpinnerWeek();
+//        spinnerMenu = (Spinner)parentView.findViewById(R.id.spinner);
+//        spinnerMenu.setAdapter(weekAdapter);
+//        if(nowWeek != null) {
+//            spinner.setSelection(nowWeek - 1, true);
+//            spinnerWeek = nowWeek;
+//            setSchedulePosition();
+//        }
+//        spinner.setOnItemSelectedListener(this);
+//        spinner.setDropDownVerticalOffset(30);
     }
 
     private void clickBtnRtn() {
