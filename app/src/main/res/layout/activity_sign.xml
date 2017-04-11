@@ -112,4 +112,30 @@
         android:layout_toRightOf="@+id/tv_class"
         android:layout_toEndOf="@+id/tv_class"/>
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="hour"
+        android:text="10"
+        android:ems="10"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="37dp"
+        android:id="@+id/et_hour" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="minute"
+        android:text="10"
+        android:ems="10"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/et_hour"
+        android:layout_alignEnd="@+id/et_hour"
+        android:id="@+id/et_minute" />
+
+
 </RelativeLayout>

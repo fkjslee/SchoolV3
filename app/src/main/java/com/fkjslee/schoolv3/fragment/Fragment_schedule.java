@@ -285,6 +285,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
             Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
             MsgClass msg = recordMsg[v.getId()];
             intent.putExtra("classMsg", msg);
+            intent.putExtra("spinnerWeek", spinnerWeek);
             startActivity(intent);
         }
     }
@@ -311,7 +312,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         Calendar calFirstDay = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            Date date = simpleDateFormat.parse("2017-4-20");
+            Date date = simpleDateFormat.parse("2017-2-20");
             calFirstDay.setTime(date);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -319,19 +320,5 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         Calendar calToday = Calendar.getInstance();
         Integer nowWeek = (calToday.get(Calendar.DAY_OF_YEAR) - calFirstDay.get(Calendar.DAY_OF_YEAR)) / 7 + 1;
         return nowWeek;
-    }
-
-    /**
-     * @return 这个时间的当前周是第几天
-     * */
-    private Integer getWeekday() {
-        Calendar calendar = Calendar.getInstance();
-        Integer weekday = calendar.get(Calendar.DAY_OF_WEEK);
-        if(calendar.getFirstDayOfWeek() == Calendar.SUNDAY) {
-            weekday--;
-            if(weekday == 0)
-                weekday = 7;
-        }
-        return weekday;
     }
 }

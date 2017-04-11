@@ -4,16 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,13 +21,11 @@ import com.amap.api.location.AMapLocationListener;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.data.MsgClass;
 import com.fkjslee.schoolv3.function.CheckPermissionsActivity;
+import com.fkjslee.schoolv3.function.GetSchedule;
 import com.fkjslee.schoolv3.function.Utils;
 import com.fkjslee.schoolv3.network.HttpThread;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -42,16 +36,22 @@ import java.util.Date;
  * */
 public class SignActivity extends CheckPermissionsActivity implements View.OnClickListener{
 
-    GouldMapLocation gouldMapLocation;
+    private GouldMapLocation gouldMapLocation;
     private Button btnRtn;
     private Button btnGetPosition;
     private Button btnSubmitPhoto;
     private Button btnShowPhoto;
     private Button btnSubmit;
     private TextView tvShowPosition;
+    private TextView tv_class;
+    private TextView tv_signState;
     private ImageView ivShowPhoto;
+    private EditText etHour;
+    private EditText etMinute;
+
     private Bitmap photo = null;
     private MsgClass msg;
+    private Integer spinnerWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +61,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         gouldMapLocation = new GouldMapLocation(this.getApplicationContext());
 
         msg = (MsgClass) getIntent().getSerializableExtra("classMsg");
-
-        TextView tv_class = (TextView)findViewById(R.id.tv_class);
-        TextView tv_signState = (TextView)findViewById(R.id.tv_signState);
-        tv_class.setText(msg.getName());
-        tv_signState.setText(hasSign()? "已签到" : "未签到");
+        spinnerWeek = (Integer)getIntent().getSerializableExtra("spinnerWeek");
 
         initView();
 
@@ -108,6 +104,13 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void submit() {
+        if(!checkTime()) {
+            Toast.makeText(getApplicationContext(), "时间错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!checkPosition()) {
+            return;
+        }
         if(photo == null) {
             Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
             return;
@@ -130,7 +133,23 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         return super.onKeyDown(keyCode, event);
     }
 
+    private Boolean checkPosition() {
+        return true;
+    }
 
+    private Boolean checkTime() {
+        Calendar calClassTime = GetSchedule.getTime(msg, spinnerWeek);
+        Calendar calToday = Calendar.getInstance();
+        if(etMinute.getText().toString().length() != 0) {
+            calToday.set(Calendar.HOUR_OF_DAY, Integer.valueOf(etHour.getText().toString()));
+            calToday.set(Calendar.MINUTE, Integer.valueOf(etMinute.getText().toString()));
+        }
+        Date d1 = calClassTime.getTime();
+        Date d2 = calToday.getTime();
+        Long disMilliSeconds = d1.getTime() - d2.getTime();
+        Long disMinute = disMilliSeconds / 1000 / 60;
+        return Math.abs(disMinute) <= 10;
+    }
 
     private void showPhoto() {
         if(photo == null) {
@@ -180,16 +199,23 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         tvShowPosition = (TextView) findViewById(R.id.tv_showPosition);
         btnSubmit = (Button) findViewById(R.id.btn_submit);
         ivShowPhoto = (ImageView) findViewById(R.id.showPhoto);
+        tv_class = (TextView)findViewById(R.id.tv_class);
+        tv_signState = (TextView)findViewById(R.id.tv_signState);
+        etHour = (EditText)findViewById(R.id.et_hour);
+        etMinute = (EditText)findViewById(R.id.et_minute);
 
         btnGetPosition.setOnClickListener(this);
         btnRtn.setOnClickListener(this);
         btnShowPhoto.setOnClickListener(this);
         btnSubmitPhoto.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
+
+        tv_class.setText(msg.getName());
+        tv_signState.setText(hasSign()? "已签到" : "未签到");
     }
 
 
-    class GouldMapLocation {
+    public class GouldMapLocation {
         private AMapLocationClient locationClient = null;
         private AMapLocationClientOption locationOption = new AMapLocationClientOption();
         private String result;
@@ -241,7 +267,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             locationClient.setLocationListener(locationListener);
         }
 
-        public void startLocation(){
+        void startLocation(){
             // 设置定位参数
             locationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
             locationClient.setLocationOption(locationOption);
@@ -249,6 +275,5 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             locationClient.startLocation();
         }
     }
-
 
 }

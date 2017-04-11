@@ -38,58 +38,65 @@ public class GetSchedule {
                 "获取课表 : " + schedule.length(), Toast.LENGTH_SHORT).show();
     }
 
-    public static Calendar getTime(MsgClass msg) {
+    public static Calendar getTime(MsgClass msg, Integer spinnerWeek) {
 
         Calendar calendar = Calendar.getInstance();
-        String time = "";
+        Integer hour = 0;
+        Integer minute = 0;
         switch (msg.getStartTime()) {
             case 1 :
-                time = "8:00";
+                hour = 8;
+                minute = 0;
                 break;
             case 2 :
-                time = "8:55";
+                hour = 8;
+                minute = 55;
                 break;
             case 3 :
-                time = "10:10";
+                hour = 10;
+                minute = 10;
                 break;
             case 4 :
-                time = "11:05";
+                hour = 11;
+                minute = 5;
                 break;
             case 5 :
-                time = "14:30";
+                hour = 14;
+                minute = 30;
                 break;
             case 6 :
-                time = "15:25";
+                hour = 15;
+                minute = 25;
                 break;
             case 7 :
-                time = "16:40";
+                hour = 16;
+                minute = 40;
                 break;
             case 8 :
-                time = "17:35";
+                hour = 17;
+                minute = 35;
                 break;
             case 9 :
-                time = "19:00";
+                hour = 19;
+                minute = 0;
                 break;
             case 10 :
-                time = "19:55";
+                hour = 19;
+                minute = 55;
                 break;
             case 11 :
-                time = "20:50";
+                hour = 20;
+                minute = 50;
                 break;
             case 12 :
-                time = "21:45";
+                hour = 21;
+                minute = 45;
                 break;
         }
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String strTime = String.valueOf(calendar.get(Calendar.YEAR)) + "-" +
-                String.valueOf(calendar.get(Calendar.MONTH)) + "-" +
-                String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + time;
-        try {
-            Date date = simpleDateFormat.parse(time);
-            calendar.setTime(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        calendar.set(Calendar.WEEK_OF_YEAR, LogActivity.calFirstDay.get(Calendar.WEEK_OF_YEAR) +
+                spinnerWeek - 1);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
         return calendar;
     }
 }
