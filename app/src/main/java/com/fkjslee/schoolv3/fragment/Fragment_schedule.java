@@ -53,7 +53,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         AdapterView.OnItemClickListener, View.OnClickListener {
 
     private Button btnRegetSchedule;
-    private Button btnSetNowWeek;
     private Spinner spinner;
 
     private View parentView = null;
@@ -77,6 +76,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     * 设置学生的课表信息*/
     @TargetApi(Build.VERSION_CODES.M)
     public void setSchedulePosition() {
+//        if(true == true) return;
         Integer recordMsgLength = 0;
         View view = parentView;
         RelativeLayout layout_schedule = (RelativeLayout)view.findViewById(R.id.layout_schedule);
@@ -124,7 +124,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         //真正的课表区域
         SharedPreferences read = parentView.getContext().getSharedPreferences("lock", parentView.getContext().MODE_WORLD_READABLE);
         String value = read.getString("code", "");
-        if(value.length() == 0) {
+        if(value.length() < 20) {
             GetSchedule.getSchedule(this.getActivity());
             read = parentView.getContext().getSharedPreferences("lock", parentView.getContext().MODE_WORLD_READABLE);
             value = read.getString("code", "");
@@ -228,10 +228,8 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void initView() {
         btnRegetSchedule = (Button)parentView.findViewById(R.id.btn_reGetSchedule);
-        btnSetNowWeek = (Button)parentView.findViewById(R.id.btn_setNowWeek);
 
         btnRegetSchedule.setOnClickListener(this);
-        btnSetNowWeek.setOnClickListener(this);
 
 
         //选择周数 spinner
@@ -282,20 +280,13 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_reGetSchedule) {
-            if(true == true) {
-                initView();
-                return;
-            }
             GetSchedule.getSchedule(getActivity());
-            return;
-        } else if(v.getId() == R.id.btn_setNowWeek) {
-            setSpinnerWeek();
-            return;
+        } else {
+            Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
+            MsgClass msg = recordMsg[v.getId()];
+            intent.putExtra("classMsg", msg);
+            startActivity(intent);
         }
-        Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
-        MsgClass msg = recordMsg[v.getId()];
-        intent.putExtra("classMsg", msg);
-        startActivity(intent);
     }
 
     public class ClassMsgButton extends Button {
@@ -317,51 +308,18 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     }
 
     private Integer getSpinnerWeek() {
-        SharedPreferences read = parentView.getContext().getSharedPreferences("lock", parentView.getContext().MODE_WORLD_READABLE);
-        String strFirstDay = read.getString("spinnerWeek", "");
-        if(strFirstDay.length() == 0) {
-            return null;
-        }
         Calendar calFirstDay = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            Date date = simpleDateFormat.parse(strFirstDay);
+            Date date = simpleDateFormat.parse("2017-4-20");
             calFirstDay.setTime(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         Calendar calToday = Calendar.getInstance();
-        EditText etMonth = (EditText)parentView.findViewById(R.id.et_month);
-        EditText etDay = (EditText)parentView.findViewById(R.id.et_day);
-        String strMonth = etMonth.getText().toString();
-        if(strMonth.length() != 0) {
-            Integer month = Integer.valueOf(strMonth);
-            Integer day = Integer.valueOf(etDay.getText().toString());
-            try {
-                Date date = simpleDateFormat.parse("2017-"+month.toString()+"-"+day.toString());
-                calToday.setTime(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
         Integer nowWeek = (calToday.get(Calendar.DAY_OF_YEAR) - calFirstDay.get(Calendar.DAY_OF_YEAR)) / 7 + 1;
         return nowWeek;
     }
-
-    private void setSpinnerWeek() {
-        Integer weekday = getWeekday();
-        Integer disToFirstDay = (spinnerWeek - 1) * 7 + (weekday - 1);
-        Calendar calFirstDay = Calendar.getInstance();
-        calFirstDay.add(Calendar.DAY_OF_MONTH, -disToFirstDay);
-        String strFirstDay = String.valueOf(calFirstDay.get(Calendar.YEAR)) + "-" +
-                String.valueOf(calFirstDay.get(Calendar.MONTH) + 1) + "-" +
-                String.valueOf(calFirstDay.get(Calendar.DAY_OF_MONTH));
-
-        SharedPreferences.Editor editor = getActivity().getSharedPreferences("lock",
-                MODE_WORLD_WRITEABLE).edit();
-        editor.putString("spinnerWeek",  strFirstDay);
-        editor.apply();
-   }
 
     /**
      * @return 这个时间的当前周是第几天

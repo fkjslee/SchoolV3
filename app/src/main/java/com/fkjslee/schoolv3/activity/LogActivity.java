@@ -26,6 +26,8 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
 
     public static String logAccount = "20140497";
     public static String logPwd = "021292";
+//    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
+    public static String url = "http://10.92.3.208:8080/MyServlet/MainServlet";
 
     private int testTime = 0;
     private long mExitTime = -2005;
@@ -41,7 +43,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_log);
         testTime = 0;
 
