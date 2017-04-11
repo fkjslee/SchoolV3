@@ -9,4 +9,9 @@
     <color name="gray">#BFBFBF</color>
     <color name="blue">#003399</color>
     <color name="white">#FFFFFF</color>
+    <color name="orchid">#DA70D6</color> <!--淡紫色 -->
+    <color name="darkorchid">#9932CC</color> <!--暗紫色 -->
+    <color name="palegreen">#98FB98</color> <!--苍绿色 -->
+    <color name="darkviolet">#9400D3</color> <!--暗紫罗兰色 -->
+    <color name="mediumpurple">#9370DB</color> <!--中紫色 -->
 </resources>

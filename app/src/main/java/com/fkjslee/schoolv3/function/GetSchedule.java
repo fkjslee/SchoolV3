@@ -6,13 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.activity.LogActivity;
-import com.fkjslee.schoolv3.data.MsgClass;
 import com.fkjslee.schoolv3.network.HttpThread;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import static android.content.Context.MODE_WORLD_WRITEABLE;
 
@@ -26,7 +20,7 @@ public class GetSchedule {
         //从服务器获得的数据
         SharedPreferences.Editor editor = activity.getSharedPreferences("lock",
                 MODE_WORLD_WRITEABLE).edit();
-        String url = LogActivity.url;
+        String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
         String param = "type=class&name=" + LogActivity.logAccount + "&password=" + LogActivity.logPwd;
         //String param = "type=picture&msg=" + picture;
         HttpThread httpThread = new HttpThread(url, param);
@@ -37,7 +31,6 @@ public class GetSchedule {
         Toast.makeText(activity.getApplicationContext(),
                 "获取课表 : " + schedule.length(), Toast.LENGTH_SHORT).show();
     }
-
     public static Calendar getTime(MsgClass msg, Integer spinnerWeek) {
 
         Calendar calendar = Calendar.getInstance();

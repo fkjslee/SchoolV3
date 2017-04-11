@@ -2,11 +2,9 @@ package com.fkjslee.schoolv3.network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
 
 /**
  * Created by wang xin on 2017/3/19.
@@ -16,24 +14,25 @@ import java.util.Arrays;
 
 public class HttpThread implements Runnable{
     private String url;
-    private byte [] param;
+    private String param;
     private String result;
 
     public HttpThread(String url, String param){
         this.url = url;
-        this.param = param.getBytes();
+        this.param = param;
         this.result = "";
     }
 
     public void run(){
-//        PrintWriter out = null;
-        OutputStream out = null;
+        PrintWriter out = null;
         BufferedReader in = null;
         String temResult = "";
         try{
             URL realUrl = new URL(url);
             // 打开和URL之间的连接
             URLConnection conn = realUrl.openConnection();
+
+            System.out.println("bbsbbc");
 
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
@@ -42,10 +41,9 @@ public class HttpThread implements Runnable{
             conn.setDoOutput(true);
             conn.setDoInput(true);
             // 获取URLConnection对象对应的输出流
-//            out = new PrintWriter(conn.getOutputStream());
-            out = conn.getOutputStream();
+            out = new PrintWriter(conn.getOutputStream());
             // 发送请求参数
-            out.write(param);
+            out.print(param);
             // flush输出流的缓冲
             out.flush();
             // 定义BufferedReader输入流来读取URL的响应
@@ -56,6 +54,7 @@ public class HttpThread implements Runnable{
                 temResult += line;
             }
         } catch (Exception e) {
+            System.out.println("发送 POST 请求出现异常！"+e);
             e.printStackTrace();
         }
 

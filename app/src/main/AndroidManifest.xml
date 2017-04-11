@@ -73,16 +73,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"></activity>
-        <activity android:name=".activity.FgtPwdActivity"></activity>
-        <activity android:name=".activity.BindPhoneActivity"></activity>
-        <activity android:name=".activity.ClassDetailActivity"></activity>
-        <activity android:name=".activity.HomeworkActivity"></activity>
-        <activity android:name=".activity.SignActivity"></activity>
-        <activity android:name=".activity.GetPhotoActivity"></activity>
-        <activity android:name=".activity.SettingActivity"></activity>
-        <activity android:name=".activity.Location_Activity"></activity>
-        <activity android:name=".activity.GetPhoto"></activity>
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.FgtPwdActivity" />
+        <activity android:name=".activity.BindPhoneActivity" />
+        <activity android:name=".activity.ClassDetailActivity" />
+        <activity android:name=".activity.HomeworkActivity" />
+        <activity android:name=".activity.SignActivity" />
+        <activity android:name=".activity.GetPhotoActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.Location_Activity" />
+        <activity
+            android:name=".teacher.TeacherActivity"
+            android:label="@string/title_activity_teacher"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".teacher.CourseSignActivity"
+            android:label="@string/title_activity_course_sign"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
