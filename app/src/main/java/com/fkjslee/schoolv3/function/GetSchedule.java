@@ -89,6 +89,7 @@ public class GetSchedule {
                 minute = 45;
                 break;
         }
+        calendar.set(Calendar.DAY_OF_WEEK, msg.getWeekday()+1);
         calendar.set(Calendar.WEEK_OF_YEAR, LogActivity.calFirstDay.get(Calendar.WEEK_OF_YEAR) +
                 spinnerWeek - 1);
         calendar.set(Calendar.HOUR_OF_DAY, hour);

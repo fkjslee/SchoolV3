@@ -46,9 +46,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
 
     private GouldMapLocation gouldMapLocation;
     private Button btnRtn;
-    private Button btnGetPosition;
     private Button btnSubmitPhoto;
-    private Button btnShowPhoto;
     private Button btnSubmit;
     private TextView tvShowPosition;
     private TextView tv_class;
@@ -60,13 +58,13 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     private Bitmap photo = null;
     private MsgClass msg;
     private Integer spinnerWeek;
+    private Double longitude;
+    private Double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
-
-        gouldMapLocation = new GouldMapLocation(this.getApplicationContext());
 
         msg = (MsgClass) getIntent().getSerializableExtra("classMsg");
         spinnerWeek = (Integer)getIntent().getSerializableExtra("spinnerWeek");
@@ -82,17 +80,11 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_getPosition:
-                clickBtnGetPosition();
-                break;
             case R.id.btn_rtn:
                 clickBtnRtn();
                 break;
             case R.id.btn_submitPhoto:
                 takePhoto();
-                break;
-            case R.id.btn_showPhoto:
-                //showPhoto();
                 break;
             case R.id.btn_submit:
                 submit();
@@ -114,11 +106,12 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void submit() {
-        if(!checkTime()) {
-            Toast.makeText(getApplicationContext(), "时间错误", Toast.LENGTH_SHORT).show();
+        if(!checkPosition()) {
+            Toast.makeText(getApplicationContext(), "位置错误", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!checkPosition()) {
+        if(!checkTime()) {
+            Toast.makeText(getApplicationContext(), "时间错误", Toast.LENGTH_SHORT).show();
             return;
         }
         if(photo == null) {
@@ -150,16 +143,41 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private Boolean checkPosition() {
-        return true;
+        if(msg.getPosition().substring(0, 2).equals("A5")) {
+            gouldMapLocation.startLocation();
+            if(etMinute.getText().toString().length() != 0) {
+                longitude = Double.valueOf(etHour.getText().toString());
+                latitude = Double.valueOf(etMinute.getText().toString());
+            }
+            Double cirLong = 106.473404;
+            Double cirLat = 29.572397;
+            Double edgeLong = 106.473938;
+            Double edgeLat = 29.572368;
+            return Math.pow(longitude - cirLong, 2) + Math.pow(latitude - cirLat, 2) <
+                    Math.pow(cirLong - edgeLong, 2) + Math.pow(cirLat - edgeLat, 2);
+        } else if(msg.getPosition().substring(0, 2).equals("A8")) {
+            Double cirLong = 106.472108;
+            Double cirLat = 29.572496;
+            Double edgeLong = 106.47269;
+            Double edgeLat = 29.572481;
+            return Math.pow(longitude - cirLong, 2) + Math.pow(latitude - cirLat, 2) <
+                    Math.pow(cirLong - edgeLong, 2) + Math.pow(cirLat - edgeLat, 2);
+        } else if(msg.getPosition().substring(0, 2).equals("A主")) {
+            Double cirLong = 106.477085;
+            Double cirLat = 29.571716;
+            Double edgeLong = 106.477716;
+            Double edgeLat = 29.57137;
+            return Math.pow(longitude - cirLong, 2) + Math.pow(latitude - cirLat, 2) <
+                    Math.pow(cirLong - edgeLong, 2) + Math.pow(cirLat - edgeLat, 2);
+        } else {
+            Toast.makeText(getApplicationContext(), "暂无这节课位置具体地点信息", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     private Boolean checkTime() {
         Calendar calClassTime = GetSchedule.getTime(msg, spinnerWeek);
         Calendar calToday = Calendar.getInstance();
-        if(etMinute.getText().toString().length() != 0) {
-            calToday.set(Calendar.HOUR_OF_DAY, Integer.valueOf(etHour.getText().toString()));
-            calToday.set(Calendar.MINUTE, Integer.valueOf(etMinute.getText().toString()));
-        }
         Date d1 = calClassTime.getTime();
         Date d2 = calToday.getTime();
         Long disMilliSeconds = d1.getTime() - d2.getTime();
@@ -168,7 +186,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void showPhoto() {
-        ImageView view = (ImageView) findViewById(R.id.showPhoto);
         String pathString = Environment.getExternalStorageDirectory()
                 .toString() + "/camera.jpg";
         photo = BitmapFactory.decodeFile(pathString);
@@ -178,7 +195,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         }
         compressPhoto();
         String strPicture = bitmapToString(photo);
-        view.setImageBitmap(stringToBitmap(strPicture));
+        ivShowPhoto.setImageBitmap(stringToBitmap(strPicture));
     }
 
     private void compressPhoto() {
@@ -223,26 +240,17 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
 
     /***
      * 图片的缩放方法
-     *
-     * @param bgimage
-     *            ：源图片资源
-     * @param newWidth
-     *            ：缩放后宽度
-     * @param newHeight
-     *            ：缩放后高度
-     * @return
+     * @param bgimage ：源图片资源
+     * @param newWidth：缩放后宽度
+     * @param newHeight ：缩放后高度
      */
     private static Bitmap zoomImage(Bitmap bgimage, double newWidth,
                                    double newHeight) {
-        // 获取这个图片的宽和高
         float width = bgimage.getWidth();
         float height = bgimage.getHeight();
-        // 创建操作图片用的matrix对象
         Matrix matrix = new Matrix();
-        // 计算宽高缩放率
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
-        // 缩放图片动作
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width,
                 (int) height, matrix, true);
@@ -255,14 +263,12 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
 
     private void clickBtnRtn() { finish(); }
 
-    private void clickBtnGetPosition() {
-        gouldMapLocation.startLocation();
-    }
-
     private void initView() {
-        btnGetPosition = (Button) findViewById(R.id.btn_getPosition);
+
+        gouldMapLocation = new GouldMapLocation(this.getApplicationContext());
+        gouldMapLocation.startLocation();
+
         btnRtn = (Button) findViewById(R.id.btn_rtn);
-        btnShowPhoto = (Button) findViewById(R.id.btn_showPhoto);
         btnSubmitPhoto = (Button) findViewById(R.id.btn_submitPhoto);
         tvShowPosition = (TextView) findViewById(R.id.tv_showPosition);
         btnSubmit = (Button) findViewById(R.id.btn_submit);
@@ -271,10 +277,9 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         tv_signState = (TextView)findViewById(R.id.tv_signState);
         etHour = (EditText)findViewById(R.id.et_hour);
         etMinute = (EditText)findViewById(R.id.et_minute);
+        ivShowPhoto = (ImageView) findViewById(R.id.showPhoto);
 
-        btnGetPosition.setOnClickListener(this);
         btnRtn.setOnClickListener(this);
-        btnShowPhoto.setOnClickListener(this);
         btnSubmitPhoto.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
 
@@ -300,6 +305,8 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
                 if (null != loc) {
                     //解析定位结果
                     result = Utils.getLocationStr(loc);
+                    longitude = Utils.getLongitude(loc);
+                    latitude = Utils.getLatitude(loc);
                     tvShowPosition.setText(result);
                 }
             }
@@ -308,7 +315,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         /**
          * 默认的定位参数
          * @since 2.8.0
-         *
          */
         private AMapLocationClientOption getDefaultOption(){
             AMapLocationClientOption mOption = new AMapLocationClientOption();

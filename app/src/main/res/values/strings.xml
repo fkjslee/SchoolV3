@@ -47,7 +47,7 @@
     <string name="add">添加</string>
     <string name="submit">提交</string>
     <string name="submit_photo">提交照片</string>
-    <string name="now_position">当前地点</string>
+    <string name="now_position">当前地点 : </string>
     <string name="showPhoto">显示照片</string>
     <string name="upload_photo">上传照片</string>
     <string name="getPosition">查看位置</string>

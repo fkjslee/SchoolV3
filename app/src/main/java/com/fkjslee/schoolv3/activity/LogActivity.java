@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.function.TimeCount;
-import com.fkjslee.schoolv3.teacher.TeacherActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +28,7 @@ import java.util.Date;
  * 4. 点击绑定手机, 跳到绑定手机界面
  * */
 
-public class LogActivity extends AppCompatActivity implements View.OnClickListener {
+public class LogActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static String logAccount = "20140497";
     public static String logPwd = "021292";
@@ -59,6 +58,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         testTime = 0;
 
         initView();
+
     }
 
     /**
@@ -83,6 +83,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
      * 正确则进入主界面, 错误给出提醒, 3次以上罚时, 罚时等于60秒
      */
     private void clickBtnLog() {
+
         if (checkPWD(etStuId.getText().toString(), etPwd.getText().toString())) {
             logAccount = etStuId.getText().toString();
             logPwd = etPwd.getText().toString();
@@ -185,5 +186,4 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         spinner1.setAdapter(adapter);
 
     }
-
 }
