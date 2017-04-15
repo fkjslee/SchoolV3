@@ -23,8 +23,12 @@ public class GetSchedule {
         //从服务器获得的数据
         SharedPreferences.Editor editor = activity.getSharedPreferences("lock",
                 MODE_WORLD_WRITEABLE).edit();
+        String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
         String param = "type=class&name=" + LogActivity.logAccount + "&password=" + LogActivity.logPwd;
-        String schedule = MyCommonFunction.sendRequestToServer(param);
+        //String param = "type=picture&msg=" + picture;
+        HttpThread httpThread = new HttpThread(url, param);
+        new Thread(httpThread).start();
+        String schedule = httpThread.getResult();
         editor.putString("code", schedule);
         editor.apply();
         Toast.makeText(activity.getApplicationContext(),

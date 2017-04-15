@@ -38,6 +38,28 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
+    private void clickBtnGetSchedule() {
+        SharedPreferences.Editor editor = getSharedPreferences("lock", MODE_WORLD_WRITEABLE).edit();
+
+        //假定的数据
+//        String schedule = "[{\"teacher\":\"\", \"name\":\"math\", \"week\":\"1 2\", \"weekday\":\"5\", " +
+//                "\"periodbegin\":\"1\", \"periodlength\":\"2\", \"classroom\":\"A1208\"}, " +
+//                "{\"teacher\":\"汪哈\", \"name\":\"英语\", \"week\":\"3 4\", \"weekday\":\"1\", " +
+//                "\"periodbegin\":\"5\", \"periodlength\":\"2\", \"classroom\":\"A1208\"}]";
+
+
+        //从服务器获得的数据
+        String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
+        String param = "type=class&name=" + LogActivity.logAccount + "&password=" + LogActivity.logPwd;
+        //String param = "type=picture&msg=" + picture;
+        HttpThread httpThread = new HttpThread(url, param);
+        new Thread(httpThread).start();
+        String schedule = httpThread.getResult();
+        editor.putString("code", schedule);
+        editor.commit();
+        Toast.makeText(getApplicationContext(), "获取课表 : " + schedule, Toast.LENGTH_SHORT).show();
+    }
+
     private void clickBtnRtn() { finish(); }
 
     private void clickBtnUploadPhoto() {
