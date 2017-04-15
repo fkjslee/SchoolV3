@@ -57,7 +57,7 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_counsellor_leave);
 
-        init();
+//        init();
     }
 
     @Override
@@ -65,6 +65,7 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
         //界面跳转之后的刷新操作
 
         super.onResume();
+        init();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,6 +73,7 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
         return true;
     }
 
+    //右上角菜单
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -117,6 +119,25 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
     }
 
     private void init(){
+
+        OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
+        for(int i = 0; i < 20;i++){
+            LeaveContent leaveContent = new LeaveContent();
+            leaveContent.studentName = "name"+i;
+            leaveContent.studentNumber = "2014400"+i;
+            leaveContent.reasons = "说的副科级酸辣粉讲的是酒店说的副科级酸辣粉讲的是酒店说的副科级酸辣粉讲的是酒店";
+            leaveContent.deal = i%2;
+            leaveContent.time = "2007.1.1";
+            if(leaveContent.deal == 1){
+                leaveContent.pass = i%2;
+            }
+            openOrCreateDB.insertLeave(leaveContent,"leaves");
+
+        }
+        openOrCreateDB.close();
+
+
+
         toolbar = (Toolbar)findViewById(R.id.counsellor_toolbars);
         setSupportActionBar(toolbar);
         backspace = (ImageView)findViewById(R.id.counsellor_backspace);
@@ -146,7 +167,7 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
         views.add(viewHandled);
         //设置viewPager
         viewPager.setAdapter(new MyViewPagerAdapter(views));
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(currIndex);
         viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
@@ -391,12 +412,12 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
         int one = offset * 2 + bmpW;
         public void onPageScrollStateChanged(int arg0) {
 
-
+            Integer x = 1;
         }
 
         public void onPageScrolled(int arg0, float arg1, int arg2) {
 
-
+            Integer y = 1;
         }
 
         public void onPageSelected(int arg0) {

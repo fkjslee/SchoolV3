@@ -27,10 +27,19 @@ import com.amap.api.location.AMapLocationListener;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.data.MsgClass;
 import com.fkjslee.schoolv3.function.CheckPermissionsActivity;
+<<<<<<< HEAD
+=======
+import com.fkjslee.schoolv3.function.GetSchedule;
+>>>>>>> parent of ad23328... 初步完成签到
 import com.fkjslee.schoolv3.function.Utils;
 import com.fkjslee.schoolv3.network.HttpThread;
 
 import java.io.ByteArrayOutputStream;
+<<<<<<< HEAD
+=======
+import java.util.Calendar;
+import java.util.Date;
+>>>>>>> parent of ad23328... 初步完成签到
 import java.io.File;
 
 
@@ -57,6 +66,11 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         gouldMapLocation = new GouldMapLocation(this.getApplicationContext());
 
         MsgClass msg = (MsgClass) getIntent().getSerializableExtra("classMsg");
+
+        TextView tv_class = (TextView)findViewById(R.id.tv_class);
+        TextView tv_signState = (TextView)findViewById(R.id.tv_signState);
+        tv_class.setText(msg.getName());
+        tv_signState.setText(hasSign()? "已签到" : "未签到");
 
         TextView tv_class = (TextView)findViewById(R.id.tv_class);
         TextView tv_signState = (TextView)findViewById(R.id.tv_signState);
@@ -101,6 +115,17 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void submit() {
+<<<<<<< HEAD
+=======
+        if(!checkPosition()) {
+            Toast.makeText(getApplicationContext(), "位置错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!checkTime()) {
+            Toast.makeText(getApplicationContext(), "时间错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+>>>>>>> parent of ad23328... 初步完成签到
         if(photo == null) {
             Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
             return;
@@ -162,6 +187,41 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         }
     }
 
+<<<<<<< HEAD
+=======
+    private void showPhoto() {
+        String pathString = Environment.getExternalStorageDirectory()
+                .toString() + "/camera.jpg";
+        photo = BitmapFactory.decodeFile(pathString);
+        if(photo == null) {
+            Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        compressPhoto();
+        String strPicture = bitmapToString(photo);
+        ivShowPhoto.setImageBitmap(stringToBitmap(strPicture));
+    }
+
+    private void compressPhoto() {
+        //图片允许最大空间   单位：KB
+        Double maxSize = 5000.00;
+        //将bitmap放至数组中，意在bitmap的大小（与实际读取的原文件要大）
+        int size;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
+            size = photo.getByteCount();
+        else
+            size = photo.getRowBytes() * photo.getHeight();
+        //判断bitmap占用空间是否大于允许最大空间  如果大于则压缩 小于则不压缩
+        if (size / 1024 > maxSize) {
+            //获取bitmap大小 是允许最大大小的多少倍
+            double i = size / 1024 / maxSize;
+            //开始压缩  此处用到平方根 将宽带和高度压缩掉对应的平方根倍 （1.保持刻度和高度和原bitmap比率一致，压缩后也达到了最大大小占用空间的大小）
+            photo = zoomImage(photo, photo.getWidth() / Math.sqrt(i),
+                    photo.getHeight() / Math.sqrt(i));
+        }
+    }
+
+>>>>>>> parent of ad23328... 初步完成签到
     private Bitmap stringToBitmap(String string){
         //将字符串转换成Bitmap类型
         Bitmap bitmap=null;
@@ -185,6 +245,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
 
     /***
      * 图片的缩放方法
+<<<<<<< HEAD
      *
      * @param bgimage
      *            ：源图片资源
@@ -205,6 +266,19 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
         // 缩放图片动作
+=======
+     * @param bgimage ：源图片资源
+     * @param newWidth：缩放后宽度
+     * @param newHeight ：缩放后高度
+     */
+    private static Bitmap zoomImage(Bitmap bgimage, double newWidth,
+                                   double newHeight) {
+        float width = bgimage.getWidth();
+        float height = bgimage.getHeight();
+        Matrix matrix = new Matrix();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+>>>>>>> parent of ad23328... 初步完成签到
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width,
                 (int) height, matrix, true);
@@ -235,6 +309,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         btnSubmitPhoto.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
     }
+
 
     class GouldMapLocation {
         private AMapLocationClient locationClient = null;

@@ -22,7 +22,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+<<<<<<< HEAD
 import android.widget.Toast;
+=======
+import android.widget.TextView;
+>>>>>>> parent of ad23328... 初步完成签到
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.activity.ClassDetailActivity;
@@ -53,7 +57,10 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         AdapterView.OnItemClickListener, View.OnClickListener {
 
     private Button btnRegetSchedule;
+<<<<<<< HEAD
     private Button btnSetNowWeek;
+=======
+>>>>>>> parent of ad23328... 初步完成签到
     private Spinner spinner;
 
     private View parentView = null;
@@ -228,10 +235,15 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void initView() {
         btnRegetSchedule = (Button)parentView.findViewById(R.id.btn_reGetSchedule);
+<<<<<<< HEAD
         btnSetNowWeek = (Button)parentView.findViewById(R.id.btn_setNowWeek);
 
         btnRegetSchedule.setOnClickListener(this);
         btnSetNowWeek.setOnClickListener(this);
+=======
+
+        btnRegetSchedule.setOnClickListener(this);
+>>>>>>> parent of ad23328... 初步完成签到
 
 
         //选择周数 spinner
@@ -282,6 +294,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btn_reGetSchedule) {
+<<<<<<< HEAD
             if(true == true) {
                 initView();
                 return;
@@ -296,6 +309,21 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         MsgClass msg = recordMsg[v.getId()];
         intent.putExtra("classMsg", msg);
         startActivity(intent);
+=======
+            GetSchedule.getSchedule(getActivity());
+        } else {
+            Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
+            MsgClass msg = recordMsg[v.getId()];
+            intent.putExtra("classMsg", msg);
+            intent.putExtra("spinnerWeek", spinnerWeek);
+            startActivity(intent);
+        }
+       /* Intent intent = new Intent(getActivity(), ClassDetailActivity.class);*/
+//        Intent intent = new Intent(getActivity(), CourseSignActivity.class);
+//        MsgClass msg = recordMsg[v.getId()];
+//        intent.putExtra("classMsg", msg);
+//        startActivity(intent);
+>>>>>>> parent of ad23328... 初步完成签到
     }
 
     public class ClassMsgButton extends Button {
