@@ -2,6 +2,7 @@ package com.fkjslee.schoolv3.activity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -10,6 +11,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 
 import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.counsellor.CounsellorLeaveActivty;
 import com.fkjslee.schoolv3.fragment.Fragment_discuss;
 import com.fkjslee.schoolv3.fragment.Fragment_leave;
 import com.fkjslee.schoolv3.fragment.Fragment_schedule;
@@ -39,11 +41,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 transaction.commit();
                 break;
             case R.id.btn_leave:
-                fragment_leave = new Fragment_leave();
-                FragmentManager fragmentManager2 = getFragmentManager();
-                FragmentTransaction transaction2 = fragmentManager2.beginTransaction();
-                transaction2.replace(R.id.top_layout, fragment_leave);
-                transaction2.commit();
+//                fragment_leave = new Fragment_leave();
+//                FragmentManager fragmentManager2 = getFragmentManager();
+//                FragmentTransaction transaction2 = fragmentManager2.beginTransaction();
+//                transaction2.replace(R.id.top_layout, fragment_leave);
+//                transaction2.commit();
+                Intent intent = new Intent(MainActivity.this, CounsellorLeaveActivty.class);
+                startActivity(intent);
                 break;
             case R.id.btn_discuss:
                 FragmentTransaction transaction3 = getFragmentManager().beginTransaction();

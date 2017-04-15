@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item-->
+        <!--android:id="@+id/muti_choose_pop"-->
+        <!--android:title="@string/mutiChoose"-->
+        <!--/>-->
+    <!--<item-->
+        <!--android:id="@+id/clear_out_pop"-->
+        <!--android:title="@string/clearOut"-->
+        <!--/>-->
+</menu>

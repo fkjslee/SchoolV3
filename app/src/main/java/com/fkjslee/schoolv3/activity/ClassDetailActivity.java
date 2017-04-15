@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.data.MsgClass;
 
-import java.util.Calendar;
-
 
 /**
  * 课程详情界面
@@ -26,7 +24,6 @@ public class ClassDetailActivity extends AppCompatActivity implements View.OnCli
     private Button btnRtn;
     private Button btnHonework;
     private Button btnSign;
-    private Integer spinnerWeek;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +32,6 @@ public class ClassDetailActivity extends AppCompatActivity implements View.OnCli
 
         initView();
         msg = (MsgClass) getIntent().getSerializableExtra("classMsg");
-        spinnerWeek = (Integer)getIntent().getSerializableExtra("spinnerWeek");
         TextView tvName = (TextView)findViewById(R.id.tvName);
         tvName.setText(msg.getName());
         TextView tvPosition = (TextView)findViewById(R.id.tvPosition);
@@ -72,7 +68,6 @@ public class ClassDetailActivity extends AppCompatActivity implements View.OnCli
         Intent intent = new Intent(ClassDetailActivity.this, SignActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         intent.putExtra("classMsg", msg);
-        intent.putExtra("spinnerWeek", spinnerWeek);
         startActivity(intent);
     }
 
@@ -100,5 +95,4 @@ public class ClassDetailActivity extends AppCompatActivity implements View.OnCli
         btnRtn.setOnClickListener(this);
         btnSign.setOnClickListener(this);
     }
-
 }
