@@ -24,34 +24,10 @@ import com.amap.api.location.AMapLocationListener;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.data.MsgClass;
 import com.fkjslee.schoolv3.function.CheckPermissionsActivity;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import com.fkjslee.schoolv3.function.GetSchedule;
-<<<<<<< HEAD
->>>>>>> parent of ad23328... 初步完成签到
-=======
->>>>>>> parent of ad23328... 初步完成签到
-=======
 import com.fkjslee.schoolv3.function.GetSchedule;
 import com.fkjslee.schoolv3.function.MyCommonFunction;
->>>>>>> parent of 00d0560... sync
 import com.fkjslee.schoolv3.function.Utils;
 
-<<<<<<< HEAD
-import java.io.ByteArrayOutputStream;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-import java.util.Calendar;
-import java.util.Date;
->>>>>>> parent of ad23328... 初步完成签到
-=======
-import java.util.Calendar;
-import java.util.Date;
->>>>>>> parent of ad23328... 初步完成签到
-=======
->>>>>>> parent of 00d0560... sync
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
@@ -88,16 +64,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         msg = (MsgClass) getIntent().getSerializableExtra("classMsg");
         spinnerWeek = (Integer)getIntent().getSerializableExtra("spinnerWeek");
 
-        TextView tv_class = (TextView)findViewById(R.id.tv_class);
-        TextView tv_signState = (TextView)findViewById(R.id.tv_signState);
-        tv_class.setText(msg.getName());
-        tv_signState.setText(hasSign()? "已签到" : "未签到");
-
-        TextView tv_class = (TextView)findViewById(R.id.tv_class);
-        TextView tv_signState = (TextView)findViewById(R.id.tv_signState);
-        tv_class.setText(msg.getName());
-        tv_signState.setText(hasSign()? "已签到" : "未签到");
-
         initView();
     }
 
@@ -130,13 +96,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void submit() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of ad23328... 初步完成签到
-=======
         String picturePath = Environment.getExternalStorageDirectory()
                 .toString() + "/ca.jpg";
         MyCommonFunction.compressAndGenImage(photo, picturePath, 1024);
@@ -147,7 +106,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
                 "&cName=" + cName + "&week=" + spinnerWeek + "&weekday" + msg.getWeekday() +
                 "&startTime" + msg.getStartTime();
         MyCommonFunction.sendRequestToServer(requestMsg);
->>>>>>> parent of 00d0560... sync
         if(!checkPosition()) {
             Toast.makeText(getApplicationContext(), "位置错误", Toast.LENGTH_SHORT).show();
             return;
@@ -156,10 +114,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             Toast.makeText(getApplicationContext(), "时间错误", Toast.LENGTH_SHORT).show();
             return;
         }
-<<<<<<< HEAD
->>>>>>> parent of ad23328... 初步完成签到
-=======
->>>>>>> parent of 00d0560... sync
         if(photo == null) {
             Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
             return;
@@ -182,88 +136,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         return super.onKeyDown(keyCode, event);
     }
 
-<<<<<<< HEAD
-    private void showPhoto() {
-        ImageView view = (ImageView) findViewById(R.id.showPhoto);
-        String pathString = Environment.getExternalStorageDirectory()
-                .toString() + "/camera.jpg";
-        photo = BitmapFactory.decodeFile(pathString);
-        if(photo == null) {
-            Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        compressPhoto();
-        String strPicture = bitmapToString(photo);
-        view.setImageBitmap(stringToBitmap(strPicture));
-    }
-
-    private void compressPhoto() {
-        //图片允许最大空间   单位：KB
-        Double maxSize = 5000.00;
-        //将bitmap放至数组中，意在bitmap的大小（与实际读取的原文件要大）
-        int size;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
-            size = photo.getByteCount();
-        else
-            size = photo.getRowBytes() * photo.getHeight();
-        //判断bitmap占用空间是否大于允许最大空间  如果大于则压缩 小于则不压缩
-        if (size / 1024 > maxSize) {
-            //获取bitmap大小 是允许最大大小的多少倍
-            double i = size / 1024 / maxSize;
-            //开始压缩  此处用到平方根 将宽带和高度压缩掉对应的平方根倍 （1.保持刻度和高度和原bitmap比率一致，压缩后也达到了最大大小占用空间的大小）
-            photo = zoomImage(photo, photo.getWidth() / Math.sqrt(i),
-                    photo.getHeight() / Math.sqrt(i));
-        }
-    }
-
-<<<<<<< HEAD
-=======
-    private void showPhoto() {
-        String pathString = Environment.getExternalStorageDirectory()
-                .toString() + "/camera.jpg";
-        photo = BitmapFactory.decodeFile(pathString);
-        if(photo == null) {
-            Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        compressPhoto();
-        String strPicture = bitmapToString(photo);
-        ivShowPhoto.setImageBitmap(stringToBitmap(strPicture));
-    }
-
-    private void compressPhoto() {
-        //图片允许最大空间   单位：KB
-        Double maxSize = 5000.00;
-        //将bitmap放至数组中，意在bitmap的大小（与实际读取的原文件要大）
-        int size;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
-            size = photo.getByteCount();
-        else
-            size = photo.getRowBytes() * photo.getHeight();
-        //判断bitmap占用空间是否大于允许最大空间  如果大于则压缩 小于则不压缩
-        if (size / 1024 > maxSize) {
-            //获取bitmap大小 是允许最大大小的多少倍
-            double i = size / 1024 / maxSize;
-            //开始压缩  此处用到平方根 将宽带和高度压缩掉对应的平方根倍 （1.保持刻度和高度和原bitmap比率一致，压缩后也达到了最大大小占用空间的大小）
-            photo = zoomImage(photo, photo.getWidth() / Math.sqrt(i),
-                    photo.getHeight() / Math.sqrt(i));
-        }
-    }
-
-<<<<<<< HEAD
->>>>>>> parent of ad23328... 初步完成签到
-=======
->>>>>>> parent of ad23328... 初步完成签到
-    private Bitmap stringToBitmap(String string){
-        //将字符串转换成Bitmap类型
-        Bitmap bitmap=null;
-        try {
-            byte[]bitmapArray;
-            bitmapArray=Base64.decode(string, Base64.DEFAULT);
-            bitmap=BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-=======
     private Boolean checkPosition() {
         if(msg.getPosition().substring(0, 2).equals("A5")) {
             gouldMapLocation.startLocation();
@@ -294,7 +166,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         } else {
             Toast.makeText(getApplicationContext(), "暂无这节课位置具体地点信息", Toast.LENGTH_SHORT).show();
             return false;
->>>>>>> parent of 00d0560... sync
         }
     }
 
@@ -308,60 +179,11 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         return Math.abs(disMinute) <= 10;
     }
 
-<<<<<<< HEAD
-    /***
-     * 图片的缩放方法
-<<<<<<< HEAD
-<<<<<<< HEAD
-     *
-     * @param bgimage
-     *            ：源图片资源
-     * @param newWidth
-     *            ：缩放后宽度
-     * @param newHeight
-     *            ：缩放后高度
-     * @return
-     */
-    private static Bitmap zoomImage(Bitmap bgimage, double newWidth,
-                                   double newHeight) {
-        // 获取这个图片的宽和高
-        float width = bgimage.getWidth();
-        float height = bgimage.getHeight();
-        // 创建操作图片用的matrix对象
-        Matrix matrix = new Matrix();
-        // 计算宽高缩放率
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // 缩放图片动作
-=======
-=======
->>>>>>> parent of ad23328... 初步完成签到
-     * @param bgimage ：源图片资源
-     * @param newWidth：缩放后宽度
-     * @param newHeight ：缩放后高度
-     */
-    private static Bitmap zoomImage(Bitmap bgimage, double newWidth,
-                                   double newHeight) {
-        float width = bgimage.getWidth();
-        float height = bgimage.getHeight();
-        Matrix matrix = new Matrix();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-<<<<<<< HEAD
->>>>>>> parent of ad23328... 初步完成签到
-=======
->>>>>>> parent of ad23328... 初步完成签到
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width,
-                (int) height, matrix, true);
-        return bitmap;
-=======
     private void showPhoto() {
         String pathString = Environment.getExternalStorageDirectory()
                 .toString() + "/camera.jpg";
         photo = BitmapFactory.decodeFile(pathString);
         ivShowPhoto.setImageURI(Uri.fromFile(new File(pathString)));
->>>>>>> parent of 00d0560... sync
     }
 
     private boolean hasSign() {
@@ -393,7 +215,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         tv_class.setText(msg.getName());
         tv_signState.setText(hasSign()? "已签到" : "未签到");
     }
-
 
     class GouldMapLocation {
         private AMapLocationClient locationClient = null;

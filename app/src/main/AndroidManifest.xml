@@ -25,6 +25,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <!-- 用于提高GPS定位速度 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!-- 写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据 -->
@@ -82,14 +83,6 @@
         <activity android:name=".activity.GetPhotoActivity" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.Location_Activity" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <activity android:name=".counsellor.CounsellorLeaveActivty" />
-        <activity android:name=".counsellor.LeaveMutiChoose" />
-        <activity android:name=".counsellor.ShowLeaveDetail"></activity>
-=======
-=======
->>>>>>> parent of 00d0560... sync
         <activity
             android:name=".teacher.TeacherActivity"
             android:label="@string/title_activity_teacher"
@@ -97,16 +90,8 @@
         <activity
             android:name=".teacher.CourseSignActivity"
             android:label="@string/title_activity_course_sign"
-<<<<<<< HEAD
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-<<<<<<< HEAD
->>>>>>> parent of ad23328... 初步完成签到
-=======
->>>>>>> parent of ad23328... 初步完成签到
-=======
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.TakePhoto" />
->>>>>>> parent of 00d0560... sync
     </application>
 
 </manifest>

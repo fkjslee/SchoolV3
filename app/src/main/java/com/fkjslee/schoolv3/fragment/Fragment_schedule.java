@@ -19,19 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 import android.widget.TextView;
->>>>>>> parent of 00d0560... sync
 import android.widget.Toast;
-=======
-import android.widget.TextView;
->>>>>>> parent of ad23328... 初步完成签到
-=======
-import android.widget.TextView;
->>>>>>> parent of ad23328... 初步完成签到
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.activity.ClassDetailActivity;
@@ -57,17 +46,6 @@ import java.util.List;
 public class Fragment_schedule extends Fragment implements AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener, View.OnClickListener {
 
-<<<<<<< HEAD
-    private Button btnRegetSchedule;
-<<<<<<< HEAD
-<<<<<<< HEAD
-    private Button btnSetNowWeek;
-=======
->>>>>>> parent of ad23328... 初步完成签到
-=======
->>>>>>> parent of ad23328... 初步完成签到
-=======
->>>>>>> parent of 00d0560... sync
     private Spinner spinner;
 
     private View parentView = null;
@@ -247,24 +225,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void initView() {
-<<<<<<< HEAD
-        btnRegetSchedule = (Button)parentView.findViewById(R.id.btn_reGetSchedule);
-<<<<<<< HEAD
-<<<<<<< HEAD
-        btnSetNowWeek = (Button)parentView.findViewById(R.id.btn_setNowWeek);
-
-        btnRegetSchedule.setOnClickListener(this);
-        btnSetNowWeek.setOnClickListener(this);
-=======
-
-        btnRegetSchedule.setOnClickListener(this);
->>>>>>> parent of ad23328... 初步完成签到
-=======
-
-        btnRegetSchedule.setOnClickListener(this);
->>>>>>> parent of ad23328... 初步完成签到
-=======
->>>>>>> parent of 00d0560... sync
 
 
         //选择周数 spinner
@@ -312,51 +272,17 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View v) {
-<<<<<<< HEAD
-        if(v.getId() == R.id.btn_reGetSchedule) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-            if(true == true) {
-                initView();
-                return;
-            }
-            GetSchedule.getSchedule(getActivity());
-            return;
-        } else if(v.getId() == R.id.btn_setNowWeek) {
-            setSpinnerWeek();
-            return;
-        }
-=======
->>>>>>> parent of 00d0560... sync
         Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
         MsgClass msg = recordMsg[v.getId()];
         intent.putExtra("classMsg", msg);
         intent.putExtra("spinnerWeek", spinnerWeek);
         startActivity(intent);
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of ad23328... 初步完成签到
-            GetSchedule.getSchedule(getActivity());
-        } else {
-            Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
-            MsgClass msg = recordMsg[v.getId()];
-            intent.putExtra("classMsg", msg);
-            intent.putExtra("spinnerWeek", spinnerWeek);
-            startActivity(intent);
-        }
-=======
 
->>>>>>> parent of 00d0560... sync
        /* Intent intent = new Intent(getActivity(), ClassDetailActivity.class);*/
 //        Intent intent = new Intent(getActivity(), CourseSignActivity.class);
 //        MsgClass msg = recordMsg[v.getId()];
 //        intent.putExtra("classMsg", msg);
 //        startActivity(intent);
-<<<<<<< HEAD
->>>>>>> parent of ad23328... 初步完成签到
-=======
->>>>>>> parent of 00d0560... sync
     }
 
     public class ClassMsgView extends TextView{

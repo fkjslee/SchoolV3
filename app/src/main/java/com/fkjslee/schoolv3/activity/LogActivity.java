@@ -32,20 +32,10 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
 
     public static String logAccount = "20140497";
     public static String logPwd = "021292";
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 //    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
-    public static String url = "http://10.92.3.208:8080/MyServlet/MainServlet";
+    public static String url = "http://10.111.49.134:8080/MyServlet/MainServlet";
     public static Calendar calFirstDay;
 
->>>>>>> parent of ad23328... 初步完成签到
-=======
-//    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
-    public static String url = "http://10.92.3.208:8080/MyServlet/MainServlet";
-    public static Calendar calFirstDay;
-
->>>>>>> parent of 00d0560... sync
     public static String loginIdentity="学生";
     private int testTime = 0;
     private long mExitTime = -2005;
