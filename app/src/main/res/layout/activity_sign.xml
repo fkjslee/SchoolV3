@@ -59,7 +59,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/submit_photo"
-                    android:id="@+id/btn_submitPhoto"/>
+                    android:id="@+id/btn_submitPhoto"
+                    android:layout_gravity="center_horizontal"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/showPhoto"
+                    android:id="@+id/btn_showPhoto"/>
 
             </LinearLayout>
 
@@ -76,23 +83,18 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/llShowPosition">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            android:layout_gravity="center_vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/now_position"
-                    android:id="@+id/textViewNotUse"
-                    android:layout_gravity="center_horizontal"/>
-            </RelativeLayout>
+            <Button
+                android:text="@string/getPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_getPosition" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/now_position"
                 android:id="@+id/tv_showPosition"
                 android:layout_gravity="center_horizontal"/>
 
@@ -109,31 +111,5 @@
         android:layout_below="@+id/btn_rtn"
         android:layout_toRightOf="@+id/tv_class"
         android:layout_toEndOf="@+id/tv_class"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="hour"
-        android:text=""
-        android:ems="10"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="37dp"
-        android:id="@+id/et_hour" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="minute"
-        android:text=""
-        android:ems="10"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/et_hour"
-        android:layout_alignEnd="@+id/et_hour"
-        android:id="@+id/et_minute" />
-
 
 </RelativeLayout>

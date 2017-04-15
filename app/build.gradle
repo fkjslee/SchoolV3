@@ -3,8 +3,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
-    aaptOptions.cruncherEnabled = false
-    aaptOptions.useNewCruncher = false
     defaultConfig {
         applicationId "com.fkjslee.schoolv3"
         minSdkVersion 15
@@ -26,8 +24,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.1.1'
     testCompile 'junit:junit:4.12'
-    compile files('libs/AMap3DMap_5.0.0_AMapSearch_5.0.0_AMapLocation_3.3.0_20170311.jar')
+    compile files('libs/AMap_Location_V3.3.0_20170118.jar')
 }

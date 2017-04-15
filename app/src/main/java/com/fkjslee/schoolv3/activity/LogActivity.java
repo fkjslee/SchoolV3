@@ -6,36 +6,35 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fkjslee.schoolv3.R;
-import com.fkjslee.schoolv3.function.TimeCount;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.counsellor.OpenOrCreateDB;
+import com.fkjslee.schoolv3.counsellor.Values;
+import com.fkjslee.schoolv3.function.TimeCount;
 
 
 /**
- * 1. 点击登录 成功则进入主界面, 失败3次有罚时<br>
- * 2. 点击退出, 退出应用<br>
- * 3. 点击忘记密码, 跳到忘记密码界面<br>
+ * 1. 点击登录 成功则进入主界面, 失败3次有罚时
+ * 2. 点击退出, 退出应用
+ * 3. 点击忘记密码, 跳到忘记密码界面
  * 4. 点击绑定手机, 跳到绑定手机界面
  * */
 
-public class LogActivity extends AppCompatActivity implements View.OnClickListener{
+public class LogActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static String logAccount = "20140497";
     public static String logPwd = "021292";
-//    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
-    public static String url = "http://10.111.49.134:8080/MyServlet/MainServlet";
-    public static Calendar calFirstDay;
-
     public static String loginIdentity="学生";
     private int testTime = 0;
     private long mExitTime = -2005;
@@ -58,12 +57,15 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         testTime = 0;
 
         initView();
-
+        localInit();
     }
 
     /**
-     * 点击事件:<br>1:登录<br>2:退出<br>3:忘记密码<br>4:绑定手机
-     * @param v 控件
+     * 点击事件
+     * 1. 点击登录
+     * 2. 点击退出
+     * 3. 点击忘记密码
+     * 4. 点击绑定手机
      */
     public void onClick(View v) {
         Class<? extends android.app.Activity> activityClass = null;
@@ -79,16 +81,17 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     /**
-     * 功能: 点击"登录"后的具体实现逻辑<br>
-     * 正确则进入主界面, 错误给出提醒, 3次以上罚时, 罚时等于60秒
+     * 功能: 点击"登录"后的具体实现逻辑
+     * 返回值: 无
+     * 参数: 无
+     * 正确则进入主界面, 错误给出提醒, 3次以上罚时, 罚时等于2^(x-3)秒
      */
     private void clickBtnLog() {
-
         if (checkPWD(etStuId.getText().toString(), etPwd.getText().toString())) {
             logAccount = etStuId.getText().toString();
             logPwd = etPwd.getText().toString();
             loginIdentity=spinner1.getSelectedItem().toString();
-//            startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
+            System.out.println(loginIdentity);
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         } else {
             Toast.makeText(getApplicationContext(), "密码错误",
@@ -148,28 +151,18 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         }
         return super.onKeyDown(keyCode, event);
     }
-
     //控件初始化
     private void initView() {
-        calFirstDay = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date date = simpleDateFormat.parse("2017-2-20");
-            calFirstDay.setTime(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        btnLog = (Button) findViewById(R.id.btn_log);
+        btnQuit = (Button) findViewById(R.id.btn_quit);
+        btnFgtPwd = (Button) findViewById(R.id.btn_fgt_pwd);
+        btnBind = (Button) findViewById(R.id.btn_bind);
+        btnSet = (Button) findViewById(R.id.btn_set);
+        etStuId = (EditText) findViewById(R.id.et_stu_ID);
+        etPwd = (EditText) findViewById(R.id.et_pwd);
 
-        btnLog = (Button)findViewById(R.id.btn_log);
-        btnQuit = (Button)findViewById(R.id.btn_quit);
-        btnFgtPwd = (Button)findViewById(R.id.btn_fgt_pwd);
-        btnBind = (Button)findViewById(R.id.btn_bind);
-        btnSet = (Button)findViewById(R.id.btn_set);
-        etStuId = (EditText)findViewById(R.id.et_stu_ID);
-        etPwd = (EditText)findViewById(R.id.et_pwd);
-
-        etStuId.setText(LogActivity.logAccount);
-        etPwd.setText(LogActivity.logPwd);
+        etStuId.setText("20140497");
+        etPwd.setText("021292");
 
         btnLog.setOnClickListener(this);
         btnQuit.setOnClickListener(this);
@@ -186,4 +179,29 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         spinner1.setAdapter(adapter);
 
     }
+
+    /**
+     * 初始化一些本地相关的一些数据
+     */
+
+    private void localInit(){
+        createFolder(Values.mainPath);//创建本地文件夹
+        createFolder(Values.dbPath);
+        OpenOrCreateDB openOrCreateDatabase = new OpenOrCreateDB();//创建或者打开数据库，数据库默认名称 users
+        openOrCreateDatabase.createLeaveTable("leaves");//创建请假条表
+        openOrCreateDatabase.close();
+    }
+
+    //创建文件夹
+    public static boolean createFolder(String path){
+        try{
+            File file = new File(path);
+            if(!file.isDirectory() && !file.exists())
+                file.mkdir();
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
 }
