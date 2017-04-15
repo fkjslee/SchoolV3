@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.activity.ClassDetailActivity;
@@ -45,7 +46,6 @@ import java.util.List;
 public class Fragment_schedule extends Fragment implements AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener, View.OnClickListener {
 
-    private Button btnRegetSchedule;
     private Spinner spinner;
 
     private View parentView = null;
@@ -123,6 +123,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
             GetSchedule.getSchedule(this.getActivity());
             read = parentView.getContext().getSharedPreferences("lock", Context.MODE_WORLD_READABLE);
             value = read.getString("code", "");
+            Toast.makeText(parentView.getContext(), "数据长度" + value.length(), Toast.LENGTH_SHORT).show();
         }
         try{
             JSONArray bbs = new JSONArray(value);
@@ -224,9 +225,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void initView() {
-        btnRegetSchedule = (Button)parentView.findViewById(R.id.btn_reGetSchedule);
-
-        btnRegetSchedule.setOnClickListener(this);
 
 
         //选择周数 spinner
@@ -274,15 +272,12 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btn_reGetSchedule) {
-            GetSchedule.getSchedule(getActivity());
-        } else {
-            Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
-            MsgClass msg = recordMsg[v.getId()];
-            intent.putExtra("classMsg", msg);
-            intent.putExtra("spinnerWeek", spinnerWeek);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
+        MsgClass msg = recordMsg[v.getId()];
+        intent.putExtra("classMsg", msg);
+        intent.putExtra("spinnerWeek", spinnerWeek);
+        startActivity(intent);
+
        /* Intent intent = new Intent(getActivity(), ClassDetailActivity.class);*/
 //        Intent intent = new Intent(getActivity(), CourseSignActivity.class);
 //        MsgClass msg = recordMsg[v.getId()];

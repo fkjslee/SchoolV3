@@ -33,7 +33,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     public static String logAccount = "20140497";
     public static String logPwd = "021292";
 //    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
-    public static String url = "http://10.92.3.208:8080/MyServlet/MainServlet";
+    public static String url = "http://10.111.49.134:8080/MyServlet/MainServlet";
     public static Calendar calFirstDay;
 
     public static String loginIdentity="学生";

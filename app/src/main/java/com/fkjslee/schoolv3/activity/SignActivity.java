@@ -4,15 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -29,13 +25,12 @@ import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.data.MsgClass;
 import com.fkjslee.schoolv3.function.CheckPermissionsActivity;
 import com.fkjslee.schoolv3.function.GetSchedule;
+import com.fkjslee.schoolv3.function.MyCommonFunction;
 import com.fkjslee.schoolv3.function.Utils;
-import com.fkjslee.schoolv3.network.HttpThread;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
-import java.io.File;
 
 
 /**
@@ -69,11 +64,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         msg = (MsgClass) getIntent().getSerializableExtra("classMsg");
         spinnerWeek = (Integer)getIntent().getSerializableExtra("spinnerWeek");
 
-        TextView tv_class = (TextView)findViewById(R.id.tv_class);
-        TextView tv_signState = (TextView)findViewById(R.id.tv_signState);
-        tv_class.setText(msg.getName());
-        tv_signState.setText(hasSign()? "已签到" : "未签到");
-
         initView();
     }
 
@@ -97,7 +87,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 根据上面发送过去的请求吗来区别
         switch (requestCode) {
-            case 0:
+            case 0: //得到照片后
                 showPhoto();
                 break;
             default:
@@ -106,6 +96,16 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void submit() {
+        String picturePath = Environment.getExternalStorageDirectory()
+                .toString() + "/ca.jpg";
+        MyCommonFunction.compressAndGenImage(photo, picturePath, 1024);
+        byte[] bytes = MyCommonFunction.getBytesFromFile(new File(picturePath));
+        String cName = msg.getName().substring(msg.getName().indexOf("|") + 1);
+        String requestMsg = "type=sign_in&sName=20144567&msg=" +
+                Base64.encodeToString(bytes, Base64.DEFAULT) + "&stuID=" + LogActivity.logAccount +
+                "&cName=" + cName + "&week=" + spinnerWeek + "&weekday" + msg.getWeekday() +
+                "&startTime" + msg.getStartTime();
+        MyCommonFunction.sendRequestToServer(requestMsg);
         if(!checkPosition()) {
             Toast.makeText(getApplicationContext(), "位置错误", Toast.LENGTH_SHORT).show();
             return;
@@ -118,21 +118,15 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
             return;
         }
-        String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
-        String param = "type=picture&msg=" + bitmapToString(photo);
-        HttpThread httpThread = new HttpThread(url, param);
-        new Thread(httpThread).start();
     }
 
     private void takePhoto() {
-        Log.v("takePhoto", "there");
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File out = new File(Environment.getExternalStorageDirectory(),
                 "camera.jpg");
         Uri uri = Uri.fromFile(out);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         startActivityForResult(intent, 0);
-        Log.v("takePhoto", "here");
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -189,72 +183,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         String pathString = Environment.getExternalStorageDirectory()
                 .toString() + "/camera.jpg";
         photo = BitmapFactory.decodeFile(pathString);
-        if(photo == null) {
-            Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        compressPhoto();
-        String strPicture = bitmapToString(photo);
-        ivShowPhoto.setImageBitmap(stringToBitmap(strPicture));
-    }
-
-    private void compressPhoto() {
-        //图片允许最大空间   单位：KB
-        Double maxSize = 5000.00;
-        //将bitmap放至数组中，意在bitmap的大小（与实际读取的原文件要大）
-        int size;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1)
-            size = photo.getByteCount();
-        else
-            size = photo.getRowBytes() * photo.getHeight();
-        //判断bitmap占用空间是否大于允许最大空间  如果大于则压缩 小于则不压缩
-        if (size / 1024 > maxSize) {
-            //获取bitmap大小 是允许最大大小的多少倍
-            double i = size / 1024 / maxSize;
-            //开始压缩  此处用到平方根 将宽带和高度压缩掉对应的平方根倍 （1.保持刻度和高度和原bitmap比率一致，压缩后也达到了最大大小占用空间的大小）
-            photo = zoomImage(photo, photo.getWidth() / Math.sqrt(i),
-                    photo.getHeight() / Math.sqrt(i));
-        }
-    }
-
-    private Bitmap stringToBitmap(String string){
-        //将字符串转换成Bitmap类型
-        Bitmap bitmap=null;
-        try {
-            byte[]bitmapArray;
-            bitmapArray=Base64.decode(string, Base64.DEFAULT);
-            bitmap=BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
-
-    private String bitmapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] bytePicture = baos.toByteArray();
-        return Base64.encodeToString(bytePicture, Base64.DEFAULT);
-    }
-
-    /***
-     * 图片的缩放方法
-     * @param bgimage ：源图片资源
-     * @param newWidth：缩放后宽度
-     * @param newHeight ：缩放后高度
-     */
-    private static Bitmap zoomImage(Bitmap bgimage, double newWidth,
-                                   double newHeight) {
-        float width = bgimage.getWidth();
-        float height = bgimage.getHeight();
-        Matrix matrix = new Matrix();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width,
-                (int) height, matrix, true);
-        return bitmap;
+        ivShowPhoto.setImageURI(Uri.fromFile(new File(pathString)));
     }
 
     private boolean hasSign() {
@@ -286,7 +215,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         tv_class.setText(msg.getName());
         tv_signState.setText(hasSign()? "已签到" : "未签到");
     }
-
 
     class GouldMapLocation {
         private AMapLocationClient locationClient = null;
