@@ -93,7 +93,7 @@ public class OpenOrCreateDB {
     }
 
     public void deleteLeaves(String tableName){//批量删除已处理内容
-        String sql = "DELETE * FROM "+tableName+" WHERE DEAL = 1";
+        String sql = "DELETE FROM "+tableName+" WHERE DEAL = 1";
         db.execSQL(sql);
     }
 

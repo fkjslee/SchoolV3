@@ -60,4 +60,8 @@
     <string name="clearOut">清空</string>
     <string name="chooseAll">全选</string>
     <string name="passLeave">已批准</string>
+
+    <!--leave_detail-->
+    <string name="agreeLeave">同意</string>
+    <string name="rejectLeave">拒绝</string>
 </resources>

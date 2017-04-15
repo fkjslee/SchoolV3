@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 public class CounsellorLeaveActivty extends AppCompatActivity {
 
@@ -44,7 +43,6 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
     private ListView listViewHandled,listViewUnhandled;
     private SimpleAdapter handledAdapter,unhandledAdapter;
     private List<Map<String,Object>> handled,unhandled;
-    public static List<LeaveContent> unhandledLeaveList,handledLeaveList;
     private TextView text1,text2;//上方的两个文字项
     private int currIndex = 0;//界面的下标指示
     private ImageView cursor = null;
@@ -57,13 +55,19 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_counsellor_leave);
 
-        init();
+//        init();
     }
 
     @Override
     protected void onResume() {
         //界面跳转之后的刷新操作
-
+        if(handled != null){
+            handled.clear();
+        }
+        if(unhandled != null){
+            unhandled.clear();
+        }
+        init();
         super.onResume();
     }
     @Override
@@ -117,6 +121,23 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
     }
 
     private void init(){
+        //数据初始化
+
+//        OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
+//        for (int i = 0;i < 30;i++){
+//            LeaveContent leaveContent = new LeaveContent();
+//            leaveContent.studentName = "name"+i;
+//            leaveContent.studentNumber = "2014400"+i;
+//            leaveContent.reasons = "睡觉啊看到静安寺觉得睡觉啊看到静安寺觉得睡觉啊看到静安寺觉得";
+//            leaveContent.time = "2014/08/02";
+//            leaveContent.deal = i%2;
+//            if(leaveContent.deal == 1){
+//                leaveContent.pass = i%2;
+//            }
+//            openOrCreateDB.insertLeave(leaveContent,"leaves");
+//        }
+//        openOrCreateDB.close();
+
         toolbar = (Toolbar)findViewById(R.id.counsellor_toolbars);
         setSupportActionBar(toolbar);
         backspace = (ImageView)findViewById(R.id.counsellor_backspace);
@@ -146,7 +167,7 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
         views.add(viewHandled);
         //设置viewPager
         viewPager.setAdapter(new MyViewPagerAdapter(views));
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(currIndex);
         viewPager.setOnPageChangeListener(new MyOnPageChangeListener());
     }
 
@@ -257,9 +278,10 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
 
                                 //添加记录到已处理记录里面并刷新显示,关闭数据库
                                 handled.clear();
-                                handled = setMapList(openOrCreateDB.getLeaveDatas("leaves"),1);
-                                handledAdapter.notifyDataSetChanged();
+                                handled.addAll(setMapList(openOrCreateDB.getLeaveDatas("leaves"),1));
                                 openOrCreateDB.close();
+                                Log.e("CounsellorLeave","hanledSize"+handled.size());
+                                handledAdapter.notifyDataSetChanged();
 
                             }
                         })
@@ -274,19 +296,19 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
                                 Map<String,Object> map = unhandled.remove(index);
                                 map.remove("pass");
                                 map.put("pass","已拒绝");
-                                handled.add(map);
+
                                 leaveTemp.studentNumber = (String)map.get("studentNumber");
                                 unhandledAdapter.notifyDataSetChanged();
-                                handledAdapter.notifyDataSetChanged();
+
                                 //从数据库更改记录
                                 OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
                                 openOrCreateDB.updateLeave(leaveTemp,"leaves");
-                                openOrCreateDB.close();
                                 //添加记录到已处理记录里面并刷新显示,关闭数据库
-//                                handled.clear();
-//                                handled = setMapList(openOrCreateDB.getLeaveDatas("leaves"),1);
-//                                handledAdapter.notifyDataSetChanged();
+                                handled.clear();
+                                handled.addAll(setMapList(openOrCreateDB.getLeaveDatas("leaves"),1));
+                                openOrCreateDB.close();
 
+                                handledAdapter.notifyDataSetChanged();
                                 dialog.dismiss();
 
                             }
@@ -334,7 +356,7 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
             String str = "";
             if (leaveContent.pass == 1){
                 str = "已批准";
-            }else{
+            }else if (leaveContent.pass == 0){
                 str = "已拒绝";
             }
             map.put(LeaveContent.array[4],str);
@@ -372,6 +394,7 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             container.addView(mListViews.get(position), 0);
+//            handledAdapter.notifyDataSetChanged();//////////////////////////////////
             return mListViews.get(position);
         }
 

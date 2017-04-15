@@ -34,9 +34,9 @@ public class LeaveMutiChoose extends AppCompatActivity {
 
 //    private int images[];
     /*下面是和多选相关的变量*/
-    private List<Boolean> checks = null;//muti choose what
+    private List<Boolean> checks;
     private MutiChooseItemAdapter leaveAdapter;
-    private int chooseMode = 0;//表示当前是未被多选的状态
+    private int chooseState = 0;//表示当前是未被多选的状态
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class LeaveMutiChoose extends AppCompatActivity {
     }
 
     private void init(){
-        chooseMode = 0;//当前是全选还是已经全选
+        chooseState = 0;//当前是全选还是已经全选
         Intent tempIntent = getIntent();
         deal = tempIntent.getIntExtra("index",0);//后面一个参数是表示默认数据
         Log.e("which",""+deal);
@@ -102,8 +102,8 @@ public class LeaveMutiChoose extends AppCompatActivity {
 
     private int chooseCount(){//判断用户使用多选时是否选择了条目
         int count = 0;
-        for(Boolean i:checks){
-            if(i){
+        for(Boolean bool : checks){
+            if(bool){
                 count++;
             }
         }
@@ -120,21 +120,20 @@ public class LeaveMutiChoose extends AppCompatActivity {
 
                 case R.id.leave_muti_choose_all:
                     //全选
-                    if(chooseMode == 0){
-                        for(int i =0 ;i<checks.size();i++){
+                    if(chooseState == 0){
+                        for(int i = 0; i < checks.size();i++){
                             checks.set(i,true);
                         }
                         chooseAll.setText("取消全选");
-                        chooseMode = 1;
+                        chooseState = 1;
                     }else{
-                        for(int i =0 ;i<checks.size();i++){
+                        for(int i = 0; i < checks.size();i++){
                             checks.set(i,false);
                         }
                         chooseAll.setText("全选");
-                        chooseMode = 0;
+                        chooseState = 0;
                     }
                     leaveAdapter.notifyDataSetChanged();
-
                     break;
 
                 case R.id.leave_muti_pass:
@@ -150,19 +149,22 @@ public class LeaveMutiChoose extends AppCompatActivity {
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     //全部通过
+                                    OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
                                     for(int i = 0;i<checks.size();i++){
                                         if(checks.get(i) == true){
-                                            if(checks.get(i) == true){
+                                                checks.remove(i);//从check里面删除
                                                 LeaveContent leaveContent = new LeaveContent();
-                                                leaveContent.studentNumber = (String)leaveList.get(i).get("studentNumber");
+                                                leaveContent.studentNumber = (String)leaveList.remove(i).get("studentNumber");
                                                 leaveContent.deal = 1;
                                                 leaveContent.pass = 1;
-                                                OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
                                                 openOrCreateDB.updateLeave(leaveContent,"leaves");
-                                                openOrCreateDB.close();
-                                            }
+                                            i --;//因为在上面删除了数据
                                         }
                                     }
+                                    leaveAdapter.notifyDataSetChanged();
+                                    openOrCreateDB.close();
+                                    chooseState = 0;
+                                    chooseAll.setText("全选");
                                     dialog.dismiss();
                                     Toast.makeText(LeaveMutiChoose.this,"已通过",Toast.LENGTH_SHORT).show();
 
@@ -188,19 +190,23 @@ public class LeaveMutiChoose extends AppCompatActivity {
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     //全部拒绝
+                                    OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
                                     for(int i = 0;i<checks.size();i++){
                                         if(checks.get(i) == true){
-                                            if(checks.get(i) == true){
                                                 LeaveContent leaveContent = new LeaveContent();
-                                                leaveContent.studentNumber = (String)leaveList.get(i).get("studentNumber");
+                                                checks.remove(i);//从check里面删除
+                                                leaveContent.studentNumber = (String)leaveList.remove(i).get("studentNumber");
                                                 leaveContent.deal = 1;
                                                 leaveContent.pass = 0;
-                                                OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
                                                 openOrCreateDB.updateLeave(leaveContent,"leaves");
-                                                openOrCreateDB.close();
-                                            }
+                                            i --;//因为在上面删除了数据
                                         }
                                     }
+                                    leaveAdapter.notifyDataSetChanged();
+                                    openOrCreateDB.close();
+
+                                    chooseState = 0;
+                                    chooseAll.setText("全选");
                                     dialog.dismiss();
                                     Toast.makeText(LeaveMutiChoose.this,"已拒绝",Toast.LENGTH_SHORT).show();
                                 }
@@ -227,10 +233,15 @@ public class LeaveMutiChoose extends AppCompatActivity {
                                     OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
                                     for(int i = 0;i<checks.size();i++){
                                         if(checks.get(i) == true){
-                                            openOrCreateDB.deleteLeave((String)leaveList.get(i).get("studentNumber"),"leaves");
+                                            checks.remove(i);//从check里面删除
+                                            openOrCreateDB.deleteLeave((String)leaveList.remove(i).get("studentNumber"),"leaves");
+                                            i --;//因为在上面删除了数据
                                         }
                                     }
+                                    leaveAdapter.notifyDataSetChanged();
                                     openOrCreateDB.close();
+                                    chooseState = 0;
+                                    chooseAll.setText("全选");
                                     dialog.dismiss();
                                     Toast.makeText(LeaveMutiChoose.this,"已删除",Toast.LENGTH_SHORT).show();
                                 }
@@ -242,6 +253,7 @@ public class LeaveMutiChoose extends AppCompatActivity {
                             }).show();
                     break;
             }
+//            leaveAdapter.notifyDataSetChanged();
         }
     }
 
@@ -308,6 +320,9 @@ public class LeaveMutiChoose extends AppCompatActivity {
         }
     }
 
+    /**
+     * 触摸事件，主要用来产生点击动画
+     */
     private class OnTouch implements View.OnTouchListener{
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
