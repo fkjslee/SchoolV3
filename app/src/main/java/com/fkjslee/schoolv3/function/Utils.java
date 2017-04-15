@@ -48,8 +48,8 @@ public class Utils {
 		if(location.getErrorCode() == 0){
 			sb.append("定位成功" + "\n");
 //			sb.append("定位类型: " + location.getLocationType() + "\n");
-//			sb.append("经    度    : " + location.getLongitude() + "\n");
-//			sb.append("纬    度    : " + location.getLatitude() + "\n");
+			sb.append("经    度    : " + location.getLongitude() + "\n");
+			sb.append("纬    度    : " + location.getLatitude() + "\n");
 //			sb.append("精    度    : " + location.getAccuracy() + "米" + "\n");
 //			sb.append("提供者    : " + location.getProvider() + "\n");
 //
@@ -77,6 +77,22 @@ public class Utils {
 		//定位之后的回调时间
 		sb.append("回调时间: " + formatUTC(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss") + "\n");
 		return sb.toString();
+	}
+
+	public synchronized static Double getLongitude(AMapLocation location){
+		if(null == location){
+			return null;
+		}
+		if(location.getErrorCode() != 0) return 0.0;
+		else return location.getLongitude();
+	}
+
+	public synchronized static Double getLatitude(AMapLocation location){
+		if(null == location){
+			return null;
+		}
+		if(location.getErrorCode() != 0) return 0.0;
+		else return location.getLatitude();
 	}
 	
 	private static SimpleDateFormat sdf = null;

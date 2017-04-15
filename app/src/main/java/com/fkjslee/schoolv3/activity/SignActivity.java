@@ -4,18 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,15 +25,20 @@ import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.data.MsgClass;
 import com.fkjslee.schoolv3.function.CheckPermissionsActivity;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import com.fkjslee.schoolv3.function.GetSchedule;
 <<<<<<< HEAD
 >>>>>>> parent of ad23328... 初步完成签到
 =======
 >>>>>>> parent of ad23328... 初步完成签到
+=======
+import com.fkjslee.schoolv3.function.GetSchedule;
+import com.fkjslee.schoolv3.function.MyCommonFunction;
+>>>>>>> parent of 00d0560... sync
 import com.fkjslee.schoolv3.function.Utils;
-import com.fkjslee.schoolv3.network.HttpThread;
 
+<<<<<<< HEAD
 import java.io.ByteArrayOutputStream;
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -48,7 +50,11 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.Date;
 >>>>>>> parent of ad23328... 初步完成签到
+=======
+>>>>>>> parent of 00d0560... sync
 import java.io.File;
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -57,28 +63,30 @@ import java.io.File;
  * */
 public class SignActivity extends CheckPermissionsActivity implements View.OnClickListener{
 
-    GouldMapLocation gouldMapLocation;
+    private GouldMapLocation gouldMapLocation;
     private Button btnRtn;
-    private Button btnGetPosition;
     private Button btnSubmitPhoto;
-    private Button btnShowPhoto;
     private Button btnSubmit;
     private TextView tvShowPosition;
+    private TextView tv_class;
+    private TextView tv_signState;
+    private ImageView ivShowPhoto;
+    private EditText etHour;
+    private EditText etMinute;
+
     private Bitmap photo = null;
+    private MsgClass msg;
+    private Integer spinnerWeek;
+    private Double longitude;
+    private Double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
 
-        gouldMapLocation = new GouldMapLocation(this.getApplicationContext());
-
-        MsgClass msg = (MsgClass) getIntent().getSerializableExtra("classMsg");
-
-        TextView tv_class = (TextView)findViewById(R.id.tv_class);
-        TextView tv_signState = (TextView)findViewById(R.id.tv_signState);
-        tv_class.setText(msg.getName());
-        tv_signState.setText(hasSign()? "已签到" : "未签到");
+        msg = (MsgClass) getIntent().getSerializableExtra("classMsg");
+        spinnerWeek = (Integer)getIntent().getSerializableExtra("spinnerWeek");
 
         TextView tv_class = (TextView)findViewById(R.id.tv_class);
         TextView tv_signState = (TextView)findViewById(R.id.tv_signState);
@@ -96,17 +104,11 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_getPosition:
-                clickBtnGetPosition();
-                break;
             case R.id.btn_rtn:
                 clickBtnRtn();
                 break;
             case R.id.btn_submitPhoto:
                 takePhoto();
-                break;
-            case R.id.btn_showPhoto:
-                //showPhoto();
                 break;
             case R.id.btn_submit:
                 submit();
@@ -119,7 +121,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // 根据上面发送过去的请求吗来区别
         switch (requestCode) {
-            case 0:
+            case 0: //得到照片后
                 showPhoto();
                 break;
             default:
@@ -130,9 +132,22 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     private void submit() {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> parent of ad23328... 初步完成签到
+=======
+        String picturePath = Environment.getExternalStorageDirectory()
+                .toString() + "/ca.jpg";
+        MyCommonFunction.compressAndGenImage(photo, picturePath, 1024);
+        byte[] bytes = MyCommonFunction.getBytesFromFile(new File(picturePath));
+        String cName = msg.getName().substring(msg.getName().indexOf("|") + 1);
+        String requestMsg = "type=sign_in&sName=20144567&msg=" +
+                Base64.encodeToString(bytes, Base64.DEFAULT) + "&stuID=" + LogActivity.logAccount +
+                "&cName=" + cName + "&week=" + spinnerWeek + "&weekday" + msg.getWeekday() +
+                "&startTime" + msg.getStartTime();
+        MyCommonFunction.sendRequestToServer(requestMsg);
+>>>>>>> parent of 00d0560... sync
         if(!checkPosition()) {
             Toast.makeText(getApplicationContext(), "位置错误", Toast.LENGTH_SHORT).show();
             return;
@@ -141,26 +156,23 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             Toast.makeText(getApplicationContext(), "时间错误", Toast.LENGTH_SHORT).show();
             return;
         }
+<<<<<<< HEAD
 >>>>>>> parent of ad23328... 初步完成签到
+=======
+>>>>>>> parent of 00d0560... sync
         if(photo == null) {
             Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
             return;
         }
-        String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
-        String param = "type=picture&msg=" + bitmapToString(photo);
-        HttpThread httpThread = new HttpThread(url, param);
-        new Thread(httpThread).start();
     }
 
     private void takePhoto() {
-        Log.v("takePhoto", "there");
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File out = new File(Environment.getExternalStorageDirectory(),
                 "camera.jpg");
         Uri uri = Uri.fromFile(out);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         startActivityForResult(intent, 0);
-        Log.v("takePhoto", "here");
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -170,6 +182,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         return super.onKeyDown(keyCode, event);
     }
 
+<<<<<<< HEAD
     private void showPhoto() {
         ImageView view = (ImageView) findViewById(R.id.showPhoto);
         String pathString = Environment.getExternalStorageDirectory()
@@ -250,18 +263,52 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             bitmap=BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
         } catch (Exception e) {
             e.printStackTrace();
+=======
+    private Boolean checkPosition() {
+        if(msg.getPosition().substring(0, 2).equals("A5")) {
+            gouldMapLocation.startLocation();
+            if(etMinute.getText().toString().length() != 0) {
+                longitude = Double.valueOf(etHour.getText().toString());
+                latitude = Double.valueOf(etMinute.getText().toString());
+            }
+            Double cirLong = 106.473404;
+            Double cirLat = 29.572397;
+            Double edgeLong = 106.473938;
+            Double edgeLat = 29.572368;
+            return Math.pow(longitude - cirLong, 2) + Math.pow(latitude - cirLat, 2) <
+                    Math.pow(cirLong - edgeLong, 2) + Math.pow(cirLat - edgeLat, 2);
+        } else if(msg.getPosition().substring(0, 2).equals("A8")) {
+            Double cirLong = 106.472108;
+            Double cirLat = 29.572496;
+            Double edgeLong = 106.47269;
+            Double edgeLat = 29.572481;
+            return Math.pow(longitude - cirLong, 2) + Math.pow(latitude - cirLat, 2) <
+                    Math.pow(cirLong - edgeLong, 2) + Math.pow(cirLat - edgeLat, 2);
+        } else if(msg.getPosition().substring(0, 2).equals("A主")) {
+            Double cirLong = 106.477085;
+            Double cirLat = 29.571716;
+            Double edgeLong = 106.477716;
+            Double edgeLat = 29.57137;
+            return Math.pow(longitude - cirLong, 2) + Math.pow(latitude - cirLat, 2) <
+                    Math.pow(cirLong - edgeLong, 2) + Math.pow(cirLat - edgeLat, 2);
+        } else {
+            Toast.makeText(getApplicationContext(), "暂无这节课位置具体地点信息", Toast.LENGTH_SHORT).show();
+            return false;
+>>>>>>> parent of 00d0560... sync
         }
-
-        return bitmap;
     }
 
-    private String bitmapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] bytePicture = baos.toByteArray();
-        return Base64.encodeToString(bytePicture, Base64.DEFAULT);
+    private Boolean checkTime() {
+        Calendar calClassTime = GetSchedule.getTime(msg, spinnerWeek);
+        Calendar calToday = Calendar.getInstance();
+        Date d1 = calClassTime.getTime();
+        Date d2 = calToday.getTime();
+        Long disMilliSeconds = d1.getTime() - d2.getTime();
+        Long disMinute = disMilliSeconds / 1000 / 60;
+        return Math.abs(disMinute) <= 10;
     }
 
+<<<<<<< HEAD
     /***
      * 图片的缩放方法
 <<<<<<< HEAD
@@ -308,6 +355,13 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width,
                 (int) height, matrix, true);
         return bitmap;
+=======
+    private void showPhoto() {
+        String pathString = Environment.getExternalStorageDirectory()
+                .toString() + "/camera.jpg";
+        photo = BitmapFactory.decodeFile(pathString);
+        ivShowPhoto.setImageURI(Uri.fromFile(new File(pathString)));
+>>>>>>> parent of 00d0560... sync
     }
 
     private boolean hasSign() {
@@ -316,23 +370,28 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
 
     private void clickBtnRtn() { finish(); }
 
-    private void clickBtnGetPosition() {
-        gouldMapLocation.startLocation();
-    }
-
     private void initView() {
-        btnGetPosition = (Button) findViewById(R.id.btn_getPosition);
+
+        gouldMapLocation = new GouldMapLocation(this.getApplicationContext());
+        gouldMapLocation.startLocation();
+
         btnRtn = (Button) findViewById(R.id.btn_rtn);
-        btnShowPhoto = (Button) findViewById(R.id.btn_showPhoto);
         btnSubmitPhoto = (Button) findViewById(R.id.btn_submitPhoto);
         tvShowPosition = (TextView) findViewById(R.id.tv_showPosition);
         btnSubmit = (Button) findViewById(R.id.btn_submit);
+        ivShowPhoto = (ImageView) findViewById(R.id.showPhoto);
+        tv_class = (TextView)findViewById(R.id.tv_class);
+        tv_signState = (TextView)findViewById(R.id.tv_signState);
+        etHour = (EditText)findViewById(R.id.et_hour);
+        etMinute = (EditText)findViewById(R.id.et_minute);
+        ivShowPhoto = (ImageView) findViewById(R.id.showPhoto);
 
-        btnGetPosition.setOnClickListener(this);
         btnRtn.setOnClickListener(this);
-        btnShowPhoto.setOnClickListener(this);
         btnSubmitPhoto.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
+
+        tv_class.setText(msg.getName());
+        tv_signState.setText(hasSign()? "已签到" : "未签到");
     }
 
 
@@ -353,6 +412,8 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
                 if (null != loc) {
                     //解析定位结果
                     result = Utils.getLocationStr(loc);
+                    longitude = Utils.getLongitude(loc);
+                    latitude = Utils.getLatitude(loc);
                     tvShowPosition.setText(result);
                 }
             }
@@ -361,7 +422,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         /**
          * 默认的定位参数
          * @since 2.8.0
-         *
          */
         private AMapLocationClientOption getDefaultOption(){
             AMapLocationClientOption mOption = new AMapLocationClientOption();
@@ -388,7 +448,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             locationClient.setLocationListener(locationListener);
         }
 
-        public void startLocation(){
+        void startLocation(){
             // 设置定位参数
             locationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
             locationClient.setLocationOption(locationOption);
@@ -396,6 +456,5 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             locationClient.startLocation();
         }
     }
-
 
 }
