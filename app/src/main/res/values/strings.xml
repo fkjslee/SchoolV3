@@ -60,4 +60,15 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_course_sign">CourseSignActivity</string>
+
+    <!--counsellor menu text-->
+    <string name="mutiChoose">多选</string>
+    <string name="clearOut">清空</string>
+    <string name="chooseAll">全选</string>
+    <string name="passLeave">已批准</string>
+
+    <!--leave_detail-->
+    <string name="agreeLeave">同意</string>
+    <string name="rejectLeave">拒绝</string>
+    <string name="empty"></string>
 </resources>

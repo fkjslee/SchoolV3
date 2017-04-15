@@ -8,7 +8,7 @@
     android:paddingRight="0dip"
     android:id="@+id/relativeLayout"
     android:paddingTop="0dip"
-    tools:context=".activity.LogActivity">
+    tools:context=".student.activity.LogActivity">
 
     <LinearLayout
         android:orientation="vertical"

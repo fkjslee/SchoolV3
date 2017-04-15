@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/muti_choose_pop"
+        android:icon="@drawable/menu"
+        android:title="@string/mutiChoose"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/clear_out_pop"
+        android:icon="@drawable/menu"
+        android:title="@string/clearOut"
+        app:showAsAction="never"
+        />
+
+</menu>
