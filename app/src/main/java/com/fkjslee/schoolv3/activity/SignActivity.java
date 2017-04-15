@@ -30,12 +30,20 @@ import com.fkjslee.schoolv3.function.CheckPermissionsActivity;
 <<<<<<< HEAD
 =======
 import com.fkjslee.schoolv3.function.GetSchedule;
+<<<<<<< HEAD
+>>>>>>> parent of ad23328... 初步完成签到
+=======
 >>>>>>> parent of ad23328... 初步完成签到
 import com.fkjslee.schoolv3.function.Utils;
 import com.fkjslee.schoolv3.network.HttpThread;
 
 import java.io.ByteArrayOutputStream;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+import java.util.Calendar;
+import java.util.Date;
+>>>>>>> parent of ad23328... 初步完成签到
 =======
 import java.util.Calendar;
 import java.util.Date;
@@ -66,6 +74,11 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         gouldMapLocation = new GouldMapLocation(this.getApplicationContext());
 
         MsgClass msg = (MsgClass) getIntent().getSerializableExtra("classMsg");
+
+        TextView tv_class = (TextView)findViewById(R.id.tv_class);
+        TextView tv_signState = (TextView)findViewById(R.id.tv_signState);
+        tv_class.setText(msg.getName());
+        tv_signState.setText(hasSign()? "已签到" : "未签到");
 
         TextView tv_class = (TextView)findViewById(R.id.tv_class);
         TextView tv_signState = (TextView)findViewById(R.id.tv_signState);
@@ -116,7 +129,10 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
 
     private void submit() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of ad23328... 初步完成签到
         if(!checkPosition()) {
             Toast.makeText(getApplicationContext(), "位置错误", Toast.LENGTH_SHORT).show();
             return;
@@ -221,6 +237,9 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         }
     }
 
+<<<<<<< HEAD
+>>>>>>> parent of ad23328... 初步完成签到
+=======
 >>>>>>> parent of ad23328... 初步完成签到
     private Bitmap stringToBitmap(String string){
         //将字符串转换成Bitmap类型
@@ -246,6 +265,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     /***
      * 图片的缩放方法
 <<<<<<< HEAD
+<<<<<<< HEAD
      *
      * @param bgimage
      *            ：源图片资源
@@ -267,6 +287,8 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         float scaleHeight = ((float) newHeight) / height;
         // 缩放图片动作
 =======
+=======
+>>>>>>> parent of ad23328... 初步完成签到
      * @param bgimage ：源图片资源
      * @param newWidth：缩放后宽度
      * @param newHeight ：缩放后高度
@@ -278,6 +300,9 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         Matrix matrix = new Matrix();
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
+<<<<<<< HEAD
+>>>>>>> parent of ad23328... 初步完成签到
+=======
 >>>>>>> parent of ad23328... 初步完成签到
         matrix.postScale(scaleWidth, scaleHeight);
         Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width,

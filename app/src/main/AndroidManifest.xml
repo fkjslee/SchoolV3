@@ -95,6 +95,9 @@
             android:name=".teacher.CourseSignActivity"
             android:label="@string/title_activity_course_sign"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+<<<<<<< HEAD
+>>>>>>> parent of ad23328... 初步完成签到
+=======
 >>>>>>> parent of ad23328... 初步完成签到
     </application>
 

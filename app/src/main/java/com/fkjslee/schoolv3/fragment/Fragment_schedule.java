@@ -23,7 +23,11 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import android.widget.Toast;
+=======
+import android.widget.TextView;
+>>>>>>> parent of ad23328... 初步完成签到
 =======
 import android.widget.TextView;
 >>>>>>> parent of ad23328... 初步完成签到
@@ -58,7 +62,10 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
 
     private Button btnRegetSchedule;
 <<<<<<< HEAD
+<<<<<<< HEAD
     private Button btnSetNowWeek;
+=======
+>>>>>>> parent of ad23328... 初步完成签到
 =======
 >>>>>>> parent of ad23328... 初步完成签到
     private Spinner spinner;
@@ -236,10 +243,15 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     private void initView() {
         btnRegetSchedule = (Button)parentView.findViewById(R.id.btn_reGetSchedule);
 <<<<<<< HEAD
+<<<<<<< HEAD
         btnSetNowWeek = (Button)parentView.findViewById(R.id.btn_setNowWeek);
 
         btnRegetSchedule.setOnClickListener(this);
         btnSetNowWeek.setOnClickListener(this);
+=======
+
+        btnRegetSchedule.setOnClickListener(this);
+>>>>>>> parent of ad23328... 初步完成签到
 =======
 
         btnRegetSchedule.setOnClickListener(this);
@@ -295,6 +307,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     public void onClick(View v) {
         if(v.getId() == R.id.btn_reGetSchedule) {
 <<<<<<< HEAD
+<<<<<<< HEAD
             if(true == true) {
                 initView();
                 return;
@@ -310,6 +323,8 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         intent.putExtra("classMsg", msg);
         startActivity(intent);
 =======
+=======
+>>>>>>> parent of ad23328... 初步完成签到
             GetSchedule.getSchedule(getActivity());
         } else {
             Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
