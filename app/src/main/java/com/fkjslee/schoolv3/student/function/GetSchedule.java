@@ -17,7 +17,7 @@ import static android.content.Context.MODE_WORLD_WRITEABLE;
  */
 
 public class GetSchedule {
-    public static void getSchedule(Activity activity) {
+    public static String getSchedule(Activity activity) {
         //从服务器获得的数据
         SharedPreferences.Editor editor = activity.getSharedPreferences("lock",
                 MODE_WORLD_WRITEABLE).edit();
@@ -27,13 +27,14 @@ public class GetSchedule {
         editor.apply();
         Toast.makeText(activity.getApplicationContext(),
                 "获取课表 : " + schedule.length(), Toast.LENGTH_SHORT).show();
+        return schedule;
     }
     public static Calendar getTime(MsgClass msg, Integer spinnerWeek) {
 
         Calendar calendar = Calendar.getInstance();
         Integer hour = 0;
         Integer minute = 0;
-        switch (msg.getStartTime()) {
+        switch (Integer.valueOf(msg.getStartTime())) {
             case 1 :
                 hour = 8;
                 minute = 0;
@@ -83,7 +84,7 @@ public class GetSchedule {
                 minute = 45;
                 break;
         }
-        calendar.set(Calendar.DAY_OF_WEEK, msg.getWeekday()+1);
+        calendar.set(Calendar.DAY_OF_WEEK, Integer.valueOf(msg.getWeekday())+1);
         calendar.set(Calendar.WEEK_OF_YEAR, LogActivity.calFirstDay.get(Calendar.WEEK_OF_YEAR) +
                 spinnerWeek - 1);
         calendar.set(Calendar.HOUR_OF_DAY, hour);

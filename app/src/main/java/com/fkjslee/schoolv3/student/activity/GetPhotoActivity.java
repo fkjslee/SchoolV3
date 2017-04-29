@@ -83,7 +83,7 @@ public class GetPhotoActivity extends AppCompatActivity implements View.OnClickL
                 .toString() + "firstSignPicture.jpg";
         MyCommonFunction.compressAndGenImage(photo, picturePath, 1024);
         byte[] bytes = MyCommonFunction.getBytesFromFile(new File(picturePath));
-        String requestMsg = "type=picture&sName=20144567&msg=" +
+        String requestMsg = "type=picture" + "&sName=" + LogActivity.logAccount + "&img=" +
                 Base64.encodeToString(bytes, Base64.DEFAULT);
         MyCommonFunction.sendRequestToServer(requestMsg);
     }

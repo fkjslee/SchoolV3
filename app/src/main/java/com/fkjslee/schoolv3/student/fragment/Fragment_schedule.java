@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.database.Database;
 import com.fkjslee.schoolv3.student.activity.ClassDetailActivity;
 import com.fkjslee.schoolv3.student.activity.LogActivity;
 import com.fkjslee.schoolv3.student.data.MsgClass;
@@ -33,6 +34,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 
 /**
@@ -115,34 +118,30 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         }
 
         //真正的课表区域
-        SharedPreferences read = parentView.getContext().getSharedPreferences("lock", Context.MODE_WORLD_READABLE);
-        String value = read.getString("code", "");
-        if(value.length() == 0) {
-            GetSchedule.getSchedule(this.getActivity());
-            read = parentView.getContext().getSharedPreferences("lock", Context.MODE_WORLD_READABLE);
-            value = read.getString("code", "");
-            Toast.makeText(parentView.getContext(), "数据长度" + value.length(), Toast.LENGTH_SHORT).show();
-        }
-        try{
-            JSONArray bbs = new JSONArray(value);
-            for(int i = 0;i < bbs.length(); i++) {
-                String myTemp1 = bbs.getString(i);
-                JSONObject jasonObject = new JSONObject(myTemp1);
-                String classTeacher = jasonObject.getString("teacher");
-                String classPosition = jasonObject.getString("classroom");
-                String className = jasonObject.getString("name");
-                Integer classWeekday = Integer.parseInt(jasonObject.getString("weekday"));
-                Integer classLength = Integer.parseInt(jasonObject.getString("courseLength"));
-                Integer classBeginTime = Integer.parseInt(jasonObject.getString("courseBegin"));
-                String[] temp = jasonObject.getString("week").split(" ");
-                Integer[] classWeeks = new Integer[temp.length];
-                for(int j = 0; j < temp.length; ++j) classWeeks[j] = Integer.parseInt(temp[j]);
-                recordMsg[recordMsgLength++] = new MsgClass(className, classTeacher, classPosition,
-                        classLength, classBeginTime, classWeekday, classWeeks);
+        List<MsgClass> list = Database.querySchedule(LogActivity.logAccount);
+        if(list.isEmpty()) {
+            try {
+                JSONArray schedule = new JSONArray(GetSchedule.getSchedule(this.getActivity()));
+                for(int i = 0; i < schedule.length(); ++i) {
+                    JSONObject jasonObject = new JSONObject(schedule.getString(i));
+                    String classTeacher = jasonObject.getString("teacher");
+                    String classPosition = jasonObject.getString("classroom");
+                    String className = jasonObject.getString("name");
+                    String classWeekday = jasonObject.getString("weekday");
+                    String classLength = jasonObject.getString("courseLength");
+                    String classBeginTime = jasonObject.getString("courseBegin");
+                    String classWeeks = jasonObject.getString("week");
+                    list.add(new MsgClass(LogActivity.logAccount, className, classTeacher, classPosition,
+                            classLength, classBeginTime, classWeekday, classWeeks));
+                }
+                Database.insertSchedule(list);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch(Exception e){
-            e.printStackTrace();
         }
+        list = Database.querySchedule(LogActivity.logAccount);
+        for(MsgClass msgClass : list)
+            recordMsg[recordMsgLength++] = msgClass;
 
         ClassPositionMsg[][] posMsg = new ClassPositionMsg[8][20];
         for(Integer i = 0; i < 8; ++i) {
@@ -153,19 +152,24 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
 
         for(Integer i = 0; i < recordMsgLength; ++i) {
             MsgClass msg = recordMsg[i];
-            Integer[] weeks = msg.getWeeks();
-            Integer weekDay = msg.getWeekday();
+            String[] tempWeek = msg.getWeeks().split(" ");
+            Integer[] weeks = new Integer[tempWeek.length];
+            for(Integer j = 0; j < tempWeek.length; ++j)
+                weeks[j] = Integer.valueOf(tempWeek[j]);
+            Integer weekDay = Integer.valueOf(msg.getWeekday());
+            Integer startTime = Integer.valueOf(msg.getStartTime());
+            Integer classLength = Integer.valueOf(msg.getLength());
 
             for(Integer eachWeek : weeks) {
                 //蓝色的课表信息
                 if(eachWeek.equals(spinnerWeek)) {
                     Integer maxColor = 0;
-                    for(int j = msg.getStartTime(), cnt = 0; cnt < msg.getLength(); ++j, ++cnt) {
+                    for(int j = startTime, cnt = 0; cnt < classLength; ++j, ++cnt) {
                         maxColor = Math.max(maxColor, posMsg[weekDay][j].color);
                     }
                     //清除颜色
                     if(maxColor != 2) {
-                        for(int j = msg.getStartTime(), cnt = 0; cnt < msg.getLength(); ++j, ++cnt) {
+                        for(int j = startTime, cnt = 0; cnt < classLength; ++j, ++cnt) {
                             if(posMsg[weekDay][j].color == 1) {
                                 for(int k = posMsg[weekDay][j].startPos, cnt2 = 0; cnt2 < posMsg[weekDay][j].length; ++k, ++cnt2) {
                                     posMsg[weekDay][k].color = 0;
@@ -173,28 +177,28 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
                             }
                         }
                         //设置颜色
-                        for(int j = msg.getStartTime(), cnt = 0; cnt < msg.getLength(); ++j, ++cnt) {
-                            ClassPositionMsg temp = posMsg[msg.getWeekday()][j];
+                        for(int j = startTime, cnt = 0; cnt < classLength; ++j, ++cnt) {
+                            ClassPositionMsg temp = posMsg[weekDay][j];
                             temp.color = 2;
                             temp.id = i;
-                            temp.startPos = msg.getStartTime();
-                            temp.length = msg.getLength();
+                            temp.startPos = startTime;
+                            temp.length = classLength;
                         }
                     }
                 }
             }
             Integer maxColor = 0;
-            for(int j = msg.getStartTime(), cnt = 0; cnt < msg.getLength(); ++j, ++cnt) {
+            for(int j = startTime, cnt = 0; cnt < classLength; ++j, ++cnt) {
                 maxColor = Math.max(maxColor, posMsg[weekDay][j].color);
             }
             if(maxColor == 0) {
                 //设置颜色
-                for(int j = msg.getStartTime(), cnt = 0; cnt < msg.getLength(); ++j, ++cnt) {
-                    ClassPositionMsg temp = posMsg[msg.getWeekday()][j];
+                for(int j = startTime, cnt = 0; cnt < classLength; ++j, ++cnt) {
+                    ClassPositionMsg temp = posMsg[weekDay][j];
                     temp.color = 1;
                     temp.id = i;
-                    temp.startPos = msg.getStartTime();
-                    temp.length = msg.getLength();
+                    temp.startPos = startTime;
+                    temp.length = classLength;
                 }
             }
         }
@@ -266,7 +270,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) { }
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View v) {
@@ -275,12 +278,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         intent.putExtra("classMsg", msg);
         intent.putExtra("spinnerWeek", spinnerWeek);
         startActivity(intent);
-
-       /* Intent intent = new Intent(getActivity(), ClassDetailActivity.class);*/
-//        Intent intent = new Intent(getActivity(), CourseSignActivity.class);
-//        MsgClass msg = recordMsg[v.getId()];
-//        intent.putExtra("classMsg", msg);
-//        startActivity(intent);
     }
 
     public class ClassMsgView extends TextView{

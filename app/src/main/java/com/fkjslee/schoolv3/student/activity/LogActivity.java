@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.student.function.TimeCount;
+import com.fkjslee.schoolv3.database.Database;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,8 +33,8 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
 
     public static String logAccount = "20140497";
     public static String logPwd = "021292";
-//    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";
-    public static String url = "http://10.111.49.134:8080/MyServlet/MainServlet";
+    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";//服务器ip
+//    public static String url = "http://10.111.49.134:8080/MyServlet/MainServlet";
     public static Calendar calFirstDay;
 
     public static String loginIdentity="学生";
@@ -57,6 +58,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_log);
         testTime = 0;
 
+        Database.initDatabase(getApplicationContext());
         initView();
 
     }

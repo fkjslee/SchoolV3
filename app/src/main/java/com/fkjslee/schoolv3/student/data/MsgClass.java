@@ -10,11 +10,14 @@ public class MsgClass implements Serializable{
     private String name;
     private String teacher;
     private String position;
-    private Integer length;
-    private Integer startTime;
-    private Integer weekday;
+    private String length;
+    private String startTime;
+    private String weekday;
+    private String weeks;
+    private String sid;
 
-    public MsgClass(String name, String teacher, String position, Integer length, Integer startTime, Integer weekday, Integer[] weeks) {
+    public MsgClass(String sid, String name, String teacher, String position, String length, String startTime, String weekday, String weeks) {
+        this.sid = sid;
         this.name = name;
         this.teacher = teacher;
         this.position = position;
@@ -36,21 +39,20 @@ public class MsgClass implements Serializable{
         return position;
     }
 
-    public Integer getLength() {
+    public String getLength() {
         return length;
     }
 
-    public Integer getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public Integer getWeekday() {
+    public String getWeekday() {
         return weekday;
     }
 
-    public Integer[] getWeeks() {
+    public String getWeeks() {
         return weeks;
     }
 
-    private Integer [] weeks;
 }

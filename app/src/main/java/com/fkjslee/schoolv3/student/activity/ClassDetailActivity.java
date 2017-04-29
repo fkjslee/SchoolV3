@@ -43,9 +43,8 @@ public class ClassDetailActivity extends AppCompatActivity implements View.OnCli
         TextView tvNum = (TextView)findViewById(R.id.tvNumber);
         tvNum.setText(String.valueOf(msg.getLength()));
         TextView tvWeeks = (TextView)findViewById(R.id.tvWeeks);
-        String temp = "";
-        for(int i : msg.getWeeks()) temp += String.valueOf(i) + " ";
-        tvWeeks.setText(String.valueOf(temp));
+        String temp = msg.getWeeks();
+        tvWeeks.setText(temp);
     }
 
     public void onClick(View v) {

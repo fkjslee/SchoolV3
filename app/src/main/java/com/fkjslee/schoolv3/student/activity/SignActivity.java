@@ -90,8 +90,6 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             case 0: //得到照片后
                 showPhoto();
                 break;
-            default:
-                break;
         }
     }
 
@@ -101,10 +99,10 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         MyCommonFunction.compressAndGenImage(photo, picturePath, 1024);
         byte[] bytes = MyCommonFunction.getBytesFromFile(new File(picturePath));
         String cName = msg.getName().substring(msg.getName().indexOf("|") + 1);
-        String requestMsg = "type=sign_in&sName=20144567&msg=" +
-                Base64.encodeToString(bytes, Base64.DEFAULT) + "&stuID=" + LogActivity.logAccount +
-                "&cName=" + cName + "&week=" + spinnerWeek + "&weekday" + msg.getWeekday() +
-                "&startTime" + msg.getStartTime();
+        String requestMsg = "type=sign_in" + "&img=" + Base64.encodeToString(bytes, Base64.DEFAULT) +
+                "&sName=" + LogActivity.logAccount + "&cName=" + cName + "&week=" + spinnerWeek +
+                "&weekday=" + msg.getWeekday() + "&courseBegin=" + msg.getStartTime() +
+                "&tName=" + msg.getTeacher() + "&length=" + msg.getLength();
         MyCommonFunction.sendRequestToServer(requestMsg);
         if(!checkPosition()) {
             Toast.makeText(getApplicationContext(), "位置错误", Toast.LENGTH_SHORT).show();
@@ -187,7 +185,12 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private boolean hasSign() {
-        return true;
+        String requestMsg = "type=sign_res" + "&sName=" + LogActivity.loginIdentity +
+                "&cName=" + msg.getName() + "&week=" + spinnerWeek + "&weekday=" + msg.getWeekday() +
+                "&courseBegin=" + msg.getStartTime() + "&length=" + msg.getLength();
+        Boolean res = Boolean.valueOf(MyCommonFunction.sendRequestToServer(requestMsg));
+        Toast.makeText(getApplicationContext(), res.toString(), Toast.LENGTH_SHORT).show();
+        return res;
     }
 
     private void clickBtnRtn() { finish(); }

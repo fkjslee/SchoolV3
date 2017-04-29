@@ -1,8 +1,12 @@
-package com.fkjslee.schoolv3.counsellor;
+package com.fkjslee.schoolv3.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
+
+import com.fkjslee.schoolv3.counsellor.LeaveContent;
+import com.fkjslee.schoolv3.counsellor.Values;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +18,7 @@ import java.util.List;
 public class OpenOrCreateDB {
     private final String databaseName = "users";//数据库的名称
     private String path = null;
+    private String dataBasePath = Environment.getExternalStorageDirectory().getPath() + "/database";
 
     SQLiteDatabase db;
 
@@ -25,19 +30,19 @@ public class OpenOrCreateDB {
     /**
      * 创建数据库表的函数，如果需要再创建其他表，直接在新建个另外的建表函数即可
      */
-    public void createLeaveTable(String tableName){
-        String sql = "CREATE TABLE IF NOT EXISTS " +tableName + " (" +
+    public void createLeaveTable(String tableName) {
+        String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " (" +
                 "STUDENTNAME       VARCHAR(50)     NOT NULL," +
                 "STUDENTNUMBER     VARCHAR(10)     NOT NULL," +
-                "REASONS      VARCHAR(500), "+
-                "TIME       VARCHAR(20), "+
-                "PASS       INTEGER ,"+
-                "DEAL       INTEGER "+
+                "REASONS      VARCHAR(500), " +
+                "TIME       VARCHAR(20), " +
+                "PASS       INTEGER ," +
+                "DEAL       INTEGER " +
                 ")";
         db.execSQL(sql);
     }
 
-    public long insertLeave(LeaveContent leaveContent,String tableName){
+    public long insertLeave(LeaveContent leaveContent, String tableName){
         if(leaveContent==null)
             return 0;
         ContentValues values = new ContentValues();
