@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 import com.fkjslee.schoolv3.student.function.TimeCount;
 import com.fkjslee.schoolv3.database.Database;
 
@@ -33,8 +34,8 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
 
     public static String logAccount = "20140497";
     public static String logPwd = "021292";
-    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";//服务器ip
-//    public static String url = "http://10.111.49.134:8080/MyServlet/MainServlet";
+//    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";//服务器ip
+    public static String url = "http://100.56.101.29:8080/MyServlet/MainServlet";
     public static Calendar calFirstDay;
 
     public static String loginIdentity="学生";
@@ -70,7 +71,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         Class<? extends android.app.Activity> activityClass = null;
         if (R.id.btn_fgt_pwd == v.getId()) activityClass = FgtPwdActivity.class;
-        if (R.id.btn_bind == v.getId()) activityClass = BindPhoneActivity.class;
+        if (R.id.btn_bind == v.getId()) activityClass = RegisterActivity.class;
         if (R.id.btn_set == v.getId()) activityClass = SettingActivity.class;
         if (null != activityClass) {
             startActivity(new Intent(this.getApplicationContext(), activityClass));
@@ -131,8 +132,17 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
      * 返回值: boolean, 密码正确
      * 参数, String, 学生的学号, String, 学生的密码
      */
-    private boolean checkPWD(String stu_ID, String pwd) {
-        return true;
+    private boolean checkPWD(String phone, String pwd) {
+        String param = "type=login&telephone=" + phone + "&password=" + pwd;
+        String result = MyCommonFunction.sendRequestToServer(param);
+        if(result.equals("学生")) {
+            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else {
+            Toast.makeText(this, "账号或者密码错误", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     /**

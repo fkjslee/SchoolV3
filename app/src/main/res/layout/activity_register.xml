@@ -8,32 +8,32 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    tools:context=".student.activity.BindPhoneActivity">
+    tools:context=".student.activity.RegisterActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:background="@color/blue"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/relativeLayout2">
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
+
+        <ImageView
+            android:id="@+id/iv_rtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/rtn"
-            android:id="@+id/btn_rtn"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="@drawable/btn_azure"/>
+            android:scaleY="0.65"
+            android:scaleX="0.65"
+            android:paddingLeft="@dimen/small_margin"
+            android:paddingRight="@dimen/small_margin"
+            android:src="@drawable/backspace"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/bind"
+            android:text="@string/register"
             android:id="@+id/textView7"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"/>
@@ -42,36 +42,19 @@
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="47dp"
         android:id="@+id/gridLayout3"
         android:layout_below="@+id/relativeLayout2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="@string/plz_input_stu_ID"
-            android:ems="8"
-            android:id="@+id/et_stu_ID"
-            android:layout_row="0"
-            android:layout_column="1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/stu_ID"
-            android:id="@+id/textView8"
-            android:layout_row="0"
-            android:layout_column="0"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/phone_number"
+            android:textSize="15sp"
             android:id="@+id/textView9"
             android:layout_row="1"
             android:layout_column="0"/>
@@ -80,7 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            android:hint="@string/plz_input_pwd"
+            android:hint="@string/plz_input_phone_number"
+            android:textSize="15sp"
             android:ems="8"
             android:id="@+id/et_phone"
             android:layout_row="1"
@@ -91,6 +75,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/code"
+            android:textSize="15sp"
             android:id="@+id/textView10"
             android:layout_row="2"
             android:layout_column="0"/>
@@ -99,9 +84,68 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/input_code"
+            android:textSize="15sp"
             android:ems="8"
             android:id="@+id/et_code"
             android:layout_row="2"
+            android:layout_column="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/pwd"
+            android:textSize="15sp"
+            android:id="@+id/textView11"
+            android:layout_row="3"
+            android:layout_column="0"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/plz_input_pwd"
+            android:textSize="15sp"
+            android:ems="11"
+            android:id="@+id/et_pwd"
+            android:layout_row="3"
+            android:layout_column="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/repeat_pwd"
+            android:textSize="15sp"
+            android:id="@+id/textView12"
+            android:layout_row="4"
+            android:layout_column="0"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/plz_repeat_pwd"
+            android:textSize="15sp"
+            android:ems="8"
+            android:id="@+id/et_rePwd"
+            android:layout_row="4"
+            android:layout_column="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/choose_identity"
+            android:textSize="15sp"
+            android:id="@+id/textView13"
+            android:layout_row="5"
+            android:layout_column="0"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner_choose_identity"
+            android:layout_row="5"
             android:layout_column="1"/>
     </GridLayout>
 
@@ -109,7 +153,9 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="0dp"
         android:text="@string/send_code"
+        android:textSize="12sp"
         android:id="@+id/btn_send_code"
         android:layout_alignTop="@+id/gridLayout3"
         android:layout_toRightOf="@+id/gridLayout3"
@@ -123,7 +169,7 @@
         android:text="@string/sure"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:textSize="20sp"
         android:id="@+id/btn_sure"
         android:background="@drawable/btn_azure"

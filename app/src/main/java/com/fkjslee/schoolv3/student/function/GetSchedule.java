@@ -18,15 +18,15 @@ import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 public class GetSchedule {
     public static String getSchedule(Activity activity) {
-        //从服务器获得的数据
-        SharedPreferences.Editor editor = activity.getSharedPreferences("lock",
-                MODE_WORLD_WRITEABLE).edit();
         String param = "type=class&name=" + LogActivity.logAccount + "&password=" + LogActivity.logPwd;
         String schedule = MyCommonFunction.sendRequestToServer(param);
-        editor.putString("code", schedule);
-        editor.apply();
-        Toast.makeText(activity.getApplicationContext(),
-                "获取课表 : " + schedule.length(), Toast.LENGTH_SHORT).show();
+        if(schedule.length() > 10) {
+            Toast.makeText(activity.getApplicationContext(),
+                    "获取课表成功", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(activity.getApplicationContext(),
+                    "获取课表失败", Toast.LENGTH_SHORT).show();
+        }
         return schedule;
     }
     public static Calendar getTime(MsgClass msg, Integer spinnerWeek) {

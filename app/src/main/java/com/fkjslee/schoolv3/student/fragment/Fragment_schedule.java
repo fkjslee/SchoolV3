@@ -227,8 +227,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void initView() {
-
-
         //选择周数 spinner
         List<String> list = new ArrayList<>();
         int maxWeek = getMaxWeek();
@@ -242,7 +240,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         spinner.setAdapter(weekAdapter);
         spinner.setSelection(nowWeek - 1, true);
         spinnerWeek = nowWeek;
-        setSchedulePosition();
         spinner.setOnItemSelectedListener(this);
         spinner.setDropDownVerticalOffset(30);
     }

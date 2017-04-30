@@ -18,6 +18,7 @@
     <string name="code">验证码:</string>
     <string name="input_code">输入接收的验证码</string>
     <string name="phone_number">手机号:</string>
+    <string name="plz_input_phone_number">请输入手机号</string>
     <string name="sure">确认</string>
     <string name="new_pwd">新密码:</string>
     <string name="repeat_pwd">密码确认:</string>
@@ -29,6 +30,8 @@
     <string name="di">第</string>
     <string name="zhou">周</string>
     <string name="get_schedule">获取课表</string>
+    <string name="register">注册</string>
+    <string name="choose_identity">选择身份:</string>
     <!--课堂信息-->
     <string name="name">名称</string>
     <string name="position">教室</string>

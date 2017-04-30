@@ -5,15 +5,12 @@
             <!-- 圆角 -->
             <corners android:radius="5dp" />
             <!--填充颜色为蓝色-->
-            <solid android:color="@color/mediumpurple" />
+            <solid android:color="@color/blue" />
         </shape>
     </item>
-    <!--单击时是一个带圆角,粉蓝色背景的矩形-->
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <!--圆角-->
             <corners android:radius="5dp" />
-            <!--填充颜色为浅蓝色-->
             <solid android:color="@color/powderblue" />
         </shape>
     </item>
