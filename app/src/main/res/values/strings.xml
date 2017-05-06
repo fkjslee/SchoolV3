@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">SchoolKey</string>
     <string name="quit">退出</string>
-    <string name="set">设置</string>
+    <string name="setting">设置</string>
     <string name="identity">身份:</string>
     <string name="stu_ID">学号:</string>
     <string name="pwd">密码:</string>
@@ -32,6 +32,12 @@
     <string name="get_schedule">获取课表</string>
     <string name="register">注册</string>
     <string name="choose_identity">选择身份:</string>
+    <string name="agree">同意</string>
+    <string name="not_agree">未同意</string>
+    <string name="leave_reason">请假原因:</string>
+    <string name="leave_request_time">申请时间 : </string>
+    <string name="leave_start_time">开始时间 : </string>
+    <string name="leave_end_time">结束时间 : </string>
     <!--课堂信息-->
     <string name="name">名称</string>
     <string name="position">教室</string>
@@ -54,9 +60,10 @@
     <string name="showPhoto">显示照片</string>
     <string name="upload_photo">上传照片</string>
     <string name="getPosition">查看位置</string>
-    <string name="reGetSchedule">重获课表</string>
+    <string name="bind_sid">绑定学号</string>
     <string name="setNowWeek">设为当前周</string>
     <string name="title_activity_teacher">TeacherActivity</string>
+    <string name="change_account">切换用户</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

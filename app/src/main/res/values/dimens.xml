@@ -19,4 +19,7 @@
     <dimen name="item_name_size">18dp</dimen>
     <dimen name="pass_size">18dp</dimen>
 
+    <dimen name="leave_agree_detail">60dp</dimen>
+    <dimen name="leave_agree_detail_textSize">20sp</dimen>
+
 </resources>

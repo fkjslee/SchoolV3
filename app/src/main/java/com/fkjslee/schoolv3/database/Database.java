@@ -22,33 +22,10 @@ import java.util.List;
 public class Database {
     private static String dataBasePath;
 
-    public Database() {
-        String dataBasePath = Environment.getExternalStorageDirectory().getPath() + "/database";
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dataBasePath, null);
-        //创建person表
-        db.execSQL("CREATE TABLE IF NOT EXISTS person (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, age SMALLINT)");
-        Person person = new Person();
-        person.name = "john";
-        person.age = 30;
-        //插入数据
-        db.execSQL("INSERT INTO person VALUES (NULL, ?, ?)", new Object[]{person.name, person.age});
-
-        Cursor c = db.rawQuery("SELECT * FROM person WHERE age >= ?", new String[]{"33"});
-        while (c.moveToNext()) {
-            int _id = c.getInt(c.getColumnIndex("_id"));
-            String name = c.getString(c.getColumnIndex("name"));
-            int age = c.getInt(c.getColumnIndex("age"));
-            Log.i("db", "_id=>" + _id + ", name=>" + name + ", age=>" + age);
-        }
-        c.close();
-        //关闭当前数据库
-        db.close();
-    }
-
     public static void initDatabase(Context context) {
         dataBasePath = context.getFilesDir().getAbsolutePath().replace("files", "database");
         createDatabase();
-        createTable();
+        createTableSchedule();
     }
 
     public static void insertSchedule(List<MsgClass> list) {
@@ -85,7 +62,7 @@ public class Database {
         return list;
     }
 
-    private static void createTable() {
+    private static void createTableSchedule() {
         SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dataBasePath, null);
         String sql = "CREATE TABLE IF NOT EXISTS schedule(" +
                 "sid            CHAR(20)," +

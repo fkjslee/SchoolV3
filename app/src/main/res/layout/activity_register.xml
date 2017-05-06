@@ -8,6 +8,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
+    android:background="@drawable/bclog"
     tools:context=".student.activity.RegisterActivity">
 
     <RelativeLayout
@@ -104,6 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/plz_input_pwd"
+            android:inputType="textPassword"
             android:textSize="15sp"
             android:ems="11"
             android:id="@+id/et_pwd"
@@ -124,6 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/plz_repeat_pwd"
+            android:inputType="textPassword"
             android:textSize="15sp"
             android:ems="8"
             android:id="@+id/et_rePwd"
@@ -160,7 +163,8 @@
         android:layout_alignTop="@+id/gridLayout3"
         android:layout_toRightOf="@+id/gridLayout3"
         android:layout_toEndOf="@+id/gridLayout3"
-        android:layout_marginTop="34dp"/>
+        android:layout_marginTop="34dp"
+        android:background="@drawable/btn_azure"/>
 
     <Button
         style="?android:attr/buttonStyleSmall"

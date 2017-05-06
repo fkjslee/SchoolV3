@@ -33,22 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/identity"
-            android:id="@+id/textView1"
-            android:layout_row="0"
-            android:layout_column="0"/>
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/identity"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/spinner1"
-            android:layout_row="0"
-            android:layout_column="1"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/stu_ID"
             android:id="@+id/textView"
             android:layout_row="1"
@@ -108,8 +92,8 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/set"
-            android:id="@+id/btn_set"
+            android:text="@string/setting"
+            android:id="@+id/btn_setting"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/btn_azure"/>
@@ -154,7 +138,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bind"
+        android:text="@string/register"
         android:id="@+id/btn_bind"
         android:layout_alignBottom="@id/btn_fgt_pwd"
         android:layout_alignRight="@id/btn_log"

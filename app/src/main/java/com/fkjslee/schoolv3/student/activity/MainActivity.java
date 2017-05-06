@@ -5,10 +5,13 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.counsellor.CounsellorLeaveActivty;
@@ -17,66 +20,67 @@ import com.fkjslee.schoolv3.student.fragment.Fragment_leave;
 import com.fkjslee.schoolv3.student.fragment.Fragment_schedule;
 
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
-    Fragment_schedule fragment_schedule = new Fragment_schedule();
-    Fragment_leave fragment_leave = new Fragment_leave();
-    Fragment_discuss fragment_discuss = new Fragment_discuss();
+    private Fragment_schedule fragment_schedule = new Fragment_schedule();
+    private Fragment_leave fragment_leave = new Fragment_leave();
+    private Fragment_discuss fragment_discuss = new Fragment_discuss();
+    private Button btnSetting;
+    private PopupMenu popupMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
-
+        initView();
     }
 
+    @Override
     public void onClick(View v) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         switch(v.getId()) {
             case R.id.btn_schedule:
-                FragmentManager fragmentManager1 = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager1.beginTransaction();
-                fragment_schedule = new Fragment_schedule();
                 transaction.replace(R.id.top_layout, fragment_schedule);
                 transaction.commit();
                 break;
             case R.id.btn_leave:
-                if(LogActivity.loginIdentity.equals("学生")) {
-                    fragment_leave = new Fragment_leave();
-                    FragmentManager fragmentManager2 = getFragmentManager();
-                    FragmentTransaction transaction2 = fragmentManager2.beginTransaction();
-                    transaction2.replace(R.id.top_layout, fragment_leave);
-                    transaction2.commit();
-                } else if(LogActivity.loginIdentity.equals("辅导员")){
-                    Intent intent = new Intent(MainActivity.this, CounsellorLeaveActivty.class);
-                    startActivity(intent);
-                }
+                transaction.replace(R.id.top_layout, fragment_leave);
+                transaction.commit();
                 break;
             case R.id.btn_discuss:
-                FragmentTransaction transaction3 = getFragmentManager().beginTransaction();
-                fragment_discuss = new Fragment_discuss();
-                transaction3.replace(R.id.top_layout, fragment_discuss);
-                transaction3.commit();
+                transaction.replace(R.id.top_layout, fragment_discuss);
+                transaction.commit();
                 break;
+            case R.id.btn_setting:
+                popupMenu = new PopupMenu(this, v);
+                popupMenu.getMenuInflater().inflate(R.menu.setting, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(this);
+                popupMenu.show();
         }
     }
 
-    /**
-    * 点击返回后返回到登录界面
-    * */
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            clickBtnRtn();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+    private void initView() {
+        btnSetting = (Button)findViewById(R.id.btn_setting);
 
-    private void clickBtnRtn() {
-        finish();
+        btnSetting.setOnClickListener(this);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        /*toDetailActivity(position);*/
+
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.bind_sid:
+                break;
+            case R.id.change_account:
+                this.finish();
+                break;
+        }
+        return true;
     }
 }

@@ -1,29 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/top_layout"
+    <Button
+        android:text="@string/setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_setting"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9">
-        <fragment
-            android:id="@+id/fragment_schedule"
-            android:name="com.fkjslee.schoolv3.student.fragment.Fragment_schedule"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/top_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_schedule"/>
-    </FrameLayout>
+            android:layout_height="0dp"
+            android:layout_weight="9">
+            <fragment
+                android:id="@+id/fragment_schedule"
+                android:name="com.fkjslee.schoolv3.student.fragment.Fragment_schedule"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_schedule"/>
+        </RelativeLayout>
 
-    <fragment
-        android:id="@+id/fragment_tab"
-        android:name="com.fkjslee.schoolv3.student.fragment.Fragment_tab"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        tools:layout="@layout/fragment_tab"/>
+        <fragment
+            android:id="@+id/fragment_tab"
+            android:name="com.fkjslee.schoolv3.student.fragment.Fragment_main_tab"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            tools:layout="@layout/fragment_tab"/>
+    </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

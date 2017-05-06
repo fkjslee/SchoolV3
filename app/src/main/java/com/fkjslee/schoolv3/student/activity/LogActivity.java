@@ -32,10 +32,10 @@ import java.util.Date;
 
 public class LogActivity extends AppCompatActivity implements View.OnClickListener{
 
-    public static String logAccount = "20140497";
-    public static String logPwd = "021292";
-//    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";//服务器ip
-    public static String url = "http://100.56.101.29:8080/MyServlet/MainServlet";
+    public static String logAccount = "18002324437";
+    public static String logPwd = "123456";
+    public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";//服务器ip
+//    public static String url = "http://100.56.101.29:8080/MyServlet/MainServlet";
     public static Calendar calFirstDay;
 
     public static String loginIdentity="学生";
@@ -49,8 +49,6 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     private Button btnSet;
     private EditText etStuId;
     private EditText etPwd;
-    private Spinner spinner1;
-    private String[] mStringArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +70,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         Class<? extends android.app.Activity> activityClass = null;
         if (R.id.btn_fgt_pwd == v.getId()) activityClass = FgtPwdActivity.class;
         if (R.id.btn_bind == v.getId()) activityClass = RegisterActivity.class;
-        if (R.id.btn_set == v.getId()) activityClass = SettingActivity.class;
+        if (R.id.btn_setting == v.getId()) activityClass = SettingActivity.class;
         if (null != activityClass) {
             startActivity(new Intent(this.getApplicationContext(), activityClass));
             return;
@@ -90,7 +88,6 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         if (checkPWD(etStuId.getText().toString(), etPwd.getText().toString())) {
             logAccount = etStuId.getText().toString();
             logPwd = etPwd.getText().toString();
-            loginIdentity=spinner1.getSelectedItem().toString();
 //            startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         } else {
@@ -135,6 +132,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     private boolean checkPWD(String phone, String pwd) {
         String param = "type=login&telephone=" + phone + "&password=" + pwd;
         String result = MyCommonFunction.sendRequestToServer(param);
+        loginIdentity = result;
         if(result.equals("学生")) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
             return true;
@@ -176,7 +174,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         btnQuit = (Button)findViewById(R.id.btn_quit);
         btnFgtPwd = (Button)findViewById(R.id.btn_fgt_pwd);
         btnBind = (Button)findViewById(R.id.btn_bind);
-        btnSet = (Button)findViewById(R.id.btn_set);
+        btnSet = (Button)findViewById(R.id.btn_setting);
         etStuId = (EditText)findViewById(R.id.et_stu_ID);
         etPwd = (EditText)findViewById(R.id.et_pwd);
 
@@ -188,14 +186,6 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         btnSet.setOnClickListener(this);
         btnFgtPwd.setOnClickListener(this);
         btnBind.setOnClickListener(this);
-        //下选框
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
-        mStringArray = getResources().getStringArray(R.array.identity);
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,
-                R.layout.simple_spinner_item, mStringArray);
-        adapter.setDropDownViewResource(
-                R.layout.simple_spinner_dropdown_item1);
-        spinner1.setAdapter(adapter);
 
     }
 }
