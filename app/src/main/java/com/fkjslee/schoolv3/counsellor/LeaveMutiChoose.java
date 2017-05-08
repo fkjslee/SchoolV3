@@ -3,9 +3,9 @@ package com.fkjslee.schoolv3.counsellor;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
-import com.fkjslee.schoolv3.database.OpenOrCreateDB;
+import com.fkjslee.schoolv3.database.Database;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +52,8 @@ public class LeaveMutiChoose extends AppCompatActivity {
         deal = tempIntent.getIntExtra("index",0);//后面一个参数是表示默认数据
         Log.e("which",""+deal);
         //get data to show
-        OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
-        leaveList = CounsellorLeaveActivty.setMapList(openOrCreateDB.getLeaveDatas("leaves"),deal);
-        openOrCreateDB.close();
+        leaveList = Helper.setMapList(Database.getLeaveDatas("leaves"),deal);
+        Database.close();
 
         backspace = (ImageView)findViewById(R.id.leave_muti_backspace);
         listView = (ListView)findViewById(R.id.leave_muti_list);
@@ -150,7 +149,6 @@ public class LeaveMutiChoose extends AppCompatActivity {
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     //全部通过
-                                    OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
                                     for(int i = 0;i<checks.size();i++){
                                         if(checks.get(i) == true){
                                                 checks.remove(i);//从check里面删除
@@ -158,12 +156,12 @@ public class LeaveMutiChoose extends AppCompatActivity {
                                                 leaveContent.studentNumber = (String)leaveList.remove(i).get("studentNumber");
                                                 leaveContent.deal = 1;
                                                 leaveContent.pass = 1;
-                                                openOrCreateDB.updateLeave(leaveContent,"leaves");
+                                                Database.updateLeave(leaveContent,"leaves");
                                             i --;//因为在上面删除了数据
                                         }
                                     }
                                     leaveAdapter.notifyDataSetChanged();
-                                    openOrCreateDB.close();
+                                    Database.close();
                                     chooseState = 0;
                                     chooseAll.setText("全选");
                                     dialog.dismiss();
@@ -191,7 +189,6 @@ public class LeaveMutiChoose extends AppCompatActivity {
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     //全部拒绝
-                                    OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
                                     for(int i = 0;i<checks.size();i++){
                                         if(checks.get(i) == true){
                                                 LeaveContent leaveContent = new LeaveContent();
@@ -199,12 +196,12 @@ public class LeaveMutiChoose extends AppCompatActivity {
                                                 leaveContent.studentNumber = (String)leaveList.remove(i).get("studentNumber");
                                                 leaveContent.deal = 1;
                                                 leaveContent.pass = 0;
-                                                openOrCreateDB.updateLeave(leaveContent,"leaves");
+                                                Database.updateLeave(leaveContent,"leaves");
                                             i --;//因为在上面删除了数据
                                         }
                                     }
                                     leaveAdapter.notifyDataSetChanged();
-                                    openOrCreateDB.close();
+                                    Database.close();
 
                                     chooseState = 0;
                                     chooseAll.setText("全选");
@@ -231,16 +228,15 @@ public class LeaveMutiChoose extends AppCompatActivity {
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     //全部删除
-                                    OpenOrCreateDB openOrCreateDB = new OpenOrCreateDB();
                                     for(int i = 0;i<checks.size();i++){
                                         if(checks.get(i) == true){
                                             checks.remove(i);//从check里面删除
-                                            openOrCreateDB.deleteLeave((String)leaveList.remove(i).get("studentNumber"),"leaves");
+                                            Database.deleteLeave((String)leaveList.remove(i).get("studentNumber"),"leaves");
                                             i --;//因为在上面删除了数据
                                         }
                                     }
                                     leaveAdapter.notifyDataSetChanged();
-                                    openOrCreateDB.close();
+                                    Database.close();
                                     chooseState = 0;
                                     chooseAll.setText("全选");
                                     dialog.dismiss();

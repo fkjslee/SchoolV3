@@ -4,12 +4,14 @@
     <string name="setting">设置</string>
     <string name="identity">身份:</string>
     <string name="stu_ID">学号:</string>
+    <string name="nickname">昵称:</string>
     <string name="pwd">密码:</string>
     <string name="rmb_pwd">记住</string>
     <string name="login">登录</string>
     <string name="bind">绑定手机</string>
     <string name="fgt_pwd">忘记密码?</string>
     <string name="plz_input_stu_ID">请输入学号</string>
+    <string name="plz_input_nickname">请输入昵称</string>
     <string name="plz_input_pwd">请输入密码</string>
     <string name="log_your_account">登录您的账号</string>
     <string name="find_your_account">找回您的密码</string>
@@ -60,7 +62,7 @@
     <string name="showPhoto">显示照片</string>
     <string name="upload_photo">上传照片</string>
     <string name="getPosition">查看位置</string>
-    <string name="bind_sid">绑定学号</string>
+    <string name="complete_msg">完善信息</string>
     <string name="setNowWeek">设为当前周</string>
     <string name="title_activity_teacher">TeacherActivity</string>
     <string name="change_account">切换用户</string>

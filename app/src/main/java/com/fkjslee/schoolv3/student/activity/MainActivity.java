@@ -75,9 +75,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.bind_sid:
+            case R.id.item_completeMsg:
+                startActivity(new Intent(this, CompleteMsgActivity.class));
                 break;
-            case R.id.change_account:
+            case R.id.item_changeAcount:
                 this.finish();
                 break;
         }

@@ -22,8 +22,8 @@ import java.io.File;
 public class GetPhotoActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button btnRtn;
-    private Button btnShowPhoto;
     private Button btnSubmit;
+    private Button btnSubmitPhoto;
     private ImageView ivShowPhoto;
     private Bitmap photo = null;
 
@@ -94,8 +94,10 @@ public class GetPhotoActivity extends AppCompatActivity implements View.OnClickL
         btnRtn = (Button)findViewById(R.id.btn_rtn);
         btnSubmit = (Button)findViewById(R.id.btn_submit);
         ivShowPhoto = (ImageView)findViewById(R.id.iv_showPhoto);
+        btnSubmitPhoto = (Button)findViewById(R.id.btn_submitPhoto);
 
+        btnSubmitPhoto.setOnClickListener(this);
         btnRtn.setOnClickListener(this);
-        btnShowPhoto.setOnClickListener(this);
+        btnSubmit.setOnClickListener(this);
     }
 }

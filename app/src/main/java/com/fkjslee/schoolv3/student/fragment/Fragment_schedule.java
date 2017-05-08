@@ -78,7 +78,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         int interval = 3;
         WindowManager wm = (WindowManager)view.getContext().getSystemService(Context.WINDOW_SERVICE);
         int screenWidth = wm.getDefaultDisplay().getWidth();
-        int screenHeight = (int) (wm.getDefaultDisplay().getHeight() * 1.5);
+        int screenHeight = (int) (wm.getDefaultDisplay().getHeight() * 1.2);
         layout_schedule.setMinimumHeight(screenHeight);
         int blankWidth = screenWidth / 14;
         screenWidth -= blankWidth;
@@ -281,6 +281,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
 
         public ClassMsgView(Context context) {
             super(context);
+            setTextSize(12);
         }
     }
 

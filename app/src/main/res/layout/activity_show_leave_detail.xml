@@ -11,7 +11,7 @@
         android:id="@+id/leave_detail_toolbars"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@color/blue"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/Theme.AppCompat.Light"
         app:contentInsetStart="0dp">
@@ -37,15 +37,47 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_above="@+id/leave_detail_bottom"
-        android:layout_below="@+id/leave_muti_toolbars"
+        android:layout_below="@+id/leave_detail_toolbars"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
+        <RelativeLayout
+
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/leave_detail_student"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginLeft="@dimen/small_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/item_name_size"/>
 
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/leave_detail_reasons"
+                android:layout_marginTop="@dimen/middle2_margin"
+                android:layout_marginBottom="@dimen/middle2_margin"
+                android:layout_below="@id/leave_detail_student"
+                android:layout_marginLeft="@dimen/middle2_margin"
+                android:layout_marginRight="@dimen/middle2_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:id="@+id/leave_detail_datatime"
+                android:layout_below="@+id/leave_detail_reasons"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:layout_marginRight="@dimen/small_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/item_time_size"/>
+
+
+        </RelativeLayout>
     </ScrollView>
 
     <LinearLayout
@@ -60,7 +92,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:background="@drawable/reject_button_style"
+            android:background="@drawable/reject_focus"
+            android:textColor="@color/colorAccent"
             android:text="@string/rejectLeave"/>
 
         <Button
@@ -68,8 +101,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+            android:background="@drawable/agree_focus"
+            android:textColor="@color/white"
             android:text="@string/agreeLeave"/>
-
     </LinearLayout>
 </RelativeLayout>

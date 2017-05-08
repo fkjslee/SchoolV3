@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.counsellor.CounsellorLeaveActivty;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 import com.fkjslee.schoolv3.student.function.TimeCount;
 import com.fkjslee.schoolv3.database.Database;
@@ -84,12 +85,15 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
      * 正确则进入主界面, 错误给出提醒, 3次以上罚时, 罚时等于60秒
      */
     private void clickBtnLog() {
-
-        if (checkPWD(etStuId.getText().toString(), etPwd.getText().toString())) {
+        String result = checkPWD(etStuId.getText().toString(), etPwd.getText().toString());
+        if (result.equals("学生")) {
             logAccount = etStuId.getText().toString();
             logPwd = etPwd.getText().toString();
-//            startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), CounsellorLeaveActivty.class));
+        } else if(result.equals("辅导员")) {
+            logAccount = etStuId.getText().toString();
+            logPwd = etPwd.getText().toString();
+            startActivity(new Intent(getApplicationContext(), CounsellorLeaveActivty.class));
         } else {
             Toast.makeText(getApplicationContext(), "密码错误",
                     Toast.LENGTH_SHORT).show();
@@ -129,17 +133,21 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
      * 返回值: boolean, 密码正确
      * 参数, String, 学生的学号, String, 学生的密码
      */
-    private boolean checkPWD(String phone, String pwd) {
+    private String checkPWD(String phone, String pwd) {
         String param = "type=login&telephone=" + phone + "&password=" + pwd;
         String result = MyCommonFunction.sendRequestToServer(param);
         loginIdentity = result;
+        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
         if(result.equals("学生")) {
             Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-            return true;
+            return "学生";
+        } else if(result.equals("辅导员")) {
+            startActivity(new Intent(this, CounsellorLeaveActivty.class));
+            return "辅导员";
         }
         else {
             Toast.makeText(this, "账号或者密码错误", Toast.LENGTH_SHORT).show();
-            return false;
+            return "";
         }
     }
 
