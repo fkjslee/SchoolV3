@@ -17,22 +17,10 @@
         android:id="@+id/showweek"
         android:layout_centerHorizontal="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/di"
-            android:id="@+id/textView13"/>
-
         <Spinner
-            android:layout_width="50dp"
-            android:layout_height="30dp"
-            android:id="@+id/spinner"/>
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/zhou"
-            android:id="@+id/textView14"/>
+            android:id="@+id/spinner"/>
 
     </LinearLayout>
 

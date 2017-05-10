@@ -1,24 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/powderblue"
+    android:background="@color/white"
     android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/blue">
+
+            <LinearLayout
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/linearLayout3">
+                <Button
+                    android:id="@+id/btn_notAgree"
+                    android:layout_width="@dimen/leave_button_w"
+                    android:layout_height="@dimen/leave_button_h"
+                    android:background="@color/white"
+                    android:textColor="@color/blue"
+                    android:text="@string/not_agree"
+                    />
+                <Button
+                    android:id="@+id/btn_agree"
+                    android:layout_width="@dimen/leave_button_w"
+                    android:layout_height="@dimen/leave_button_h"
+                    android:background="@drawable/counsellor_leave_not"
+                    android:text="@string/agree"
+                    android:textColor="@color/white"
+                    />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/counsellor_backspace"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:paddingLeft="@dimen/small_margin"
+                android:paddingRight="@dimen/small_margin"
+                android:src="@drawable/backspace"
+                android:layout_alignTop="@+id/linearLayout3"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/leave_top_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9">
-    </RelativeLayout>
 
-    <fragment
-        android:id="@+id/fragment_tab"
-        android:name="com.fkjslee.schoolv3.student.fragment.leave.Fragment_leave_tab"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        tools:layout="@layout/fragment_leave_tab"/>
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:srcCompat="@drawable/add"
+            android:layout_marginRight="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="28dp"
+            android:id="@+id/iv_add"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
 </LinearLayout>

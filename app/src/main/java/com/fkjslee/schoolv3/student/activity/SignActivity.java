@@ -7,12 +7,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,13 +32,21 @@ import com.fkjslee.schoolv3.student.function.Utils;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 /**
  * 签到界面
  * 通过classDetail界面进入
- * */
-public class SignActivity extends CheckPermissionsActivity implements View.OnClickListener{
+ */
+public class SignActivity extends CheckPermissionsActivity implements View.OnClickListener {
+
+    private static final int getSignState = 1;
+    private static Handler handler;
 
     private GouldMapLocation gouldMapLocation;
     private Button btnRtn;
@@ -47,14 +56,13 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     private TextView tv_class;
     private TextView tv_signState;
     private ImageView ivShowPhoto;
-    private EditText etHour;
-    private EditText etMinute;
 
     private Bitmap photo = null;
     private MsgClass msg;
     private Integer spinnerWeek;
     private Double longitude;
     private Double latitude;
+    private String requestMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +70,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         setContentView(R.layout.activity_sign);
 
         msg = (MsgClass) getIntent().getSerializableExtra("classMsg");
-        spinnerWeek = (Integer)getIntent().getSerializableExtra("spinnerWeek");
+        spinnerWeek = (Integer) getIntent().getSerializableExtra("spinnerWeek");
 
         initView();
     }
@@ -104,17 +112,16 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
                 "&weekday=" + msg.getWeekday() + "&courseBegin=" + msg.getStartTime() +
                 "&tName=" + msg.getTeacher() + "&length=" + msg.getLength();
         MyCommonFunction.sendRequestToServer(requestMsg);
-        if(!checkPosition()) {
+        if (!checkPosition()) {
             Toast.makeText(getApplicationContext(), "位置错误", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(!checkTime()) {
+        if (!checkTime()) {
             Toast.makeText(getApplicationContext(), "时间错误", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(photo == null) {
+        if (photo == null) {
             Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
-            return;
         }
     }
 
@@ -135,26 +142,22 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private Boolean checkPosition() {
-        if(msg.getPosition().substring(0, 2).equals("A5")) {
-            gouldMapLocation.startLocation();
-            if(etMinute.getText().toString().length() != 0) {
-                longitude = Double.valueOf(etHour.getText().toString());
-                latitude = Double.valueOf(etMinute.getText().toString());
-            }
+        if (msg.getPosition().substring(0, 2).equals("A5")) {
+//            gouldMapLocation.startLocation();
             Double cirLong = 106.473404;
             Double cirLat = 29.572397;
             Double edgeLong = 106.473938;
             Double edgeLat = 29.572368;
             return Math.pow(longitude - cirLong, 2) + Math.pow(latitude - cirLat, 2) <
                     Math.pow(cirLong - edgeLong, 2) + Math.pow(cirLat - edgeLat, 2);
-        } else if(msg.getPosition().substring(0, 2).equals("A8")) {
+        } else if (msg.getPosition().substring(0, 2).equals("A8")) {
             Double cirLong = 106.472108;
             Double cirLat = 29.572496;
             Double edgeLong = 106.47269;
             Double edgeLat = 29.572481;
             return Math.pow(longitude - cirLong, 2) + Math.pow(latitude - cirLat, 2) <
                     Math.pow(cirLong - edgeLong, 2) + Math.pow(cirLat - edgeLat, 2);
-        } else if(msg.getPosition().substring(0, 2).equals("A主")) {
+        } else if (msg.getPosition().substring(0, 2).equals("A主")) {
             Double cirLong = 106.477085;
             Double cirLat = 29.571716;
             Double edgeLong = 106.477716;
@@ -185,15 +188,28 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private boolean hasSign() {
-        String requestMsg = "type=sign_res" + "&sName=" + LogActivity.loginIdentity +
+//        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+        requestMsg = "type=sign_res" + "&sName=" + LogActivity.logAccount +
                 "&cName=" + msg.getName() + "&week=" + spinnerWeek + "&weekday=" + msg.getWeekday() +
                 "&courseBegin=" + msg.getStartTime() + "&length=" + msg.getLength();
-        Boolean res = Boolean.valueOf(MyCommonFunction.sendRequestToServer(requestMsg));
-        Toast.makeText(getApplicationContext(), res.toString(), Toast.LENGTH_SHORT).show();
+//        cachedThreadPool.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                String result = MyCommonFunction.sendRequestToServer(requestMsg);
+//                Integer y = 1;
+//                tv_signState.setText("xxxx");
+//                Integer x = 2;
+//            }
+//        });
+        String result = MyCommonFunction.sendRequestToServer(requestMsg);
+        Boolean res = Boolean.valueOf(result);
+        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
         return res;
     }
 
-    private void clickBtnRtn() { finish(); }
+    private void clickBtnRtn() {
+        finish();
+    }
 
     private void initView() {
 
@@ -205,10 +221,8 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         tvShowPosition = (TextView) findViewById(R.id.tv_showPosition);
         btnSubmit = (Button) findViewById(R.id.btn_submit);
         ivShowPhoto = (ImageView) findViewById(R.id.showPhoto);
-        tv_class = (TextView)findViewById(R.id.tv_class);
-        tv_signState = (TextView)findViewById(R.id.tv_signState);
-        etHour = (EditText)findViewById(R.id.et_hour);
-        etMinute = (EditText)findViewById(R.id.et_minute);
+        tv_class = (TextView) findViewById(R.id.tv_class);
+        tv_signState = (TextView) findViewById(R.id.tv_signState);
         ivShowPhoto = (ImageView) findViewById(R.id.showPhoto);
 
         btnRtn.setOnClickListener(this);
@@ -216,7 +230,27 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         btnSubmit.setOnClickListener(this);
 
         tv_class.setText(msg.getName());
-        tv_signState.setText(hasSign()? "已签到" : "未签到");
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case getSignState:
+                        tv_signState.setText((String) msg.obj);
+                        break;
+                }
+            }
+        };
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message message = new Message();
+                message.what = getSignState;
+                message.obj = hasSign() ? "已签到" : "未签到";
+                handler.sendMessage(message);
+            }
+        }).start();
     }
 
     class GouldMapLocation {
@@ -245,9 +279,10 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
 
         /**
          * 默认的定位参数
+         *
          * @since 2.8.0
          */
-        private AMapLocationClientOption getDefaultOption(){
+        private AMapLocationClientOption getDefaultOption() {
             AMapLocationClientOption mOption = new AMapLocationClientOption();
             mOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);//可选，设置定位模式，可选的模式有高精度、仅设备、仅网络。默认为高精度模式
             mOption.setGpsFirst(false);//可选，设置是否gps优先，只在高精度模式下有效。默认关闭
@@ -263,7 +298,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             return mOption;
         }
 
-        private void initLocation(){
+        private void initLocation() {
             //初始化client
             locationClient = new AMapLocationClient(context);
             //设置定位参数
@@ -272,7 +307,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
             locationClient.setLocationListener(locationListener);
         }
 
-        void startLocation(){
+        void startLocation() {
             // 设置定位参数
             locationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
             locationClient.setLocationOption(locationOption);

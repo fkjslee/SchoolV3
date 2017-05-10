@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -39,84 +39,6 @@
     </RelativeLayout>
 
 
-    <GridLayout
-        android:id="@+id/gl_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl_top"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="42dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/nickname"
-            android:id="@+id/textView0"
-            android:layout_row="0"
-            android:layout_column="0"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="@string/plz_input_nickname"
-            android:ems="10"
-            android:id="@+id/et_nickName"
-            android:layout_row="0"
-            android:layout_column="1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/stu_ID"
-            android:id="@+id/textView"
-            android:layout_row="1"
-            android:layout_column="0"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="@string/plz_input_stu_ID"
-            android:ems="10"
-            android:id="@+id/et_stu_ID"
-            android:layout_row="1"
-            android:layout_column="1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/pwd"
-            android:id="@+id/textView2"
-            android:layout_row="2"
-            android:layout_column="0"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="@string/plz_input_pwd"
-            android:ems="10"
-            android:id="@+id/et_pwd"
-            android:layout_row="2"
-            android:layout_column="1"/>
-    </GridLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/gl_data"
-        android:text="@string/upload_photo"
-        android:id="@+id/btn_uploadPhoto"
-        android:textSize="20sp"
-        android:background="@drawable/btn_azure"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="67dp"
-        android:layout_marginStart="67dp" />
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -129,7 +51,119 @@
         android:background="@drawable/btn_azure"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="183dp" />
+        android:layout_marginBottom="270dp" />
+
+    <GridLayout
+        android:id="@+id/gl_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
+        android:layout_below="@+id/rl_top"
+        android:layout_alignLeft="@+id/btn_submit"
+        android:layout_alignStart="@+id/btn_submit">
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            app:srcCompat="@drawable/nickname"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:id="@+id/imageView9" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/nickname"
+            android:id="@+id/textView0"
+            android:layout_row="0"
+            android:layout_column="1"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:inputType="textPersonName"
+            android:hint="暂时不用输入"
+            android:ems="10"
+            android:id="@+id/et_nickName"
+            android:layout_row="0"
+            android:layout_column="2"/>
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            app:srcCompat="@drawable/sid"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:id="@+id/imageView10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/stu_ID"
+            android:id="@+id/textView"
+            android:layout_row="1"
+            android:layout_column="1"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:inputType="textPersonName"
+            android:hint="@string/plz_input_stu_ID"
+            android:ems="10"
+            android:id="@+id/et_stu_ID"
+            android:layout_row="1"
+            android:layout_column="2"/>
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            app:srcCompat="@drawable/sid"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:id="@+id/imageView11" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/pwd"
+            android:id="@+id/textView2"
+            android:layout_row="2"
+            android:layout_column="1"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:inputType="textPassword"
+            android:hint="@string/plz_input_pwd"
+            android:ems="10"
+            android:id="@+id/et_pwd"
+            android:layout_row="2"
+            android:layout_column="2"/>
+    </GridLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/upload_photo"
+        android:id="@+id/btn_uploadPhoto"
+        android:textSize="15sp"
+        android:background="@drawable/btn_azure"
+        android:layout_alignTop="@+id/gl_data"
+        android:layout_alignRight="@+id/btn_submit"
+        android:layout_alignEnd="@+id/btn_submit"
+        android:layout_marginRight="59dp"
+        android:layout_marginEnd="59dp"
+        android:layout_marginTop="33dp" />
+
 
 
 </RelativeLayout>

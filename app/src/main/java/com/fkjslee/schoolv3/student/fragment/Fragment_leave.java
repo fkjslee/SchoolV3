@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.student.data.AssumeData2;
@@ -31,6 +33,7 @@ public class Fragment_leave extends Fragment implements View.OnClickListener{
     private Fragment_notAgree fragment_notAgree = new Fragment_notAgree();
     private Button btnAgree;
     private Button btnNotAgree;
+    private ImageView ivAdd;
     private View view;
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -45,9 +48,11 @@ public class Fragment_leave extends Fragment implements View.OnClickListener{
     private void initView() {
         btnAgree = (Button)view.findViewById(R.id.btn_agree);
         btnNotAgree = (Button)view.findViewById(R.id.btn_notAgree);
+        ivAdd = (ImageView)view.findViewById(R.id.iv_add);
 
         btnAgree.setOnClickListener(this);
         btnNotAgree.setOnClickListener(this);
+        ivAdd.setOnClickListener(this);
         onClick(view.findViewById(R.id.btn_notAgree));
     }
 
@@ -68,6 +73,9 @@ public class Fragment_leave extends Fragment implements View.OnClickListener{
                 btnNotAgree.setBackgroundResource(R.drawable.btn_azure);
                 transaction.replace(R.id.leave_top_layout, fragment_notAgree);
                 transaction.commit();
+                break;
+            case R.id.iv_add:
+                Toast.makeText(view.getContext(), "here", Toast.LENGTH_LONG);
                 break;
         }
     }

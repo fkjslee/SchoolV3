@@ -54,7 +54,7 @@ public class CompleteMsgActivity extends AppCompatActivity implements View.OnCli
             case R.id.btn_submit:
                 String param = "type=bind&telephone=" + LogActivity.logAccount +
                         "&sName=" + etSid.getText().toString() +
-                        "&pwd=" + etPwd.getText().toString();
+                        "&sPwd=" + etPwd.getText().toString();
                 String result = MyCommonFunction.sendRequestToServer(param);
                 Toast.makeText(this, "上传成功 ? " + result, Toast.LENGTH_SHORT).show();
         }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
@@ -50,6 +50,15 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/telephone"
+            android:id="@+id/imageView3"
+            android:layout_row="1"
+            android:layout_column="0"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +67,7 @@
             android:textSize="15sp"
             android:id="@+id/textView9"
             android:layout_row="1"
-            android:layout_column="0"/>
+            android:layout_column="1"/>
 
         <EditText
             android:layout_width="wrap_content"
@@ -69,7 +78,16 @@
             android:ems="8"
             android:id="@+id/et_phone"
             android:layout_row="1"
-            android:layout_column="1"/>
+            android:layout_column="2"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/code"
+            android:id="@+id/imageView4"
+            android:layout_row="2"
+            android:layout_column="0"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -79,7 +97,7 @@
             android:textSize="15sp"
             android:id="@+id/textView10"
             android:layout_row="2"
-            android:layout_column="0"/>
+            android:layout_column="1"/>
 
         <EditText
             android:layout_width="wrap_content"
@@ -89,28 +107,25 @@
             android:ems="8"
             android:id="@+id/et_code"
             android:layout_row="2"
-            android:layout_column="1"/>
+            android:layout_column="2"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/pwd"
-            android:textSize="15sp"
-            android:id="@+id/textView11"
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/pwd"
+            android:id="@+id/imageView5"
             android:layout_row="3"
             android:layout_column="0"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/plz_input_pwd"
-            android:inputType="textPassword"
-            android:textSize="15sp"
-            android:ems="11"
-            android:id="@+id/et_pwd"
-            android:layout_row="3"
-            android:layout_column="1"/>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/pwd"
+            android:id="@+id/imageView6"
+            android:layout_row="4"
+            android:layout_column="0"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -120,7 +135,7 @@
             android:textSize="15sp"
             android:id="@+id/textView12"
             android:layout_row="4"
-            android:layout_column="0"/>
+            android:layout_column="1"/>
 
         <EditText
             android:layout_width="wrap_content"
@@ -131,7 +146,16 @@
             android:ems="8"
             android:id="@+id/et_rePwd"
             android:layout_row="4"
-            android:layout_column="1"/>
+            android:layout_column="2"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/identity"
+            android:id="@+id/imageView7"
+            android:layout_row="5"
+            android:layout_column="0"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -142,14 +166,35 @@
             android:textSize="15sp"
             android:id="@+id/textView13"
             android:layout_row="5"
-            android:layout_column="0"/>
+            android:layout_column="1"/>
 
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/spinner_choose_identity"
             android:layout_row="5"
+            android:layout_column="2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/pwd"
+            android:textSize="15sp"
+            android:id="@+id/textView11"
+            android:layout_row="3"
             android:layout_column="1"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/plz_input_pwd"
+            android:inputType="textPassword"
+            android:textSize="15sp"
+            android:ems="11"
+            android:id="@+id/et_pwd"
+            android:layout_row="3"
+            android:layout_column="2"/>
     </GridLayout>
 
     <Button

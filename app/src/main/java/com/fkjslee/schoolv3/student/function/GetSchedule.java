@@ -18,7 +18,7 @@ import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 public class GetSchedule {
     public static String getSchedule(Activity activity) {
-        String param = "type=class&telephone=" + LogActivity.logAccount;
+        String param = "type=getClass&telephone=" + LogActivity.logAccount;
         String schedule = MyCommonFunction.sendRequestToServer(param);
         if(schedule.length() > 10) {
             Toast.makeText(activity.getApplicationContext(),

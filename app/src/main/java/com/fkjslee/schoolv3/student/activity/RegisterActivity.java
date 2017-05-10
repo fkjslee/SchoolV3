@@ -144,7 +144,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     * 验证成功后绑定手机
     * */
     private void register(String phone, String pwd, String identity) {
-        String param = "type=signUp&phone=" + phone + "&pwd=" + pwd + "&identity=" + identity;
+        String param = "type=signUp&telephone=" + phone + "&pwd=" + pwd + "&identity=" + identity;
         String result = MyCommonFunction.sendRequestToServer(param);
         if(result.equals("Yes")) {
             Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();

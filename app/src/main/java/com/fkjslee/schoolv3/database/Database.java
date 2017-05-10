@@ -27,8 +27,10 @@ public class Database {
         dataBasePath = context.getFilesDir().getAbsolutePath().replace("files", "database");
         createDatabase();
         createTableSchedule();
+        createLeaveTable("leaves");
     }
 
+    //课表
     public static void insertSchedule(List<MsgClass> list) {
         SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dataBasePath, null);
         for (MsgClass msgClass : list) {
@@ -43,6 +45,7 @@ public class Database {
                     msgClass.getWeeks() + "')";
             db.execSQL(sql);
         }
+        db.close();
     }
 
     public static List<MsgClass> querySchedule(String account) {
@@ -60,6 +63,7 @@ public class Database {
                     c.getString(c.getColumnIndex("allWeek"))));
         }
         c.close();
+        db.close();
         return list;
     }
 
@@ -76,9 +80,11 @@ public class Database {
                 "allWeek        VARCHAR(50))";
         db.execSQL(sql);
         db.execSQL("CREATE TABLE IF NOT EXISTS person (_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR, age SMALLINT)");
+        db.close();
     }
 
-    /**
+    /*
+     * 请假表, 辅导员端
      * 创建数据库表的函数，如果需要再创建其他表，直接在新建个另外的建表函数即可
      */
     public static void createLeaveTable(String tableName) {
@@ -108,9 +114,6 @@ public class Database {
         return db.insert(tableName, null, values);
     }
 
-    private static void createDatabase() {
-        SQLiteDatabase.openOrCreateDatabase(dataBasePath, null);
-    }
 
     public static boolean searchLeave(LeaveContent leaveContent,String tableName){
         SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dataBasePath, null);
@@ -164,8 +167,14 @@ public class Database {
         db.execSQL(sql);
     }
 
+    //请假 学生端
+
     public static void close(){
         SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dataBasePath, null);
         db.close();
+    }
+
+    private static void createDatabase() {
+        SQLiteDatabase.openOrCreateDatabase(dataBasePath, null);
     }
 }

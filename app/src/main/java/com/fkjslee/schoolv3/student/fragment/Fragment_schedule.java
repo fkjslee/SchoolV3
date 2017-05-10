@@ -5,10 +5,11 @@ import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.database.Database;
@@ -35,8 +35,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static android.content.Context.MODE_WORLD_WRITEABLE;
-
 
 /**
  * Created by fkjslee on 2017/2/18.
@@ -46,6 +44,9 @@ import static android.content.Context.MODE_WORLD_WRITEABLE;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class Fragment_schedule extends Fragment implements AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener, View.OnClickListener {
+
+    private static final int getScheduleState = 1;
+    private static Handler handler;
 
     private Spinner spinner;
 
@@ -87,13 +88,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         int itemWidth = screenWidth / 7 - interval;
         int itemHeight = screenHeight / 12 - interval;
 
-        //左上的空白
-        ClassMsgView btnLeftUp = new ClassMsgView(parentView.getContext());
-        btnLeftUp.setLayoutParams(new ViewGroup.LayoutParams(blankWidth, blankHeight));
-        btnLeftUp.setClickable(false);
-        btnLeftUp.setBackgroundResource(R.drawable.btn_alpha);
-        layout_schedule.addView(btnLeftUp);
-
         //左边的提示 (课数)
         //变成TextView
         for(Integer i = 0; i < 12; ++i) {
@@ -127,6 +121,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
                     String classTeacher = jasonObject.getString("teacher");
                     String classPosition = jasonObject.getString("classroom");
                     String className = jasonObject.getString("name");
+                    className = className.substring(className.indexOf("|") + 1);
                     String classWeekday = jasonObject.getString("weekday");
                     String classLength = jasonObject.getString("courseLength");
                     String classBeginTime = jasonObject.getString("courseBegin");
@@ -231,7 +226,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         List<String> list = new ArrayList<>();
         int maxWeek = getMaxWeek();
         for(int i = 1; i <= maxWeek; ++i) {
-            list.add(Integer.toString(i));
+            list.add("第" + Integer.toString(i) + "周");
         }
         weekAdapter = new ArrayAdapter<>(parentView.getContext(),
                 android.R.layout.simple_spinner_item, list);
@@ -242,6 +237,29 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         spinnerWeek = nowWeek;
         spinner.setOnItemSelectedListener(this);
         spinner.setDropDownVerticalOffset(30);
+        setSchedulePosition();
+
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case getScheduleState:
+                        break;
+                }
+            }
+        };
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message message = new Message();
+                message.what = getScheduleState;
+                setSchedulePosition();
+                handler.sendMessage(message);
+            }
+        }).start();
     }
 
     /**
@@ -256,7 +274,9 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
      * */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        spinnerWeek = Integer.valueOf(weekAdapter.getItem(position));
+        String temp = weekAdapter.getItem(position);
+        temp = temp.substring(1, temp.indexOf("周"));
+        spinnerWeek = Integer.valueOf(temp);
         setSchedulePosition();
     }
 

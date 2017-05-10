@@ -27,7 +27,7 @@ public class MsgLeave implements Serializable{
         calendar.set(Calendar.MONTH, 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.set(Calendar.HOUR_OF_DAY, 1);
-        return new MsgLeave("11111111111111111111111111111111111111111111111111111111111", calendar, calendar, calendar);
+        return new MsgLeave("12岁的女儿偷了某员工的车，所以他没法来上班，因为他不想闹到警局去。", calendar, calendar, calendar);
     }
 
     public static MsgLeave m2() {
@@ -36,7 +36,7 @@ public class MsgLeave implements Serializable{
         calendar.set(Calendar.MONTH, 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.set(Calendar.HOUR_OF_DAY, 1);
-        return new MsgLeave("222", calendar, calendar, calendar);
+        return new MsgLeave("在去旧货市场血拼之后头痛", calendar, calendar, calendar);
     }
 
     public String getReason() {

@@ -10,9 +10,9 @@
     <string name="login">登录</string>
     <string name="bind">绑定手机</string>
     <string name="fgt_pwd">忘记密码?</string>
-    <string name="plz_input_stu_ID">请输入学号</string>
+    <string name="plz_input_stu_ID">请输入教务处学号</string>
     <string name="plz_input_nickname">请输入昵称</string>
-    <string name="plz_input_pwd">请输入密码</string>
+    <string name="plz_input_pwd">请输入教务处密码</string>
     <string name="log_your_account">登录您的账号</string>
     <string name="find_your_account">找回您的密码</string>
     <string name="rtn">返回</string>
@@ -41,11 +41,11 @@
     <string name="leave_start_time">开始时间 : </string>
     <string name="leave_end_time">结束时间 : </string>
     <!--课堂信息-->
-    <string name="name">名称</string>
-    <string name="position">教室</string>
-    <string name="teacher">老师</string>
-    <string name="number">节数</string>
-    <string name="weeks">周数</string>
+    <string name="name">名称 : </string>
+    <string name="position">教室 : </string>
+    <string name="teacher">老师 : </string>
+    <string name="number">节数 : </string>
+    <string name="weeks">周数 : </string>
     <string name="oneKeySign">签到</string>
     <string name="homework">作业</string>
     <string name="notice">公告</string>

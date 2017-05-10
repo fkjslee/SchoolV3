@@ -1,7 +1,10 @@
 package com.fkjslee.schoolv3.student.fragment.leave;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +42,7 @@ public class Fragment_agree extends Fragment implements AdapterView.OnItemClickL
         return view;
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
     private void initView() {
         lvLeaveAgree = (ListView)view.findViewById(R.id.lv_leave_agree);
 
@@ -60,7 +64,8 @@ public class Fragment_agree extends Fragment implements AdapterView.OnItemClickL
             MsgLeave msgLeave = msgLeaves.elementAt(i);
             item = new HashMap<>();
             item.put("reason", msgLeave.getReason());
-            item.put("time", "2");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+            item.put("time", dateFormat.format(msgLeave.getRequestTime().getTime()));
             item.put("id", i.toString());
             items.add(item);
         }

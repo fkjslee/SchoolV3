@@ -6,17 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.counsellor.CounsellorLeaveActivty;
+import com.fkjslee.schoolv3.database.Database;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 import com.fkjslee.schoolv3.student.function.TimeCount;
-import com.fkjslee.schoolv3.database.Database;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +45,6 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
     private Button btnQuit;
     private Button btnFgtPwd;
     private Button btnBind;
-    private Button btnSet;
     private EditText etStuId;
     private EditText etPwd;
 
@@ -71,7 +68,6 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         Class<? extends android.app.Activity> activityClass = null;
         if (R.id.btn_fgt_pwd == v.getId()) activityClass = FgtPwdActivity.class;
         if (R.id.btn_bind == v.getId()) activityClass = RegisterActivity.class;
-        if (R.id.btn_setting == v.getId()) activityClass = SettingActivity.class;
         if (null != activityClass) {
             startActivity(new Intent(this.getApplicationContext(), activityClass));
             return;
@@ -89,7 +85,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         if (result.equals("学生")) {
             logAccount = etStuId.getText().toString();
             logPwd = etPwd.getText().toString();
-            startActivity(new Intent(getApplicationContext(), CounsellorLeaveActivty.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         } else if(result.equals("辅导员")) {
             logAccount = etStuId.getText().toString();
             logPwd = etPwd.getText().toString();
@@ -134,20 +130,18 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
      * 参数, String, 学生的学号, String, 学生的密码
      */
     private String checkPWD(String phone, String pwd) {
-        String param = "type=login&telephone=" + phone + "&password=" + pwd;
+        String param = "type=login&telephone=" + phone + "&pwd=" + pwd;
         String result = MyCommonFunction.sendRequestToServer(param);
         loginIdentity = result;
         Toast.makeText(this, result, Toast.LENGTH_LONG).show();
-        if(result.equals("学生")) {
-            Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-            return "学生";
-        } else if(result.equals("辅导员")) {
-            startActivity(new Intent(this, CounsellorLeaveActivty.class));
-            return "辅导员";
-        }
-        else {
-            Toast.makeText(this, "账号或者密码错误", Toast.LENGTH_SHORT).show();
-            return "";
+        switch (result) {
+            case "学生":
+                return "学生";
+            case "辅导员":
+                return "辅导员";
+            default:
+                Toast.makeText(this, "账号或者密码错误", Toast.LENGTH_SHORT).show();
+                return "";
         }
     }
 
@@ -182,7 +176,6 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
         btnQuit = (Button)findViewById(R.id.btn_quit);
         btnFgtPwd = (Button)findViewById(R.id.btn_fgt_pwd);
         btnBind = (Button)findViewById(R.id.btn_bind);
-        btnSet = (Button)findViewById(R.id.btn_setting);
         etStuId = (EditText)findViewById(R.id.et_stu_ID);
         etPwd = (EditText)findViewById(R.id.et_pwd);
 
@@ -191,7 +184,6 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
 
         btnLog.setOnClickListener(this);
         btnQuit.setOnClickListener(this);
-        btnSet.setOnClickListener(this);
         btnFgtPwd.setOnClickListener(this);
         btnBind.setOnClickListener(this);
 

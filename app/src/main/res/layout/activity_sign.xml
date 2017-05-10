@@ -10,6 +10,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btn_azure"
         android:text="@string/rtn"
         android:id="@+id/btn_rtn"
         android:layout_alignParentTop="true"
@@ -19,6 +20,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btn_azure"
         android:text="@string/submit"
         android:id="@+id/btn_submit"
         android:layout_marginBottom="98dp"
@@ -28,6 +30,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="30sp"
         android:text="New Text"
         android:id="@+id/tv_class"
         android:layout_below="@+id/btn_rtn"
@@ -50,18 +53,13 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/submit_photo"
-                    android:id="@+id/btn_submitPhoto"/>
-
-            </LinearLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_azure"
+                android:layout_gravity="center"
+                android:text="@string/submit_photo"
+                android:id="@+id/btn_submitPhoto"/>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -103,37 +101,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:text="New Text"
-        android:textSize="12sp"
+        android:textSize="15sp"
         android:id="@+id/tv_signState"
         android:layout_below="@+id/btn_rtn"
         android:layout_toRightOf="@+id/tv_class"
         android:layout_toEndOf="@+id/tv_class"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="hour"
-        android:text=""
-        android:ems="10"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="37dp"
-        android:id="@+id/et_hour" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="minute"
-        android:text=""
-        android:ems="10"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/et_hour"
-        android:layout_alignEnd="@+id/et_hour"
-        android:id="@+id/et_minute" />
 
 
 </RelativeLayout>
