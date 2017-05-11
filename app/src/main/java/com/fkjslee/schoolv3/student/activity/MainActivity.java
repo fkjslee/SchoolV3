@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         btnSetting = (Button)findViewById(R.id.btn_setting);
 
         btnSetting.setOnClickListener(this);
+        onClick(findViewById(R.id.btn_schedule));
     }
 
     @Override

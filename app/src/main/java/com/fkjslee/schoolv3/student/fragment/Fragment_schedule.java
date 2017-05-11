@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -73,8 +75,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     public void setSchedulePosition() {
         Integer recordMsgLength = 0;
         View view = parentView;
-        RelativeLayout layout_schedule = (RelativeLayout)view.findViewById(R.id.layout_schedule);
-        layout_schedule.removeAllViews();
+        FrameLayout layout_schedule = (FrameLayout)view.findViewById(R.id.layout_schedule);
 
         int interval = 3;
         WindowManager wm = (WindowManager)view.getContext().getSystemService(Context.WINDOW_SERVICE);
@@ -112,29 +113,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         }
 
         //真正的课表区域
-        List<MsgClass> list = Database.querySchedule(LogActivity.logAccount);
-        if(list.isEmpty()) {
-            try {
-                JSONArray schedule = new JSONArray(GetSchedule.getSchedule(this.getActivity()));
-                for(int i = 0; i < schedule.length(); ++i) {
-                    JSONObject jasonObject = new JSONObject(schedule.getString(i));
-                    String classTeacher = jasonObject.getString("teacher");
-                    String classPosition = jasonObject.getString("classroom");
-                    String className = jasonObject.getString("name");
-                    className = className.substring(className.indexOf("|") + 1);
-                    String classWeekday = jasonObject.getString("weekday");
-                    String classLength = jasonObject.getString("courseLength");
-                    String classBeginTime = jasonObject.getString("courseBegin");
-                    String classWeeks = jasonObject.getString("week");
-                    list.add(new MsgClass(LogActivity.logAccount, className, classTeacher, classPosition,
-                            classLength, classBeginTime, classWeekday, classWeeks));
-                }
-                Database.insertSchedule(list);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        list = Database.querySchedule(LogActivity.logAccount);
+        List<MsgClass> list = Database.querySchedule(LogActivity.logAccount); //得到课表信息
         for(MsgClass msgClass : list)
             recordMsg[recordMsgLength++] = msgClass;
 
@@ -245,19 +224,21 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case getScheduleState:
+                        setSchedulePosition();
                         break;
                 }
             }
         };
 
-
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Looper.prepare();
+                getScheduleData();
                 Message message = new Message();
                 message.what = getScheduleState;
-                setSchedulePosition();
                 handler.sendMessage(message);
+                Looper.loop();
             }
         }).start();
     }
@@ -295,6 +276,31 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         intent.putExtra("classMsg", msg);
         intent.putExtra("spinnerWeek", spinnerWeek);
         startActivity(intent);
+    }
+
+    private void getScheduleData() {
+        List<MsgClass> list = Database.querySchedule(LogActivity.logAccount);
+        if(list.isEmpty()) {
+            try {
+                JSONArray schedule = new JSONArray(GetSchedule.getSchedule(this.getActivity()));//向服务器请求课表
+                for(int i = 0; i < schedule.length(); ++i) {
+                    JSONObject jasonObject = new JSONObject(schedule.getString(i));
+                    String classTeacher = jasonObject.getString("teacher");
+                    String classPosition = jasonObject.getString("classroom");
+                    String className = jasonObject.getString("name");
+                    className = className.substring(className.indexOf("|") + 1);
+                    String classWeekday = jasonObject.getString("weekday");
+                    String classLength = jasonObject.getString("courseLength");
+                    String classBeginTime = jasonObject.getString("courseBegin");
+                    String classWeeks = jasonObject.getString("week");
+                    list.add(new MsgClass(LogActivity.logAccount, className, classTeacher, classPosition,
+                            classLength, classBeginTime, classWeekday, classWeeks));
+                }
+                Database.insertSchedule(list);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public class ClassMsgView extends TextView{

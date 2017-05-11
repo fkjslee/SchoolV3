@@ -75,12 +75,11 @@ public class HttpThread implements Runnable{
 
     public String getResult(){
         try{
-            Thread.sleep(5000);
-            int exception = 1/this.result.length();
-        } catch(ArithmeticException e){
-            return "得到结果长度为0";
+            while(result == null || result.length() == 0) {
+                Thread.sleep(100);
+            }
         } catch (InterruptedException e) {
-            return "打断异常";
+            e.printStackTrace();
         }
         return this.result;
     }

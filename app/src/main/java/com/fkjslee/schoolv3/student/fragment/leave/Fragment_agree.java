@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.student.activity.AskLeaveActivity;
 import com.fkjslee.schoolv3.student.activity.LeaveDetail;
 import com.fkjslee.schoolv3.student.data.MsgLeave;
 
@@ -29,8 +31,9 @@ import java.util.Vector;
  * @time 2017/5/6
  */
 
-public class Fragment_agree extends Fragment implements AdapterView.OnItemClickListener {
+public class Fragment_agree extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener {
     private ListView lvLeaveAgree;
+    private ImageView ivAdd;
     private View view;
     private Vector<MsgLeave> msgLeaves = new Vector<>();
 
@@ -45,6 +48,9 @@ public class Fragment_agree extends Fragment implements AdapterView.OnItemClickL
     @TargetApi(Build.VERSION_CODES.N)
     private void initView() {
         lvLeaveAgree = (ListView)view.findViewById(R.id.lv_leave_agree);
+        ivAdd = (ImageView)view.findViewById(R.id.iv_add);
+
+        ivAdd.setOnClickListener(this);
 
         List<Map<String, Object>> items = new ArrayList<>();
         Map<String, Object> item;
@@ -81,5 +87,13 @@ public class Fragment_agree extends Fragment implements AdapterView.OnItemClickL
         Intent intent = new Intent(view.getContext(), LeaveDetail.class);
         intent.putExtra("msgLeave", msgLeaves.elementAt(Integer.valueOf((String)map.get("id"))));
         startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_add:
+                startActivity(new Intent(view.getContext(), AskLeaveActivity.class));
+        }
     }
 }

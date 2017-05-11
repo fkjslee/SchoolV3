@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 
@@ -63,28 +64,20 @@ public class GetPhotoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void takePhoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File out = new File(Environment.getExternalStorageDirectory(),
-                "firstSignPicture.jpg");
-        Uri uri = Uri.fromFile(out);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        startActivityForResult(intent, 0);
+        startActivityForResult(new Intent(this, TakePhoto.class), 0);
     }
 
     private void showPhoto() {
-        String pathString = Environment.getExternalStorageDirectory()
-                .toString() + "firstSignPicture.jpg";
-        photo = BitmapFactory.decodeFile(pathString);
-        ivShowPhoto.setImageURI(Uri.fromFile(new File(pathString)));
+        photo = TakePhoto.photo;
+        TakePhoto.photo = null;
+        ivShowPhoto.setImageBitmap(photo);
     }
 
     private void submit() {
-        String picturePath = Environment.getExternalStorageDirectory()
-                .toString() + "firstSignPicture.jpg";
-        MyCommonFunction.compressAndGenImage(photo, picturePath, 1024);
-        byte[] bytes = MyCommonFunction.getBytesFromFile(new File(picturePath));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.PNG, 100, baos);
         String requestMsg = "type=picture" + "&sName=" + LogActivity.logAccount + "&img=" +
-                Base64.encodeToString(bytes, Base64.DEFAULT);
+                Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
         MyCommonFunction.sendRequestToServer(requestMsg);
     }
 

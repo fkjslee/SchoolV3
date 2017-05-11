@@ -13,6 +13,7 @@
     <string name="plz_input_stu_ID">请输入教务处学号</string>
     <string name="plz_input_nickname">请输入昵称</string>
     <string name="plz_input_pwd">请输入教务处密码</string>
+    <string name="plz_input_leave_reason">请输入请假原因(100字以内)</string>
     <string name="log_your_account">登录您的账号</string>
     <string name="find_your_account">找回您的密码</string>
     <string name="rtn">返回</string>
@@ -36,7 +37,9 @@
     <string name="choose_identity">选择身份:</string>
     <string name="agree">同意</string>
     <string name="not_agree">未同意</string>
-    <string name="leave_reason">请假原因:</string>
+    <string name="leave_reason">请假原因 : </string>
+    <string name="set_time">设置时间</string>
+    <string name="set_date">设置日期</string>
     <string name="leave_request_time">申请时间 : </string>
     <string name="leave_start_time">开始时间 : </string>
     <string name="leave_end_time">结束时间 : </string>
@@ -59,9 +62,11 @@
     <string name="submit">提交</string>
     <string name="submit_photo">提交照片</string>
     <string name="now_position">当前地点 : </string>
+    <string name="loading">请等待......</string>
     <string name="showPhoto">显示照片</string>
     <string name="upload_photo">上传照片</string>
     <string name="getPosition">查看位置</string>
+    <string name="msg_pos">位置信息</string>
     <string name="complete_msg">完善信息</string>
     <string name="setNowWeek">设为当前周</string>
     <string name="title_activity_teacher">TeacherActivity</string>

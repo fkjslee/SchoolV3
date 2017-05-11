@@ -7,33 +7,43 @@
     tools:context=".student.activity.SignActivity">
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_azure"
-        android:text="@string/rtn"
-        android:id="@+id/btn_rtn"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/blue"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_centerHorizontal="true"
+        android:id="@+id/relativeLayout2">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_azure"
-        android:text="@string/submit"
-        android:id="@+id/btn_submit"
-        android:layout_marginBottom="98dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:id="@+id/iv_rtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleY="0.65"
+            android:scaleX="0.65"
+            android:paddingLeft="@dimen/small_margin"
+            android:paddingRight="@dimen/small_margin"
+            android:src="@drawable/backspace"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/oneKeySign"
+            android:id="@+id/textView7"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:layout_margin="20dp"
+        android:textSize="20sp"
         android:text="New Text"
         android:id="@+id/tv_class"
-        android:layout_below="@+id/btn_rtn"
+        android:layout_below="@+id/relativeLayout2"
         android:layout_centerHorizontal="true"/>
 
     <LinearLayout
@@ -55,7 +65,7 @@
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:background="@drawable/btn_azure"
                 android:layout_gravity="center"
                 android:text="@string/submit_photo"
@@ -76,23 +86,20 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:id="@+id/llShowPosition">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/now_position"
-                    android:id="@+id/textViewNotUse"
-                    android:layout_gravity="center_horizontal"/>
-            </RelativeLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/btn_azure"
+                android:layout_gravity="center"
+                android:text="@string/msg_pos"
+                android:id="@+id/button2"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_showPosition"
-                android:layout_gravity="center_horizontal"/>
+                android:text="@string/loading"
+                android:id="@+id/tv_showPosition"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -100,14 +107,28 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:text="New Text"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/loading"
         android:textSize="15sp"
         android:id="@+id/tv_signState"
-        android:layout_below="@+id/btn_rtn"
+        android:layout_alignTop="@+id/tv_class"
         android:layout_toRightOf="@+id/tv_class"
-        android:layout_toEndOf="@+id/tv_class"/>
+        android:layout_toEndOf="@+id/tv_class" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sure"
+        android:textSize="20sp"
+        android:id="@+id/btn_submit"
+        android:background="@drawable/btn_azure"
+        android:layout_marginBottom="74dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

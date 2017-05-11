@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/transparent"
     android:orientation="vertical">
 
         <RelativeLayout
@@ -36,17 +36,6 @@
                     android:textColor="@color/white"
                     />
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/counsellor_backspace"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:paddingLeft="@dimen/small_margin"
-                android:paddingRight="@dimen/small_margin"
-                android:src="@drawable/backspace"
-                android:layout_alignTop="@+id/linearLayout3"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
         </RelativeLayout>
 
     <RelativeLayout
@@ -55,17 +44,6 @@
         android:layout_height="0dp"
         android:layout_weight="9">
 
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            app:srcCompat="@drawable/add"
-            android:layout_marginRight="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="28dp"
-            android:id="@+id/iv_add"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
 </LinearLayout>

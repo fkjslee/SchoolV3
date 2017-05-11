@@ -118,6 +118,27 @@
             android:layout_row="3"
             android:layout_column="0"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/pwd"
+            android:textSize="15sp"
+            android:id="@+id/textView11"
+            android:layout_row="3"
+            android:layout_column="1"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/plz_input_pwd"
+            android:inputType="textPassword"
+            android:textSize="15sp"
+            android:ems="11"
+            android:id="@+id/et_pwd"
+            android:layout_row="3"
+            android:layout_column="2"/>
+
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -173,27 +194,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/spinner_choose_identity"
             android:layout_row="5"
-            android:layout_column="2"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/pwd"
-            android:textSize="15sp"
-            android:id="@+id/textView11"
-            android:layout_row="3"
-            android:layout_column="1"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/plz_input_pwd"
-            android:inputType="textPassword"
-            android:textSize="15sp"
-            android:ems="11"
-            android:id="@+id/et_pwd"
-            android:layout_row="3"
             android:layout_column="2"/>
     </GridLayout>
 

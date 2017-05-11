@@ -38,7 +38,7 @@ public class TakePhoto extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // 根据上面发送过去的请求吗来区别
+        // 根据上面发送过去的请求码来区别
         switch (requestCode) {
             case 0:
                 String pathString = Environment.getExternalStorageDirectory()

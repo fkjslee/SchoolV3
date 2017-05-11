@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -29,14 +30,10 @@ import com.fkjslee.schoolv3.student.function.GetSchedule;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 import com.fkjslee.schoolv3.student.function.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -49,7 +46,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     private static Handler handler;
 
     private GouldMapLocation gouldMapLocation;
-    private Button btnRtn;
+    private ImageView ivRtn;
     private Button btnSubmitPhoto;
     private Button btnSubmit;
     private TextView tvShowPosition;
@@ -78,8 +75,8 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_rtn:
-                clickBtnRtn();
+            case R.id.iv_rtn:
+                finish();
                 break;
             case R.id.btn_submitPhoto:
                 takePhoto();
@@ -102,12 +99,10 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void submit() {
-        String picturePath = Environment.getExternalStorageDirectory()
-                .toString() + "/ca.jpg";
-        MyCommonFunction.compressAndGenImage(photo, picturePath, 1024);
-        byte[] bytes = MyCommonFunction.getBytesFromFile(new File(picturePath));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.PNG, 100, baos);
         String cName = msg.getName().substring(msg.getName().indexOf("|") + 1);
-        String requestMsg = "type=sign_in" + "&img=" + Base64.encodeToString(bytes, Base64.DEFAULT) +
+        String requestMsg = "type=sign_in" + "&img=" + Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT) +
                 "&sName=" + LogActivity.logAccount + "&cName=" + cName + "&week=" + spinnerWeek +
                 "&weekday=" + msg.getWeekday() + "&courseBegin=" + msg.getStartTime() +
                 "&tName=" + msg.getTeacher() + "&length=" + msg.getLength();
@@ -126,24 +121,18 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void takePhoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File out = new File(Environment.getExternalStorageDirectory(),
-                "camera.jpg");
-        Uri uri = Uri.fromFile(out);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        startActivityForResult(intent, 0);
+        startActivityForResult(new Intent(this, TakePhoto.class), 0);
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            clickBtnRtn();
+            finish();
         }
         return super.onKeyDown(keyCode, event);
     }
 
     private Boolean checkPosition() {
         if (msg.getPosition().substring(0, 2).equals("A5")) {
-//            gouldMapLocation.startLocation();
             Double cirLong = 106.473404;
             Double cirLat = 29.572397;
             Double edgeLong = 106.473938;
@@ -181,34 +170,19 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void showPhoto() {
-        String pathString = Environment.getExternalStorageDirectory()
-                .toString() + "/camera.jpg";
-        photo = BitmapFactory.decodeFile(pathString);
-        ivShowPhoto.setImageURI(Uri.fromFile(new File(pathString)));
+        photo = TakePhoto.photo;
+        TakePhoto.photo = null;
+        ivShowPhoto.setImageBitmap(photo);
     }
 
     private boolean hasSign() {
-//        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
         requestMsg = "type=sign_res" + "&sName=" + LogActivity.logAccount +
                 "&cName=" + msg.getName() + "&week=" + spinnerWeek + "&weekday=" + msg.getWeekday() +
                 "&courseBegin=" + msg.getStartTime() + "&length=" + msg.getLength();
-//        cachedThreadPool.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                String result = MyCommonFunction.sendRequestToServer(requestMsg);
-//                Integer y = 1;
-//                tv_signState.setText("xxxx");
-//                Integer x = 2;
-//            }
-//        });
         String result = MyCommonFunction.sendRequestToServer(requestMsg);
         Boolean res = Boolean.valueOf(result);
         Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
         return res;
-    }
-
-    private void clickBtnRtn() {
-        finish();
     }
 
     private void initView() {
@@ -216,7 +190,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         gouldMapLocation = new GouldMapLocation(this.getApplicationContext());
         gouldMapLocation.startLocation();
 
-        btnRtn = (Button) findViewById(R.id.btn_rtn);
+        ivRtn = (ImageView) findViewById(R.id.iv_rtn);
         btnSubmitPhoto = (Button) findViewById(R.id.btn_submitPhoto);
         tvShowPosition = (TextView) findViewById(R.id.tv_showPosition);
         btnSubmit = (Button) findViewById(R.id.btn_submit);
@@ -225,7 +199,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         tv_signState = (TextView) findViewById(R.id.tv_signState);
         ivShowPhoto = (ImageView) findViewById(R.id.showPhoto);
 
-        btnRtn.setOnClickListener(this);
+        ivRtn.setOnClickListener(this);
         btnSubmitPhoto.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
 
@@ -245,10 +219,12 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Looper.prepare();
                 Message message = new Message();
                 message.what = getSignState;
                 message.obj = hasSign() ? "已签到" : "未签到";
                 handler.sendMessage(message);
+                Looper.loop();
             }
         }).start();
     }

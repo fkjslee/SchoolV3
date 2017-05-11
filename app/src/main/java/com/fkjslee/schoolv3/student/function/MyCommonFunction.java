@@ -1,6 +1,7 @@
 package com.fkjslee.schoolv3.student.function;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 
 import com.fkjslee.schoolv3.student.activity.LogActivity;
 import com.fkjslee.schoolv3.network.HttpThread;
@@ -8,6 +9,7 @@ import com.fkjslee.schoolv3.network.HttpThread;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -68,5 +70,20 @@ public class MyCommonFunction {
         HttpThread httpThread = new HttpThread(url, param);
         new Thread(httpThread).start();
         return httpThread.getResult();
+    }
+
+    public static void saveImage(Bitmap bmp, String fileName) {
+        File file = new File(fileName);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
