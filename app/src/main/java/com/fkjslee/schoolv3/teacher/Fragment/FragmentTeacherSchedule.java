@@ -1,18 +1,14 @@
-package com.fkjslee.schoolv3.student.fragment;
-
+package com.fkjslee.schoolv3.teacher.Fragment;
 
 import android.annotation.TargetApi;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,6 +26,7 @@ import com.fkjslee.schoolv3.student.activity.ClassDetailActivity;
 import com.fkjslee.schoolv3.student.activity.LogActivity;
 import com.fkjslee.schoolv3.student.data.MsgClass;
 import com.fkjslee.schoolv3.student.function.GetSchedule;
+import com.fkjslee.schoolv3.teacher.CourseSignActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,20 +36,12 @@ import java.util.Calendar;
 import java.util.List;
 
 
-/**
- * Created by fkjslee on 2017/2/18.
- * "课表"碎片
- */
-
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class Fragment_schedule extends Fragment implements AdapterView.OnItemSelectedListener,
+public class FragmentTeacherSchedule extends android.app.Fragment implements AdapterView.OnItemSelectedListener,
         AdapterView.OnItemClickListener, View.OnClickListener {
-
     private static final int getScheduleState = 1;
     private static Handler handler;
 
     private Spinner spinner;
-
     private View parentView = null;
     private Integer spinnerWeek = 1;
     private ArrayAdapter<String> weekAdapter = null;
@@ -62,7 +52,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_fragment_teacher_schedule, container, false);
         parentView = view;
         initView();
 
@@ -70,12 +60,12 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     }
 
     /**
-    * 设置学生的课表信息*/
+     * 设置学生的课表信息*/
     @TargetApi(Build.VERSION_CODES.M)
     public void setSchedulePosition() {
         Integer recordMsgLength = 0;
         View view = parentView;
-        FrameLayout layout_schedule = (FrameLayout)view.findViewById(R.id.layout_schedule);
+        RelativeLayout layout_schedule = (RelativeLayout)view.findViewById(R.id.layout_teacher_schedule);
         layout_schedule.removeAllViews();
 
         int interval = 3;
@@ -114,7 +104,8 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         }
 
         //真正的课表区域
-        List<MsgClass> list = Database.querySchedule(LogActivity.logAccount); //得到课表信息
+       // List<MsgClass> list = Database.querySchedule(LogActivity.logAccount); //得到课表信息
+        List<MsgClass> list=getScheduleData();
         for(MsgClass msgClass : list)
             recordMsg[recordMsgLength++] = msgClass;
 
@@ -180,7 +171,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
 
         for(Integer i = 1; i < 8; ++i)
             for(Integer j = 1; j < 20; ++j) {
-                if(posMsg[i][j].startPos == null || !posMsg[i][j].startPos.equals(j) || posMsg[i][j].color == 0) continue;
+                if(posMsg[i][j].startPos != j || posMsg[i][j].color == 0) continue;
                 ClassMsgView btn = new ClassMsgView(view.getContext());
                 btn.setX(blankWidth+interval + (i-1) * (itemWidth+interval));
                 btn.setY(blankHeight+interval + (j-1) * (itemHeight+interval));
@@ -189,11 +180,12 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
                 btn.setLines(j*3-1);
                 btn.setOnClickListener(this);
                 layout_schedule.addView(btn);
+                btn.setBackgroundResource(0);
                 if(posMsg[i][j].color == 1) btn.setBackgroundResource(R.drawable.btn_alpha);
                 else btn.setBackgroundResource(R.drawable.btn_azure);
                 @android.support.annotation.IdRes int id = posMsg[i][j].id;
-                btn.setText(""+recordMsg[id].getName() + recordMsg[id].getPosition());
-                btn.setTextColor(Color.WHITE);
+                btn.setText(recordMsg[id].getName() + recordMsg[id].getPosition());
+                btn.setTextColor(this.getResources().getColor(R.color.white));
                 btn.getBackground().setAlpha(200);
                 btn.setId(id);
             }
@@ -233,19 +225,17 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Looper.prepare();
                 getScheduleData();
                 Message message = new Message();
                 message.what = getScheduleState;
                 handler.sendMessage(message);
-                Looper.loop();
             }
         }).start();
     }
 
     /**
      * 功能: 得到一个学生有多少周有课
-    * */
+     * */
     private int getMaxWeek() {
         return 18;
     }
@@ -256,7 +246,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String temp = weekAdapter.getItem(position);
-        assert temp != null;
         temp = temp.substring(1, temp.indexOf("周"));
         spinnerWeek = Integer.valueOf(temp);
         setSchedulePosition();
@@ -272,14 +261,15 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(getActivity(), ClassDetailActivity.class);
+        //课程表显示签到信息的跳转
+        Intent intent = new Intent(getActivity(), CourseSignActivity.class);
         MsgClass msg = recordMsg[v.getId()];
         intent.putExtra("classMsg", msg);
         intent.putExtra("spinnerWeek", spinnerWeek);
         startActivity(intent);
     }
 
-    private void getScheduleData() {
+    private List<MsgClass> getScheduleData() {
         List<MsgClass> list = Database.querySchedule(LogActivity.logAccount);
         if(list.isEmpty()) {
             try {
@@ -302,14 +292,14 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
                 e.printStackTrace();
             }
         }
+        return list;
     }
 
-    public class ClassMsgView extends TextView{
+    public class ClassMsgView extends TextView {
 
         public ClassMsgView(Context context) {
             super(context);
             setTextSize(12);
-            setGravity(Gravity.CENTER_VERTICAL);
         }
     }
 

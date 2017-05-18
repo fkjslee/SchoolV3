@@ -1,11 +1,12 @@
-package com.fkjslee.schoolv3.counsellor;
+package com.fkjslee.schoolv3.teacher.Fragment;
 
-import android.app.Activity;
-import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,21 +17,24 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.counsellor.HandledFragment;
+import com.fkjslee.schoolv3.counsellor.Helper;
+import com.fkjslee.schoolv3.counsellor.LeaveContent;
+import com.fkjslee.schoolv3.counsellor.ShowLeaveDetail;
 import com.fkjslee.schoolv3.database.Database;
+import com.fkjslee.schoolv3.student.function.MyCommonFunction;
+import com.fkjslee.schoolv3.teacher.ShowStuLeave;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Xiaojun on 2017/5/7.
- */
-
-public class HandledFragment extends Fragment {
+public class TeacherHandle extends android.app.Fragment {
     private View view = null;
     private ListView listViewHandled = null;
     private SimpleAdapter handledAdapter = null;
     private List<Map<String,Object>> handled;
-
+    private String LeaveNodeId;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +44,11 @@ public class HandledFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.counsellor_leave_handled,container,false);
+        view = inflater.inflate(R.layout.fragment_teacher_handle,container,false);
+		
         return view;
     }
-
+	//
     @Override
     public void onResume() {
         if (handled != null){
@@ -58,8 +63,8 @@ public class HandledFragment extends Fragment {
     }
 
     private void initHandledView(){ //初始化已处理界面
-        listViewHandled = null;
-        listViewHandled = (ListView) view.findViewById(R.id.counsellor_leave_handled);
+        //listViewHandled = null;
+        listViewHandled = (ListView) view.findViewById(R.id.teacher_leave_handled);
         handledAdapter = new SimpleAdapter(view.getContext(),handled,R.layout.counsellor_leave_item,
                 LeaveContent.array,
                 new int[]{R.id.counsellor_leave_student_name,R.id.counsellor_leave_student_sn,
@@ -69,7 +74,7 @@ public class HandledFragment extends Fragment {
         listViewHandled.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(HandledFragment.this.getActivity(),ShowLeaveDetail.class);
+                Intent intent = new Intent(TeacherHandle.this.getActivity(),ShowStuLeave.class);
                 /*传递假条对象*/
                 LeaveContent leaveContent = new LeaveContent();
                 leaveContent.studentName = (String) handled.get(i).get("studentName");
@@ -77,6 +82,7 @@ public class HandledFragment extends Fragment {
                 leaveContent.reasons = (String)handled.get(i).get("reasons");
                 leaveContent.startTime = (String)handled.get(i).get("startTime");
                 leaveContent.endTime = (String)handled.get(i).get("endTime");
+                leaveContent.leaveNoteId=(String)handled.get(i).get("leaveNoteId");//服务气短的假条ID
                 intent.putExtra("leaveContent",leaveContent);
                 intent.putExtra("deal",1);//表示这些假条未处理
                 startActivity(intent);
@@ -110,4 +116,17 @@ public class HandledFragment extends Fragment {
         });
     }
 
+    private List<Map<String,Object>> getLeaveNote(){
+
+        String param = "type=getLeave&telephone=" + "" + "&noteState= 1";
+        String result = MyCommonFunction.sendRequestToServer(param);
+        List<LeaveContent> list=getLeaveContent(result);
+        return new Helper().setMapList(list,1);
+    }
+
+    private List<LeaveContent>  getLeaveContent(String str){
+        List<LeaveContent> list=new ArrayList<>();
+		//解析数据
+        return list;
+    }
 }

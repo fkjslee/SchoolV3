@@ -2,7 +2,9 @@ package com.fkjslee.schoolv3.teacher;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,18 +12,24 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.student.activity.CompleteMsgActivity;
 import com.fkjslee.schoolv3.student.fragment.Fragment_discuss;
 import com.fkjslee.schoolv3.student.fragment.Fragment_leave;
-import com.fkjslee.schoolv3.student.fragment.Fragment_schedule;
+import com.fkjslee.schoolv3.teacher.Fragment.FragmentTeacherSchedule;
+import com.fkjslee.schoolv3.teacher.Fragment.TeacherLeave;
 
 public class TeacherActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    Fragment_schedule fragment_schedule = new Fragment_schedule();
-    Fragment_leave fragment_leave = new Fragment_leave();
+    FragmentTeacherSchedule fragment_schedule = new FragmentTeacherSchedule();
+    TeacherLeave fragment_leave = new TeacherLeave();
     Fragment_discuss fragment_discuss = new Fragment_discuss();
+    private Button btnSetting;
+    private PopupMenu popupMenu;
+    private Button btnSchedule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +41,14 @@ public class TeacherActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+    private void initView() {
+        btnSetting = (Button)findViewById(R.id.btn_setting1);
+        btnSchedule = (Button)findViewById(R.id.btn_schedule);
 
+        btnSchedule.setOnClickListener(this);
+        onClick(findViewById(R.id.btn_schedule));
+        //btnSetting.setOnClickListener(this);
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -54,12 +69,9 @@ public class TeacherActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -78,7 +90,6 @@ public class TeacherActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
-
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -95,14 +106,14 @@ public class TeacherActivity extends AppCompatActivity
             case R.id.btn_schedule:
                 FragmentManager fragmentManager1 = getFragmentManager();
                 FragmentTransaction transaction = fragmentManager1.beginTransaction();
-                fragment_schedule = new Fragment_schedule();
+                fragment_schedule = new FragmentTeacherSchedule();
                 transaction.replace(R.id.top_layout, fragment_schedule);
                 transaction.commit();
                 break;
             case R.id.btn_leave:
-                fragment_leave = new Fragment_leave();
                 FragmentManager fragmentManager2 = getFragmentManager();
                 FragmentTransaction transaction2 = fragmentManager2.beginTransaction();
+                fragment_leave=new TeacherLeave();
                 transaction2.replace(R.id.top_layout, fragment_leave);
                 transaction2.commit();
                 break;
@@ -114,4 +125,5 @@ public class TeacherActivity extends AppCompatActivity
                 break;
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package com.fkjslee.schoolv3.counsellor;
+package com.fkjslee.schoolv3.teacher;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,19 +9,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.counsellor.LeaveContent;
 import com.fkjslee.schoolv3.database.Database;
+import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 
-public class ShowLeaveDetail extends AppCompatActivity {
+public class ShowStuLeave extends AppCompatActivity {
 
-    private TextView student,reasons,startTime,endTime;
+    private TextView student,reasons,startTime,endTime,stuNum;
     private ImageView back;
-    private Button agree,reject;
+    private Button sure;
     private LeaveContent leaveContent;//要显示的对象
     /**
      *下面是和是否已经处理请假消息有关的变量
      */
     private int deal = 0;
-
+    private String leaveNoteId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +37,12 @@ public class ShowLeaveDetail extends AppCompatActivity {
         Intent intent = getIntent();
         leaveContent = (LeaveContent) intent.getSerializableExtra("leaveContent");
         deal = intent.getIntExtra("deal",0);
-
-        student = (TextView)findViewById(R.id.leave_detail_student);
-        reasons = (TextView)findViewById(R.id.leave_detail_reasons);
-        startTime = (TextView)findViewById(R.id.leave_detail_starttime);
-        endTime = (TextView)findViewById(R.id.leave_detail_endtime);
+        student = (TextView)findViewById(R.id.stu_leave_student);
+        stuNum=(TextView)findViewById(R.id.stu_leave_studentnum);
+        reasons = (TextView)findViewById(R.id.stu_leave_reasons);
+        startTime = (TextView)findViewById(R.id.stu_leave_starttime);
+        endTime = (TextView)findViewById(R.id.stu_leave_endtime);
+        leaveNoteId=leaveContent.leaveNoteId;
         /**
          * 设置假条相关内容
          */
@@ -48,23 +51,16 @@ public class ShowLeaveDetail extends AppCompatActivity {
         reasons.setText(leaveContent.reasons);
         startTime.setText(leaveContent.startTime);
         endTime.setText(leaveContent.endTime);
-        back = (ImageView)findViewById(R.id.leave_detail_backspace);
+        back = (ImageView)findViewById(R.id.stu_leave_backspace);
 
-        agree = (Button)findViewById(R.id.leave_detail_agree);
-        reject = (Button)findViewById(R.id.leave_detail_reject);
 
         Onclick onclick = new Onclick();
         back.setOnClickListener(onclick);
-        agree.setOnClickListener(onclick);
-        reject.setOnClickListener(onclick);
+        sure.setOnClickListener(onclick);
 
         /**
          * 根据点击的位置不同，设置agree reject是否可见,已处理的请假条不需要再设置同意和拒绝
          */
-        if(deal == 1){
-            agree.setVisibility(View.INVISIBLE);
-            reject.setVisibility(View.INVISIBLE);
-        }
     }
 
 
@@ -72,24 +68,24 @@ public class ShowLeaveDetail extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             switch (view.getId()){
-                case R.id.leave_detail_backspace:
-                    ShowLeaveDetail.this.finish();
+                case R.id.stu_leave_backspace:
+                    ShowStuLeave.this.finish();
                     break;
-                case R.id.leave_detail_agree:
+                case R.id.stu_leave_sure:
                     leaveContent.deal = 1;
                     leaveContent.pass = 1;
-                    Database.updateLeave(leaveContent,"leaves");
-                    Database.close();
-                    ShowLeaveDetail.this.finish();
-                    break;
-                case R.id.leave_detail_reject:
-                    leaveContent.deal = 1;
-                    leaveContent.pass = 0;
-                    Database.updateLeave(leaveContent,"leaves");
-                    Database.close();
-                    ShowLeaveDetail.this.finish();
+                   /* Database.updateLeave(leaveContent,"leaves");
+                    Database.close();*/
+                    //添加向服务器发送数据
+                    ShowStuLeave.this.finish();
                     break;
             }
         }
     }
+
+    private void sendMsgToserver(String leaveNoteId){
+        String param = "type=TeacherSeeLeaveNote&telephone=" + "" + "&LeaveNoteId"+leaveNoteId;
+        String result = MyCommonFunction.sendRequestToServer(param);
+    }
+
 }

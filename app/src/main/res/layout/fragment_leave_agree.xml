@@ -14,17 +14,4 @@
         android:id="@+id/lv_leave_agree"
         android:descendantFocusability="blocksDescendants"/>
 
-
-    <ImageView
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        app:srcCompat="@drawable/add"
-        android:layout_marginRight="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="28dp"
-        android:id="@+id/iv_add"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:focusableInTouchMode="true"/>
 </RelativeLayout>

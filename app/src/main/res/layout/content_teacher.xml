@@ -13,4 +13,12 @@
     tools:context="com.fkjslee.schoolv3.teacher.TeacherActivity"
     tools:showIn="@layout/app_bar_teacher">
 
+    <Button
+        android:text="@string/setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_setting1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

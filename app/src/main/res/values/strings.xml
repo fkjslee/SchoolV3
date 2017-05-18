@@ -5,6 +5,7 @@
     <string name="identity">身份:</string>
     <string name="stu_ID">学号:</string>
     <string name="nickname">昵称:</string>
+    <string name="academy">学院</string>
     <string name="pwd">密码:</string>
     <string name="rmb_pwd">记住</string>
     <string name="login">登录</string>
@@ -15,6 +16,8 @@
     <string name="plz_input_pwd">请输入教务处密码</string>
     <string name="plz_input_leave_reason">请输入请假原因(100字以内)</string>
     <string name="log_your_account">登录您的账号</string>
+    <string name="real_name">真名 : </string>
+    <string name="real_name_function">用于签到等功能</string>
     <string name="find_your_account">找回您的密码</string>
     <string name="rtn">返回</string>
     <string name="send_code">发送验证码</string>

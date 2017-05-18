@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.counsellor.CounsellorLeaveActivty;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Fragment_schedule fragment_schedule = new Fragment_schedule();
     private Fragment_leave fragment_leave = new Fragment_leave();
     private Fragment_discuss fragment_discuss = new Fragment_discuss();
-    private Button btnSetting;
+    private ImageView ivSetting;
     private PopupMenu popupMenu;
 
     @Override
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 transaction.replace(R.id.top_layout, fragment_discuss);
                 transaction.commit();
                 break;
-            case R.id.btn_setting:
+            case R.id.iv_setting:
                 popupMenu = new PopupMenu(this, v);
                 popupMenu.getMenuInflater().inflate(R.menu.setting, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(this);
@@ -62,9 +63,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void initView() {
-        btnSetting = (Button)findViewById(R.id.btn_setting);
+        ivSetting = (ImageView) findViewById(R.id.iv_setting);
 
-        btnSetting.setOnClickListener(this);
+        ivSetting.bringToFront();
+        ivSetting.setOnClickListener(this);
         onClick(findViewById(R.id.btn_schedule));
     }
 

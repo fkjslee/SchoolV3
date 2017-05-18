@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="course_sign_toolbar" type="id" />
+    <item name="course_sign_backspace" type="id" />
+</resources>

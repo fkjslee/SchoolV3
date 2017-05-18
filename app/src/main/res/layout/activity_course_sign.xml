@@ -7,19 +7,25 @@
     android:fitsSystemWindows="true"
     tools:context="com.fkjslee.schoolv3.teacher.CourseSignActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/course_sign_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:contentInsetStart="0dp">
 
-    </android.support.design.widget.AppBarLayout>
+            <ImageView
+                android:id="@+id/course_sign_backspace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleY="0.65"
+                android:scaleX="0.65"
+                android:paddingLeft="@dimen/small_margin"
+                android:paddingRight="@dimen/small_margin"
+                android:src="@drawable/backspace"/>
+
+        </android.support.v7.widget.Toolbar>
 
     <include layout="@layout/content_course_sign" />
 

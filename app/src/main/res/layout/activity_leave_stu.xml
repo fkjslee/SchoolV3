@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/leave_stu_toolbars"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/Theme.AppCompat.Light"
+        app:contentInsetStart="0dp">
+
+        <ImageView
+            android:id="@+id/leave_stu_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleY="0.65"
+            android:scaleX="0.65"
+            android:paddingLeft="@dimen/small_margin"
+            android:paddingRight="@dimen/small_margin"
+            android:src="@drawable/backspace"/>
+
+        <TextView
+            android:id="@+id/leave_stu_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="请假"/>
+
+    </android.support.v7.widget.Toolbar>
+    <ListView
+        android:id="@+id/activity_leave_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
+</LinearLayout>

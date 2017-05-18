@@ -24,7 +24,8 @@ public class Helper {
             map.put(LeaveContent.array[0],leaveContent.studentName);
             map.put(LeaveContent.array[1],leaveContent.studentNumber);
             map.put(LeaveContent.array[2],leaveContent.reasons);
-            map.put(LeaveContent.array[3],leaveContent.time);
+            map.put(LeaveContent.array[3],leaveContent.startTime);
+            map.put(LeaveContent.array[4],leaveContent.endTime);
             String str = "";
             if (leaveContent.pass == 1){
                 str = "已批准";

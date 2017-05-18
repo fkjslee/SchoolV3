@@ -100,19 +100,19 @@ public class Database {
         db.execSQL(sql);
     }
 
-    public static long insertLeave(LeaveContent leaveContent, String tableName){
-        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dataBasePath, null);
-        if(leaveContent==null)
-            return 0;
-        ContentValues values = new ContentValues();
-        values.put("STUDENTNAME", leaveContent.studentName);
-        values.put("STUDENTNUMBER", leaveContent.studentNumber);
-        values.put("REASONS", leaveContent.reasons);
-        values.put("TIME", leaveContent.time);
-        values.put("PASS",leaveContent.pass);
-        values.put("DEAL",leaveContent.deal);
-        return db.insert(tableName, null, values);
-    }
+//    public static long insertLeave(LeaveContent leaveContent, String tableName){
+//        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dataBasePath, null);
+//        if(leaveContent==null)
+//            return 0;
+//        ContentValues values = new ContentValues();
+//        values.put("STUDENTNAME", leaveContent.studentName);
+//        values.put("STUDENTNUMBER", leaveContent.studentNumber);
+//        values.put("REASONS", leaveContent.reasons);
+//        values.put("TIME", leaveContent.time);
+//        values.put("PASS",leaveContent.pass);
+//        values.put("DEAL",leaveContent.deal);
+//        return db.insert(tableName, null, values);
+//    }
 
 
     public static boolean searchLeave(LeaveContent leaveContent,String tableName){
@@ -135,7 +135,7 @@ public class Database {
             leaveContent.studentName = cursor.getString(0);
             leaveContent.studentNumber = cursor.getString(1);
             leaveContent.reasons = cursor.getString(2);
-            leaveContent.time = cursor.getString(3);
+            leaveContent.startTime = cursor.getString(3);
             leaveContent.pass = cursor.getInt(4);
             leaveContent.deal = cursor.getInt(5);
             list.add(leaveContent);

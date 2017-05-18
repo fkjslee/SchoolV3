@@ -158,7 +158,7 @@
             android:hint="@string/plz_input_leave_reason"
             android:textSize="15sp"
             android:ems="11"
-            android:id="@+id/et_pwd"
+            android:id="@+id/et_reason"
             android:layout_row="3"
             android:layout_column="2"/>
 

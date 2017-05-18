@@ -36,7 +36,6 @@ public class Fragment_leave extends Fragment implements View.OnClickListener{
     private Fragment_notAgree fragment_notAgree = new Fragment_notAgree();
     private Button btnAgree;
     private Button btnNotAgree;
-//    private ImageView ivAdd;
     private View view;
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -51,12 +50,9 @@ public class Fragment_leave extends Fragment implements View.OnClickListener{
     private void initView() {
         btnAgree = (Button)view.findViewById(R.id.btn_agree);
         btnNotAgree = (Button)view.findViewById(R.id.btn_notAgree);
-//        ivAdd = (ImageView)view.findViewById(R.id.iv_add);
 
         btnAgree.setOnClickListener(this);
         btnNotAgree.setOnClickListener(this);
-//        ivAdd.setOnClickListener(this);
-//        ivAdd.bringToFront();
         onClick(view.findViewById(R.id.btn_notAgree));
     }
 

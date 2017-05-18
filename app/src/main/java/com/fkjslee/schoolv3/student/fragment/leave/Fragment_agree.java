@@ -31,9 +31,8 @@ import java.util.Vector;
  * @time 2017/5/6
  */
 
-public class Fragment_agree extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class Fragment_agree extends Fragment implements AdapterView.OnItemClickListener {
     private ListView lvLeaveAgree;
-    private ImageView ivAdd;
     private View view;
     private Vector<MsgLeave> msgLeaves = new Vector<>();
 
@@ -48,9 +47,6 @@ public class Fragment_agree extends Fragment implements AdapterView.OnItemClickL
     @TargetApi(Build.VERSION_CODES.N)
     private void initView() {
         lvLeaveAgree = (ListView)view.findViewById(R.id.lv_leave_agree);
-        ivAdd = (ImageView)view.findViewById(R.id.iv_add);
-
-        ivAdd.setOnClickListener(this);
 
         List<Map<String, Object>> items = new ArrayList<>();
         Map<String, Object> item;
@@ -87,13 +83,5 @@ public class Fragment_agree extends Fragment implements AdapterView.OnItemClickL
         Intent intent = new Intent(view.getContext(), LeaveDetail.class);
         intent.putExtra("msgLeave", msgLeaves.elementAt(Integer.valueOf((String)map.get("id"))));
         startActivity(intent);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_add:
-                startActivity(new Intent(view.getContext(), AskLeaveActivity.class));
-        }
     }
 }

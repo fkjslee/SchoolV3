@@ -106,6 +106,8 @@
         <activity android:name=".student.activity.CompleteMsgActivity" />
         <activity android:name=".student.activity.AskLeaveActivity">
         </activity>
+        <activity android:name=".teacher.AbsentStuActivity" />
+        <activity android:name=".teacher.LeaveStuActivity" />
     </application>
 
 </manifest>

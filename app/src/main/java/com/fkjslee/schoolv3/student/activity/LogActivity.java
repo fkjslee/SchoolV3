@@ -15,6 +15,7 @@ import com.fkjslee.schoolv3.counsellor.CounsellorLeaveActivty;
 import com.fkjslee.schoolv3.database.Database;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 import com.fkjslee.schoolv3.student.function.TimeCount;
+import com.fkjslee.schoolv3.teacher.TeacherActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,7 +32,7 @@ import java.util.Date;
 
 public class LogActivity extends AppCompatActivity implements View.OnClickListener{
 
-    public static String logAccount = "18002324437";
+    public static String logAccount = "18725884156";
     public static String logPwd = "123456";
     public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";//服务器ip
 //    public static String url = "http://100.56.101.29:8080/MyServlet/MainServlet";
@@ -90,6 +91,10 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
             logAccount = etStuId.getText().toString();
             logPwd = etPwd.getText().toString();
             startActivity(new Intent(getApplicationContext(), CounsellorLeaveActivty.class));
+        } else if (result.equals("老师")) {
+            logAccount = etStuId.getText().toString();
+            logPwd = etPwd.getText().toString();
+            startActivity(new Intent(getApplicationContext(), TeacherActivity.class));
         } else {
             Toast.makeText(getApplicationContext(), "密码错误",
                     Toast.LENGTH_SHORT).show();
@@ -139,6 +144,8 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
                 return "学生";
             case "辅导员":
                 return "辅导员";
+            case "老师":
+                return "老师";
             default:
                 Toast.makeText(this, "账号或者密码错误", Toast.LENGTH_SHORT).show();
                 return "";

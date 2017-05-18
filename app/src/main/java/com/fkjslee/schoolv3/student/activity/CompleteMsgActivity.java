@@ -18,6 +18,8 @@ public class CompleteMsgActivity extends AppCompatActivity implements View.OnCli
     private EditText etNickname;
     private EditText etSid;
     private EditText etPwd;
+    private EditText etRealName;
+    private EditText etAcadamy;
     private Button btnUploadPhoto;
     private Button btnSubmit;
     private ImageView ivRtn;
@@ -33,6 +35,8 @@ public class CompleteMsgActivity extends AppCompatActivity implements View.OnCli
         etNickname = (EditText)findViewById(R.id.et_nickName);
         etSid = (EditText)findViewById(R.id.et_stu_ID);
         etPwd = (EditText)findViewById(R.id.et_pwd);
+        etRealName = (EditText) findViewById(R.id.et_realName);
+        etAcadamy = (EditText) findViewById(R.id.et_academy);
         btnUploadPhoto = (Button) findViewById(R.id.btn_uploadPhoto);
         btnSubmit = (Button)findViewById(R.id.btn_submit);
         ivRtn = (ImageView)findViewById(R.id.iv_rtn);
@@ -52,9 +56,12 @@ public class CompleteMsgActivity extends AppCompatActivity implements View.OnCli
                 startActivity(new Intent(this, GetPhotoActivity.class));
                 break;
             case R.id.btn_submit:
-                String param = "type=bind&telephone=" + LogActivity.logAccount +
+                String param = "type=bind" + "" +
+                        "&telephone=" + LogActivity.logAccount +
                         "&sName=" + etSid.getText().toString() +
-                        "&sPwd=" + etPwd.getText().toString();
+                        "&sPwd=" + etPwd.getText().toString() +
+                        "&userName=" + etRealName.getText().toString() +
+                        "&academy=" + etAcadamy.getText().toString();
                 String result = MyCommonFunction.sendRequestToServer(param);
                 Toast.makeText(this, "上传成功 ? " + result, Toast.LENGTH_SHORT).show();
         }

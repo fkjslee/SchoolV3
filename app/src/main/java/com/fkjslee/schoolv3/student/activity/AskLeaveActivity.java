@@ -3,11 +3,15 @@ package com.fkjslee.schoolv3.student.activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -16,11 +20,16 @@ import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 
 public class AskLeaveActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final int askLeaveReault = 0;
+
+    private static Handler handler;
+
     private Button btnStartTimeSetDate;
     private Button btnStartTimeSetTime;
     private Button btnEndTimeSetDate;
     private Button btnEndTimeSetTime;
     private Button btnSure;
+    private EditText etReason;
 
     private Integer stYear, stMonth, stDay, stHour, stMinute;
     private Integer etYear, etMonth, etDay, etHour, etMinute;
@@ -38,12 +47,24 @@ public class AskLeaveActivity extends AppCompatActivity implements View.OnClickL
         btnEndTimeSetDate = (Button) findViewById(R.id.btn_endTimeSetDate);
         btnEndTimeSetTime = (Button) findViewById(R.id.btn_endTimeSetTime);
         btnSure = (Button)findViewById(R.id.btn_sure);
+        etReason = (EditText)findViewById(R.id.et_reason);
 
         btnStartTimeSetDate.setOnClickListener(this);
         btnStartTimeSetTime.setOnClickListener(this);
         btnEndTimeSetDate.setOnClickListener(this);
         btnEndTimeSetTime.setOnClickListener(this);
         btnSure.setOnClickListener(this);
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case askLeaveReault:
+                        Toast.makeText(getApplicationContext(), msg.toString(), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
     }
 
     @Override
@@ -73,6 +94,17 @@ public class AskLeaveActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private String askLeave() {
+        String param = "type=askForLeave" +
+                "&telephone=" + LogActivity.logAccount +
+                "&content=" + etReason.getText().toString() +
+                "&startTime=" + stYear.toString() + "-" + stMonth.toString() + "-" + stDay.toString() + " " +
+                stHour.toString() + ":" + stMinute.toString() + ":00" +
+                "&endTime=" + etYear.toString() + "-" + etMonth.toString() + "-" + etDay.toString() + " " +
+                etHour.toString() + ":" + etMinute.toString() + ":00";
+        return MyCommonFunction.sendRequestToServer(param);
+    }
+
     private void clickBtnSure() {
         String set = "设置";
         if(btnStartTimeSetDate.getText().toString().substring(0, 2).equals(set) ||
@@ -82,8 +114,18 @@ public class AskLeaveActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(this, "请输入正确时间", Toast.LENGTH_SHORT).show();
             return;
         }
-        String param = "";
-        MyCommonFunction.sendRequestToServer(param);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                Message message = new Message();
+                message.what = askLeaveReault;
+                message.obj = askLeave();
+                handler.sendMessage(message);
+                Looper.loop();
+            }
+        }).start();
     }
 
     private void clickBtnStartTimeSetDate() {
