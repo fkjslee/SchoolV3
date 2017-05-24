@@ -1,33 +1,36 @@
 package com.fkjslee.schoolv3.student.activity;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.fkjslee.schoolv3.R;
-import com.fkjslee.schoolv3.counsellor.CounsellorLeaveActivty;
-import com.fkjslee.schoolv3.student.fragment.Fragment_discuss;
+import com.fkjslee.schoolv3.student.fragment.FragmentMine;
+import com.fkjslee.schoolv3.student.fragment.FragmentNews;
 import com.fkjslee.schoolv3.student.fragment.Fragment_leave;
 import com.fkjslee.schoolv3.student.fragment.Fragment_schedule;
 
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity
+        implements View.OnClickListener, FragmentMine.FragmentMineListener{
 
     private Fragment_schedule fragment_schedule = new Fragment_schedule();
     private Fragment_leave fragment_leave = new Fragment_leave();
-    private Fragment_discuss fragment_discuss = new Fragment_discuss();
-    private ImageView ivSetting;
+    private FragmentNews fragmentNews = new FragmentNews();
+    private FragmentMine fragmentMine = new FragmentMine();
     private PopupMenu popupMenu;
+    private LinearLayout llSchedule;
+    private LinearLayout llLeave;
+    private LinearLayout llNews;
+    private LinearLayout llMine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,54 +40,50 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         initView();
     }
 
+    private void initView() {
+        llSchedule = (LinearLayout)findViewById(R.id.ll_schedule);
+        llLeave = (LinearLayout)findViewById(R.id.ll_leave);
+        llNews = (LinearLayout)findViewById(R.id.ll_news);
+        llMine = (LinearLayout)findViewById(R.id.ll_mine);
+
+        llSchedule.setOnClickListener(this);
+        llLeave.setOnClickListener(this);
+        llNews.setOnClickListener(this);
+        llMine.setOnClickListener(this);
+        onClick(findViewById(R.id.ll_schedule));
+    }
+
     @Override
     public void onClick(View v) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         switch(v.getId()) {
-            case R.id.btn_schedule:
+            case R.id.ll_schedule:
                 transaction.replace(R.id.top_layout, fragment_schedule);
                 transaction.commit();
                 break;
-            case R.id.btn_leave:
+            case R.id.ll_leave:
                 transaction.replace(R.id.top_layout, fragment_leave);
                 transaction.commit();
                 break;
-            case R.id.btn_discuss:
-                transaction.replace(R.id.top_layout, fragment_discuss);
+            case R.id.ll_news:
+                transaction.replace(R.id.top_layout, fragmentNews);
                 transaction.commit();
                 break;
-            case R.id.iv_setting:
-                popupMenu = new PopupMenu(this, v);
-                popupMenu.getMenuInflater().inflate(R.menu.setting, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(this);
-                popupMenu.show();
+            case R.id.ll_mine:
+                transaction.replace(R.id.top_layout, fragmentMine);
+                transaction.commit();
+                break;
         }
-    }
-
-    private void initView() {
-        ivSetting = (ImageView) findViewById(R.id.iv_setting);
-
-        ivSetting.bringToFront();
-        ivSetting.setOnClickListener(this);
-        onClick(findViewById(R.id.btn_schedule));
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+    public void finishActivity() {
+        finish();
     }
 
     @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_completeMsg:
-                startActivity(new Intent(this, CompleteMsgActivity.class));
-                break;
-            case R.id.item_changeAcount:
-                this.finish();
-                break;
-        }
-        return true;
+    public void startCompleteMsg() {
+        startActivity(new Intent(this, CompleteMsgActivity.class));
     }
 }

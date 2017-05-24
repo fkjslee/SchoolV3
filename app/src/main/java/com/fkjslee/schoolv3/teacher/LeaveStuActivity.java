@@ -1,7 +1,6 @@
 package com.fkjslee.schoolv3.teacher;
 
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,17 +12,12 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
-import com.fkjslee.schoolv3.counsellor.Helper;
-import com.fkjslee.schoolv3.counsellor.LeaveContent;
 import com.fkjslee.schoolv3.database.Database;
-import com.fkjslee.schoolv3.student.activity.LogActivity;
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.student.data.MsgClass;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 import com.fkjslee.schoolv3.teacher.function.Student;
 import com.fkjslee.schoolv3.teacher.function.StudentHelp;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
@@ -31,7 +25,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

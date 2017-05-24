@@ -1,5 +1,6 @@
-package com.fkjslee.schoolv3.student.activity;
+package com.fkjslee.schoolv3;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.counsellor.CounsellorLeaveActivty;
 import com.fkjslee.schoolv3.database.Database;
+import com.fkjslee.schoolv3.student.activity.FgtPwdActivity;
+import com.fkjslee.schoolv3.student.activity.MainActivity;
+import com.fkjslee.schoolv3.student.activity.RegisterActivity;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
+import com.fkjslee.schoolv3.student.function.News;
+import com.fkjslee.schoolv3.student.function.SchoolNews;
 import com.fkjslee.schoolv3.student.function.TimeCount;
 import com.fkjslee.schoolv3.teacher.TeacherActivity;
 
@@ -28,17 +33,18 @@ import java.util.Date;
  * 2. 点击退出, 退出应用<br>
  * 3. 点击忘记密码, 跳到忘记密码界面<br>
  * 4. 点击绑定手机, 跳到绑定手机界面
- * */
+ */
 
-public class LogActivity extends AppCompatActivity implements View.OnClickListener{
+public class LogActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static String logAccount = "18725884156";
+    public static Context context;
+    public static String logAccount = "22222";
     public static String logPwd = "123456";
     public static String url = "http://119.29.241.101:8080/MyServlet/MainServlet";//服务器ip
-//    public static String url = "http://100.56.101.29:8080/MyServlet/MainServlet";
+    //    public static String url = "http://100.56.101.29:8080/MyServlet/MainServlet";
     public static Calendar calFirstDay;
 
-    public static String loginIdentity="学生";
+    public static String loginIdentity = "学生";
     private int testTime = 0;
     private long mExitTime = -2005;
 
@@ -58,11 +64,14 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
 
         Database.initDatabase(getApplicationContext());
         initView();
-
+        for(News news : new SchoolNews().getNewsList()) {
+            Toast.makeText(this, news.getTitle(), Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
      * 点击事件:<br>1:登录<br>2:退出<br>3:忘记密码<br>4:绑定手机
+     *
      * @param v 控件
      */
     public void onClick(View v) {
@@ -87,7 +96,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
             logAccount = etStuId.getText().toString();
             logPwd = etPwd.getText().toString();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        } else if(result.equals("辅导员")) {
+        } else if (result.equals("辅导员")) {
             logAccount = etStuId.getText().toString();
             logPwd = etPwd.getText().toString();
             startActivity(new Intent(getApplicationContext(), CounsellorLeaveActivty.class));
@@ -170,6 +179,7 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
 
     //控件初始化
     private void initView() {
+        context = getApplicationContext();
         calFirstDay = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -179,12 +189,12 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
             e.printStackTrace();
         }
 
-        btnLog = (Button)findViewById(R.id.btn_log);
-        btnQuit = (Button)findViewById(R.id.btn_quit);
-        btnFgtPwd = (Button)findViewById(R.id.btn_fgt_pwd);
-        btnBind = (Button)findViewById(R.id.btn_bind);
-        etStuId = (EditText)findViewById(R.id.et_stu_ID);
-        etPwd = (EditText)findViewById(R.id.et_pwd);
+        btnLog = (Button) findViewById(R.id.btn_log);
+        btnQuit = (Button) findViewById(R.id.btn_quit);
+        btnFgtPwd = (Button) findViewById(R.id.btn_fgt_pwd);
+        btnBind = (Button) findViewById(R.id.btn_bind);
+        etStuId = (EditText) findViewById(R.id.et_stu_ID);
+        etPwd = (EditText) findViewById(R.id.et_pwd);
 
         etStuId.setText(LogActivity.logAccount);
         etPwd.setText(LogActivity.logPwd);

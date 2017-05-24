@@ -1,7 +1,6 @@
 package com.fkjslee.schoolv3.teacher;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,11 +12,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
-import com.fkjslee.schoolv3.counsellor.HandledFragment;
-import com.fkjslee.schoolv3.counsellor.LeaveContent;
-import com.fkjslee.schoolv3.counsellor.ShowLeaveDetail;
 import com.fkjslee.schoolv3.database.Database;
-import com.fkjslee.schoolv3.student.activity.LogActivity;
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.student.data.MsgClass;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 import com.fkjslee.schoolv3.teacher.function.Student;
@@ -28,10 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class AbsentStuActivity extends AppCompatActivity {
 

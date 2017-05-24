@@ -3,14 +3,10 @@ package com.fkjslee.schoolv3.student.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,6 +19,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.student.data.MsgClass;
 import com.fkjslee.schoolv3.student.function.CheckPermissionsActivity;
@@ -31,7 +28,6 @@ import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 import com.fkjslee.schoolv3.student.function.Utils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -103,7 +99,7 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
         photo.compress(Bitmap.CompressFormat.PNG, 100, baos);
         String cName = msg.getName().substring(msg.getName().indexOf("|") + 1);
         String requestMsg = "type=sign_in" + "&img=" + Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT) +
-                "&sName=" + LogActivity.logAccount + "&cName=" + cName + "&week=" + spinnerWeek +
+                "&telephone=" + LogActivity.logAccount + "&cName=" + cName + "&week=" + spinnerWeek +
                 "&weekday=" + msg.getWeekday() + "&courseBegin=" + msg.getStartTime() +
                 "&tName=" + msg.getTeacher() + "&length=" + msg.getLength();
         MyCommonFunction.sendRequestToServer(requestMsg);
@@ -176,13 +172,11 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private boolean hasSign() {
-        requestMsg = "type=sign_res" + "&sName=" + LogActivity.logAccount +
+        requestMsg = "type=sign_res" + "&telephone=" + LogActivity.logAccount +
                 "&cName=" + msg.getName() + "&week=" + spinnerWeek + "&weekday=" + msg.getWeekday() +
                 "&courseBegin=" + msg.getStartTime() + "&length=" + msg.getLength();
         String result = MyCommonFunction.sendRequestToServer(requestMsg);
-        Boolean res = Boolean.valueOf(result);
-        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-        return res;
+        return result.equals("Yes");
     }
 
     private void initView() {

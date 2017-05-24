@@ -15,7 +15,7 @@ public class ShowLeaveDetail extends AppCompatActivity {
 
     private TextView student,reasons,startTime,endTime;
     private ImageView back;
-    private Button agree,reject;
+//    private Button agree,reject;
     private LeaveContent leaveContent;//要显示的对象
     /**
      *下面是和是否已经处理请假消息有关的变量
@@ -50,20 +50,20 @@ public class ShowLeaveDetail extends AppCompatActivity {
         endTime.setText(leaveContent.endTime);
         back = (ImageView)findViewById(R.id.leave_detail_backspace);
 
-        agree = (Button)findViewById(R.id.leave_detail_agree);
-        reject = (Button)findViewById(R.id.leave_detail_reject);
+//        agree = (Button)findViewById(R.id.leave_detail_agree);
+//        reject = (Button)findViewById(R.id.leave_detail_reject);
 
         Onclick onclick = new Onclick();
         back.setOnClickListener(onclick);
-        agree.setOnClickListener(onclick);
-        reject.setOnClickListener(onclick);
+//        agree.setOnClickListener(onclick);
+//        reject.setOnClickListener(onclick);
 
         /**
          * 根据点击的位置不同，设置agree reject是否可见,已处理的请假条不需要再设置同意和拒绝
          */
         if(deal == 1){
-            agree.setVisibility(View.INVISIBLE);
-            reject.setVisibility(View.INVISIBLE);
+//            agree.setVisibility(View.INVISIBLE);
+//            reject.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -75,20 +75,20 @@ public class ShowLeaveDetail extends AppCompatActivity {
                 case R.id.leave_detail_backspace:
                     ShowLeaveDetail.this.finish();
                     break;
-                case R.id.leave_detail_agree:
-                    leaveContent.deal = 1;
-                    leaveContent.pass = 1;
-                    Database.updateLeave(leaveContent,"leaves");
-                    Database.close();
-                    ShowLeaveDetail.this.finish();
-                    break;
-                case R.id.leave_detail_reject:
-                    leaveContent.deal = 1;
-                    leaveContent.pass = 0;
-                    Database.updateLeave(leaveContent,"leaves");
-                    Database.close();
-                    ShowLeaveDetail.this.finish();
-                    break;
+//                case R.id.leave_detail_agree:
+//                    leaveContent.deal = 1;
+//                    leaveContent.pass = 1;
+//                    Database.updateLeave(leaveContent,"leaves");
+//                    Database.close();
+//                    ShowLeaveDetail.this.finish();
+//                    break;
+//                case R.id.leave_detail_reject:
+//                    leaveContent.deal = 1;
+//                    leaveContent.pass = 0;
+//                    Database.updateLeave(leaveContent,"leaves");
+//                    Database.close();
+//                    ShowLeaveDetail.this.finish();
+//                    break;
             }
         }
     }

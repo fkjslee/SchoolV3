@@ -1,0 +1,93 @@
+注册：
+type:	singUp
+param:	telephone(电话)	 	pwd(密码)	identity(身份)
+返回：	Yes/No
+
+登录： 
+type : 	login
+param: 	telephone(电话)		pwd（密码）
+返回：	No/学生、老师、辅导员
+
+！！！！！绑定做了修改，填写信息填写信息加上几项
+绑定学号：(老师、学生、辅导员)
+type:	bind
+param:	telephone(电话)		sID（学号）	sPwd（密码） userName(真实姓名)	academy(学院)
+返回：	Yes/No
+
+基础照片存储------------------------改了手机号
+type:  	picture
+param: 	telephone （手机号）	img（图片）
+返回： 	Done(照片上传成功)
+
+获取课表：(老师、学生)
+type:	getClass
+param:	telephone(电话号码)
+返回：	JSONArray（课程信息）
+
+----------------------------------------------------------------------------
+签到:
+1) 照片上传-----------改了手机号
+type: 	sign_in
+param:	telephone(手机号)  tName(老师名字)  cName(课程名)  week(周数)  weekday(星期几)  courseBegin  length  img（图片）
+返回： 	Done(照片上传成功)
+
+2）查看签到结果(学生)
+type:  	sign_res
+param:	telephone(手机号)  week(周数)  weekday(星期几)  courseBegin  length
+返回： 	Yes/No
+
+-----------------初步约定
+	
+老师参看签到结果：
+type:	getSignRes
+param:	telephone(电话号码)	   week(周数)  weekday(星期几)  courseBegin  length
+返回：	JSONObject（签到统计）  参数形如：{"failed":签到失败人数, "succeed":签到成功人数, "leave":请假人数}
+
+老师查看具体情况：
+type:	getSignDetail
+param:	telephone(手机号码)	   week(周数)  weekday(星期几)  courseBegin  length    state(0: 查看未签到/签到失败，2：请假的人)
+返回：	JSONArray（学生信息）	参数形如：[{"stuId":"20144567", "stuName":"汪鑫"}, {"stuId":"2324", "stuName":"bbsbbc"}]
+
+学生请假：
+type:	askForLeave
+param:	telephone(手机号码)		content(理由)	startTime(请假开始)		endTime(请假结束)	
+返回：	noteId(假条ID)/No(假条发送失败)
+
+学生查看假条状态:
+type:	askForState
+param:	telephone(手机号码)
+返回：	JSONArray（假条信息）
+返回示例：[{"content":"回家搓麻将","startTime":"2017-5-15 14:00:00","endTime":"2017-5-16 14:00:00","applyTime":"2017-5-14 15:43:02", "state":"0"}
+			, ...]
+
+辅导员请求近期假条:
+type:	getNotes
+param:	telephone(手机号码)
+返回：	JSONArray（假条信息）	
+返回示例：[{"sId":"20144567","sName":"汪鑫","content":"回家搓麻将","startTime":"2017-5-15 14:00:00","endTime":"2017-5-16 14:00:00","applyTime":"2017-5-14 15:43:02","noteId":"5"}
+			, ...]
+			
+sId
+sName
+content
+startTime
+endTime
+applyTime
+noteId
+
+辅导员批示假条：
+type:	noteHandle
+param:	noteId(假条ID) 	apply(-1：不同意， 1：同意)
+返回：	Done(处理完成)	ps: 不同意理由暂时不加
+
+老师查看假条：
+type:	teacherGetNotes
+param:	telephone
+返回：	JSONArray（假条信息）
+返回示例：[{"sId":"20144567","sName":"汪鑫","content":"回家搓麻将","week":"8","weekday":"2","courseBegin":1, "length":2,"note2Id":"5", "state":0}
+			, ...]
+
+老师回复假条：
+type:	teacherNoteHandle
+param:	note2Id (只要回复一下就好了,表示看过)
+返回值：Done

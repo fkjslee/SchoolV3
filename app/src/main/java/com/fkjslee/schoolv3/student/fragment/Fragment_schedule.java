@@ -20,13 +20,15 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.database.Database;
 import com.fkjslee.schoolv3.student.activity.ClassDetailActivity;
-import com.fkjslee.schoolv3.student.activity.LogActivity;
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.student.data.MsgClass;
 import com.fkjslee.schoolv3.student.function.GetSchedule;
 
@@ -52,7 +54,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
 
     private Spinner spinner;
 
-    private View parentView = null;
+    private View view = null;
     private Integer spinnerWeek = 1;
     private ArrayAdapter<String> weekAdapter = null;
 
@@ -62,8 +64,7 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_schedule, container, false);
-        parentView = view;
+        view = inflater.inflate(R.layout.fragment_schedule, container, false);
         initView();
 
         return view;
@@ -74,7 +75,6 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
     @TargetApi(Build.VERSION_CODES.M)
     public void setSchedulePosition() {
         Integer recordMsgLength = 0;
-        View view = parentView;
         FrameLayout layout_schedule = (FrameLayout)view.findViewById(R.id.layout_schedule);
         layout_schedule.removeAllViews();
 
@@ -207,10 +207,10 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         for(int i = 1; i <= maxWeek; ++i) {
             list.add("第" + Integer.toString(i) + "周");
         }
-        weekAdapter = new ArrayAdapter<>(parentView.getContext(),
+        weekAdapter = new ArrayAdapter<>(view.getContext(),
                 android.R.layout.simple_spinner_item, list);
         Integer nowWeek = getSpinnerWeek();
-        spinner = (Spinner)parentView.findViewById(R.id.spinner);
+        spinner = (Spinner)view.findViewById(R.id.spinner);
         spinner.setAdapter(weekAdapter);
         spinner.setSelection(nowWeek - 1, true);
         spinnerWeek = nowWeek;
@@ -284,6 +284,10 @@ public class Fragment_schedule extends Fragment implements AdapterView.OnItemSel
         if(list.isEmpty()) {
             try {
                 JSONArray schedule = new JSONArray(GetSchedule.getSchedule(this.getActivity()));//向服务器请求课表
+                if(schedule.length() == 0) {
+                    Toast.makeText(view.getContext(), "检测到未绑定信息， 请到\"我的\"中\"完善信息\"", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 for(int i = 0; i < schedule.length(); ++i) {
                     JSONObject jasonObject = new JSONObject(schedule.getString(i));
                     String classTeacher = jasonObject.getString("teacher");

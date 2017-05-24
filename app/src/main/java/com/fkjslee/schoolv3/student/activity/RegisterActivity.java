@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
-import com.fkjslee.schoolv3.student.function.SendSms;
+//import com.fkjslee.schoolv3.student.function.SendSms;
 import com.fkjslee.schoolv3.student.function.TimeCount;
 
 import java.util.ArrayList;
@@ -122,12 +122,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     * */
     private void sendCode(final String phone) {
         mobileCode = (int)((Math.random()*9+1)*100000);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new SendSms().Sendsms(phone,mobileCode);
-            }
-        }).start() ;
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                new SendSms().Sendsms(phone,mobileCode);
+//            }
+//        }).start() ;
     }
 
     /**

@@ -15,8 +15,13 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.database.Database;
+import com.fkjslee.schoolv3.student.function.MyCommonFunction;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.List;
 import java.util.Map;
@@ -48,7 +53,16 @@ public class HandledFragment extends Fragment {
     public void onResume() {
         if (handled != null){
             handled.clear();
-            handled.addAll(Helper.setMapList(Database.getLeaveDatas("leaves"),1));
+            List<LeaveContent> li = Database.getLeaveDatas("leaves");
+            String param = "type=getNotes" +
+                    "&telephone=" + LogActivity.logAccount;
+            String result = MyCommonFunction.sendRequestToServer(param);
+            try {
+                JSONArray temArray = new JSONArray(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            handled.addAll(Helper.setMapList(li,1));
         }else{
             handled = Helper.setMapList(Database.getLeaveDatas("leaves"),1);
         }

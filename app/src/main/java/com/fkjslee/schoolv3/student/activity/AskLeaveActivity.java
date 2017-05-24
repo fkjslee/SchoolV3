@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 
@@ -60,7 +61,7 @@ public class AskLeaveActivity extends AppCompatActivity implements View.OnClickL
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case askLeaveReault:
-                        Toast.makeText(getApplicationContext(), msg.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
                         break;
                 }
             }

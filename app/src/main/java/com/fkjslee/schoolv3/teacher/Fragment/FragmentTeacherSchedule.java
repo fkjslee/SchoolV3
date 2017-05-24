@@ -1,4 +1,4 @@
-package com.fkjslee.schoolv3.teacher.Fragment;
+package com.fkjslee.schoolv3.teacher.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -15,15 +15,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.database.Database;
-import com.fkjslee.schoolv3.student.activity.ClassDetailActivity;
-import com.fkjslee.schoolv3.student.activity.LogActivity;
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.student.data.MsgClass;
 import com.fkjslee.schoolv3.student.function.GetSchedule;
 import com.fkjslee.schoolv3.teacher.CourseSignActivity;
@@ -42,7 +41,7 @@ public class FragmentTeacherSchedule extends android.app.Fragment implements Ada
     private static Handler handler;
 
     private Spinner spinner;
-    private View parentView = null;
+    private View view;
     private Integer spinnerWeek = 1;
     private ArrayAdapter<String> weekAdapter = null;
 
@@ -52,8 +51,7 @@ public class FragmentTeacherSchedule extends android.app.Fragment implements Ada
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_fragment_teacher_schedule, container, false);
-        parentView = view;
+        view = inflater.inflate(R.layout.fragment_fragment_teacher_schedule, container, false);
         initView();
 
         return view;
@@ -64,7 +62,6 @@ public class FragmentTeacherSchedule extends android.app.Fragment implements Ada
     @TargetApi(Build.VERSION_CODES.M)
     public void setSchedulePosition() {
         Integer recordMsgLength = 0;
-        View view = parentView;
         RelativeLayout layout_schedule = (RelativeLayout)view.findViewById(R.id.layout_teacher_schedule);
         layout_schedule.removeAllViews();
 
@@ -199,10 +196,10 @@ public class FragmentTeacherSchedule extends android.app.Fragment implements Ada
         for(int i = 1; i <= maxWeek; ++i) {
             list.add("第" + Integer.toString(i) + "周");
         }
-        weekAdapter = new ArrayAdapter<>(parentView.getContext(),
+        weekAdapter = new ArrayAdapter<>(view.getContext(),
                 android.R.layout.simple_spinner_item, list);
         Integer nowWeek = getSpinnerWeek();
-        spinner = (Spinner)parentView.findViewById(R.id.spinner);
+        spinner = (Spinner)view.findViewById(R.id.spinner);
         spinner.setAdapter(weekAdapter);
         spinner.setSelection(nowWeek - 1, true);
         spinnerWeek = nowWeek;
@@ -274,6 +271,8 @@ public class FragmentTeacherSchedule extends android.app.Fragment implements Ada
         if(list.isEmpty()) {
             try {
                 JSONArray schedule = new JSONArray(GetSchedule.getSchedule(this.getActivity()));//向服务器请求课表
+                if(schedule.length() < 10) Toast.makeText(view.getContext(),
+                        "获取课表失败 可能是未绑定, 请在设置中完善信息", Toast.LENGTH_SHORT).show();
                 for(int i = 0; i < schedule.length(); ++i) {
                     JSONObject jasonObject = new JSONObject(schedule.getString(i));
                     String classTeacher = jasonObject.getString("teacher");

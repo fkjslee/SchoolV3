@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:id="@+id/teacher_leave_handled"
+        android:id="@+id/lv_hasSeen"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>

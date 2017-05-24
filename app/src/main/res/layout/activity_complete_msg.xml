@@ -65,35 +65,6 @@
         <ImageView
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
-            app:srcCompat="@drawable/nickname"
-            android:layout_row="0"
-            android:layout_column="0"
-            android:id="@+id/imageView9" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/detail_font_size"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/nickname"
-            android:id="@+id/textView0"
-            android:layout_row="0"
-            android:layout_column="1"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/detail_font_size"
-            android:inputType="textPersonName"
-            android:hint="暂时不用输入"
-            android:ems="10"
-            android:id="@+id/et_nickName"
-            android:layout_row="0"
-            android:layout_column="2"/>
-
-        <ImageView
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
             app:srcCompat="@drawable/sid"
             android:layout_row="1"
             android:layout_column="0"
@@ -142,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/detail_font_size"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:hint="@string/real_name_function"
             android:ems="10"
             android:id="@+id/et_realName"
@@ -199,7 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/detail_font_size"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:hint="@string/plz_input_pwd"
             android:ems="10"
             android:id="@+id/et_academy"
@@ -217,8 +188,8 @@
         android:layout_alignTop="@+id/gl_data"
         android:layout_alignRight="@+id/btn_submit"
         android:layout_alignEnd="@+id/btn_submit"
-        android:layout_marginRight="59dp"
-        android:layout_marginEnd="59dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginEnd="9dp"
         android:layout_marginTop="33dp" />
 
 

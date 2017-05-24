@@ -68,9 +68,10 @@
         <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService" />
 
-        <activity android:name=".student.activity.LogActivity">
+        <activity android:name=".LogActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -79,19 +80,16 @@
         <activity android:name=".student.activity.RegisterActivity" />
         <activity android:name=".student.activity.ClassDetailActivity" />
         <activity android:name=".student.activity.HomeworkActivity" />
-        <activity android:name=".student.activity.SignActivity" >
-        </activity>
+        <activity android:name=".student.activity.SignActivity" />
         <activity android:name=".student.activity.GetPhotoActivity" />
         <activity android:name=".student.activity.SettingActivity" />
         <activity android:name=".student.activity.Location_Activity" />
         <activity
             android:name=".teacher.TeacherActivity"
-            android:label="@string/title_activity_teacher"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_teacher" />
         <activity
             android:name=".teacher.CourseSignActivity"
-            android:label="@string/title_activity_course_sign"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_course_sign" />
         <activity android:name=".student.activity.TakePhoto" />
         <activity
             android:name=".counsellor.CounsellorLeaveActivty"
@@ -104,10 +102,11 @@
             android:label="@string/empty" />
         <activity android:name=".student.activity.LeaveDetail" />
         <activity android:name=".student.activity.CompleteMsgActivity" />
-        <activity android:name=".student.activity.AskLeaveActivity">
-        </activity>
+        <activity android:name=".student.activity.AskLeaveActivity" />
         <activity android:name=".teacher.AbsentStuActivity" />
         <activity android:name=".teacher.LeaveStuActivity" />
+        <activity android:name=".teacher.CompleteMsgActivityTeacher" />
+        <activity android:name=".teacher.TeacherLeaveDetailActivity"></activity>
     </application>
 
 </manifest>

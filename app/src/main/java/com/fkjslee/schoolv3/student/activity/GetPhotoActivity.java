@@ -2,22 +2,19 @@ package com.fkjslee.schoolv3.student.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 
 public class GetPhotoActivity extends AppCompatActivity implements View.OnClickListener{
@@ -79,6 +76,8 @@ public class GetPhotoActivity extends AppCompatActivity implements View.OnClickL
         String requestMsg = "type=picture" + "&sName=" + LogActivity.logAccount + "&img=" +
                 Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
         MyCommonFunction.sendRequestToServer(requestMsg);
+        Toast.makeText(this, "上传照片完成", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private void clickBtnRtn() { finish(); }

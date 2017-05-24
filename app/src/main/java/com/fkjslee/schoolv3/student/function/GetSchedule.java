@@ -1,15 +1,12 @@
 package com.fkjslee.schoolv3.student.function;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.widget.Toast;
 
-import com.fkjslee.schoolv3.student.activity.LogActivity;
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.student.data.MsgClass;
 
 import java.util.Calendar;
-
-import static android.content.Context.MODE_WORLD_WRITEABLE;
 
 /**
  * @author fkjslee
@@ -19,15 +16,7 @@ import static android.content.Context.MODE_WORLD_WRITEABLE;
 public class GetSchedule {
     public static String getSchedule(Activity activity) {
         String param = "type=getClass&telephone=" + LogActivity.logAccount;
-        String schedule = MyCommonFunction.sendRequestToServer(param);
-        if(schedule.length() > 10) {
-            Toast.makeText(activity.getApplicationContext(),
-                    "获取课表成功", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(activity.getApplicationContext(),
-                    "获取课表失败", Toast.LENGTH_SHORT).show();
-        }
-        return schedule;
+        return MyCommonFunction.sendRequestToServer(param);
     }
 
     public static Calendar getTime(MsgClass msg, Integer spinnerWeek) {

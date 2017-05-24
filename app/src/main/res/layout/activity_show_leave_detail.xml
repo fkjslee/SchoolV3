@@ -96,22 +96,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/leave_detail_reject"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background="@drawable/reject_focus"
-            android:textColor="@color/colorAccent"
-            android:text="@string/rejectLeave"/>
-
-        <Button
-            android:id="@+id/leave_detail_agree"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:background="@drawable/agree_focus"
-            android:textColor="@color/white"
-            android:text="@string/agreeLeave"/>
     </LinearLayout>
 </RelativeLayout>

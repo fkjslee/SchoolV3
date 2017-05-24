@@ -10,12 +10,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 
 public class CompleteMsgActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText etNickname;
     private EditText etSid;
     private EditText etPwd;
     private EditText etRealName;
@@ -32,7 +32,6 @@ public class CompleteMsgActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initView() {
-        etNickname = (EditText)findViewById(R.id.et_nickName);
         etSid = (EditText)findViewById(R.id.et_stu_ID);
         etPwd = (EditText)findViewById(R.id.et_pwd);
         etRealName = (EditText) findViewById(R.id.et_realName);
@@ -56,14 +55,27 @@ public class CompleteMsgActivity extends AppCompatActivity implements View.OnCli
                 startActivity(new Intent(this, GetPhotoActivity.class));
                 break;
             case R.id.btn_submit:
-                String param = "type=bind" + "" +
+                String param = "type=bind"  +
                         "&telephone=" + LogActivity.logAccount +
-                        "&sName=" + etSid.getText().toString() +
+                        "&sID=" + etSid.getText().toString() +
                         "&sPwd=" + etPwd.getText().toString() +
                         "&userName=" + etRealName.getText().toString() +
                         "&academy=" + etAcadamy.getText().toString();
                 String result = MyCommonFunction.sendRequestToServer(param);
-                Toast.makeText(this, "上传成功 ? " + result, Toast.LENGTH_SHORT).show();
+                String show;
+                switch (result) {
+                    case "yes":
+                        show = "绑定成功";
+                        finish();
+                        break;
+                    case "no":
+                        show = "绑定失败, 检查信息 ? 该信息已经被绑定?";
+                        break;
+                    default:
+                        show = "错误";
+                        break;
+                }
+                Toast.makeText(this, show, Toast.LENGTH_SHORT).show();
         }
     }
 

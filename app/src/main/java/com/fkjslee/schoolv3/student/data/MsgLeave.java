@@ -13,30 +13,14 @@ public class MsgLeave implements Serializable{
     private Calendar requestTime;
     private Calendar startTime;
     private Calendar endTime;
+    private String result;
 
-    public MsgLeave(String reason, Calendar requestTime, Calendar startTime, Calendar endTime) {
+    public MsgLeave(String reason, Calendar requestTime, Calendar startTime, Calendar endTime, String result) {
         this.reason = reason;
         this.requestTime = requestTime;
         this.startTime = startTime;
         this.endTime = endTime;
-    }
-
-    public static MsgLeave m1() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, 2017);
-        calendar.set(Calendar.MONTH, 1);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 1);
-        return new MsgLeave("12岁的女儿偷了某员工的车，所以他没法来上班，因为他不想闹到警局去。", calendar, calendar, calendar);
-    }
-
-    public static MsgLeave m2() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, 2017);
-        calendar.set(Calendar.MONTH, 1);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 1);
-        return new MsgLeave("在去旧货市场血拼之后头痛", calendar, calendar, calendar);
+        this.result = result;
     }
 
     public String getReason() {
@@ -54,4 +38,6 @@ public class MsgLeave implements Serializable{
     public Calendar getEndTime() {
         return endTime;
     }
+
+    public String getResult() { return result; }
 }

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_teacher_leave_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fkjslee.schoolv3.teacher.TeacherLeaveDetailActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/blue"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/relativeLayout">
+
+
+        <ImageView
+            android:id="@+id/iv_rtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleY="0.65"
+            android:scaleX="0.65"
+            android:paddingLeft="@dimen/small_margin"
+            android:paddingRight="@dimen/small_margin"
+            android:src="@drawable/backspace"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/leave_detail"
+            android:id="@+id/textView7"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+
+
+    <GridLayout
+        android:id="@+id/gl_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
+        android:layout_below="@+id/relativeLayout">
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/sid"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:id="@+id/imageView9" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="学号 : "
+            android:id="@+id/textView1"
+            android:layout_row="0"
+            android:layout_column="1"/>
+
+        <TextView
+            android:id="@+id/tv_sId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:layout_row="0"
+            android:layout_column="2"/>
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/identity"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:id="@+id/imageView10" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="学生 : "
+            android:id="@+id/textView"
+            android:layout_row="1"
+            android:layout_column="1"/>
+        <TextView
+            android:id="@+id/tv_sName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:layout_row="1"
+            android:layout_column="2"/>
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/reason"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:id="@+id/imageView12" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="内容 : "
+            android:id="@+id/textView12"
+            android:layout_row="2"
+            android:layout_column="1"/>
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:layout_row="2"
+            android:layout_column="2"/>
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/time"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:id="@+id/imageView13" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="时间 : "
+            android:id="@+id/textView13"
+            android:layout_row="3"
+            android:layout_column="1"/>
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:layout_row="3"
+            android:layout_column="2"/>
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:src="@drawable/sid"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:id="@+id/imageView14" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="结果 : "
+            android:id="@+id/textView14"
+            android:layout_row="4"
+            android:layout_column="1"/>
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/detail_font_size"
+            android:layout_row="1"
+            android:layout_column="2"/>
+    </GridLayout>
+
+</RelativeLayout>
