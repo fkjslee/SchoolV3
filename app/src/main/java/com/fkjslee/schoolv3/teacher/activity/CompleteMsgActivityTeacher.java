@@ -1,4 +1,4 @@
-package com.fkjslee.schoolv3.teacher;
+package com.fkjslee.schoolv3.teacher.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

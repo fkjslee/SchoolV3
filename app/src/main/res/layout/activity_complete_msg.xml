@@ -8,7 +8,6 @@
     android:background="@drawable/bclog"
     tools:context="com.fkjslee.schoolv3.student.activity.CompleteMsgActivity">
 
-
     <RelativeLayout
         android:id="@+id/rl_top"
         android:layout_width="match_parent"

@@ -1,10 +1,12 @@
 package com.fkjslee.schoolv3.teacher.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -12,6 +14,7 @@ import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 import com.fkjslee.schoolv3.teacher.TeacherLeaveContent;
+import com.fkjslee.schoolv3.teacher.activity.TeacherLeaveDetailActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-public class FragmentTeacherHasSeen extends android.app.Fragment {
+public class FragmentTeacherHasSeen extends android.app.Fragment implements AdapterView.OnItemClickListener {
     private View view = null;
-    private ListView lvHandled = null;
+    private ListView lvHasSeen = null;
     private Vector<TeacherLeaveContent> teacherLeaveContents = new Vector<>();
 
     @Override
@@ -36,7 +39,7 @@ public class FragmentTeacherHasSeen extends android.app.Fragment {
     }
 
     private void initView() {
-        lvHandled = (ListView) view.findViewById(R.id.lv_hasSeen);
+        lvHasSeen = (ListView) view.findViewById(R.id.lv_hasSeen);
 
         try {
             String param = "type=teacherGetNotes" +
@@ -68,11 +71,21 @@ public class FragmentTeacherHasSeen extends android.app.Fragment {
             item.put("content", temp.getContent());
             item.put("time", "第" + temp.getWeek() + "周  " + "周" + temp.getWeekDay() + "  " + "第" + temp.getCourseBegin() + "节课");
             item.put("name", temp.getsName());
+            item.put("id", i.toString());
             items.add(item);
         }
         SimpleAdapter adapter = new SimpleAdapter(view.getContext(), items, R.layout.teacher_leave_item,
                 new String[]{"content", "time", "name"}, new int[]{R.id.tv_content, R.id.tv_time, R.id.tv_sName});
 
-        lvHandled.setAdapter(adapter);
+        lvHasSeen.setAdapter(adapter);
+        lvHasSeen.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Map<String,Object> map = (Map<String, Object>) lvHasSeen.getItemAtPosition(i);
+        Intent intent = new Intent(view.getContext(), TeacherLeaveDetailActivity.class);
+        intent.putExtra("teacherLeaveContent", teacherLeaveContents.elementAt(Integer.valueOf((String)map.get("id"))));
+        startActivity(intent);
     }
 }

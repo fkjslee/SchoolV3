@@ -51,6 +51,9 @@
     <string name="result">结果 : </string>
     <!--课堂信息-->
     <string name="name">名称 : </string>
+    <string name="ask_leave_persion">请假人数 : </string>
+    <string name="signed_persion">签到人数 : </string>
+    <string name="absent_persion">缺勤人数 : </string>
     <string name="position">教室 : </string>
     <string name="teacher">老师 : </string>
     <string name="number">节数 : </string>
@@ -60,7 +63,8 @@
     <string name="homework">作业</string>
     <string name="notice">公告</string>
     <string name="test">考试</string>
-    <string name="content">内容</string>
+    <string name="content">内容 : </string>
+    <string name="time">时间 : </string>
     <string name="startTime">起始时间</string>
     <string name="endTime">截止时间</string>
     <string name="remind">提醒</string>
@@ -77,6 +81,7 @@
     <string name="complete_msg">完善信息</string>
     <string name="personal_msg">个人信息</string>
     <string name="student">学生 : </string>
+    <string name="s_id">学号 : </string>
     <string name="has_seen">已阅</string>
     <string name="not_seen">未阅</string>
     <string name="setNowWeek">设为当前周</string>

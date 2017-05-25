@@ -4,7 +4,7 @@
     android:id="@+id/activity_teacher_leave_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fkjslee.schoolv3.teacher.TeacherLeaveDetailActivity">
+    tools:context="com.fkjslee.schoolv3.teacher.activity.TeacherLeaveDetailActivity">
 
 
     <RelativeLayout
@@ -14,8 +14,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/relativeLayout">
-
-
         <ImageView
             android:id="@+id/iv_rtn"
             android:layout_width="wrap_content"
@@ -25,7 +23,6 @@
             android:paddingLeft="@dimen/small_margin"
             android:paddingRight="@dimen/small_margin"
             android:src="@drawable/backspace"/>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,26 +33,31 @@
             android:layout_centerHorizontal="true"/>
     </RelativeLayout>
 
-
     <GridLayout
         android:id="@+id/gl_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="47dp"
-        android:layout_below="@+id/relativeLayout">
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_below="@id/relativeLayout">
         <ImageView
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
+            android:layout_gravity="center"
             android:src="@drawable/sid"
             android:layout_row="0"
             android:layout_column="0"
             android:id="@+id/imageView9" />
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/font_height"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:textSize="@dimen/detail_font_size"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="学号 : "
+            android:text="@string/s_id"
             android:id="@+id/textView1"
             android:layout_row="0"
             android:layout_column="1"/>
@@ -71,16 +73,20 @@
         <ImageView
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
+            android:layout_gravity="center"
             android:src="@drawable/identity"
             android:layout_row="1"
             android:layout_column="0"
             android:id="@+id/imageView10" />
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/font_height"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:textSize="@dimen/detail_font_size"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="学生 : "
+            android:text="@string/student"
             android:id="@+id/textView"
             android:layout_row="1"
             android:layout_column="1"/>
@@ -95,16 +101,20 @@
         <ImageView
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
+            android:layout_gravity="center"
             android:src="@drawable/reason"
             android:layout_row="2"
             android:layout_column="0"
             android:id="@+id/imageView12" />
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/font_height"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:textSize="@dimen/detail_font_size"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="内容 : "
+            android:text="@string/content"
             android:id="@+id/textView12"
             android:layout_row="2"
             android:layout_column="1"/>
@@ -119,16 +129,20 @@
         <ImageView
             android:layout_width="@dimen/icon_size"
             android:layout_height="@dimen/icon_size"
+            android:layout_gravity="center"
             android:src="@drawable/time"
             android:layout_row="3"
             android:layout_column="0"
             android:id="@+id/imageView13" />
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/font_height"
+            android:gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:textSize="@dimen/detail_font_size"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="时间 : "
+            android:text="@string/time"
             android:id="@+id/textView13"
             android:layout_row="3"
             android:layout_column="1"/>
@@ -139,30 +153,20 @@
             android:textSize="@dimen/detail_font_size"
             android:layout_row="3"
             android:layout_column="2"/>
-
-        <ImageView
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:src="@drawable/sid"
-            android:layout_row="4"
-            android:layout_column="0"
-            android:id="@+id/imageView14" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/detail_font_size"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="结果 : "
-            android:id="@+id/textView14"
-            android:layout_row="4"
-            android:layout_column="1"/>
-        <TextView
-            android:id="@+id/tv_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/detail_font_size"
-            android:layout_row="1"
-            android:layout_column="2"/>
     </GridLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/has_seen"
+        android:id="@+id/btn_hasSeen"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:background="@drawable/btn_azure"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="200dp" />
 
 </RelativeLayout>

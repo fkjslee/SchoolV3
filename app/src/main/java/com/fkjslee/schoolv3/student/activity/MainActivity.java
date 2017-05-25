@@ -86,4 +86,10 @@ public class MainActivity extends AppCompatActivity
     public void startCompleteMsg() {
         startActivity(new Intent(this, CompleteMsgActivity.class));
     }
+
+    @Override
+    public void quit() {
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(0);
+    }
 }

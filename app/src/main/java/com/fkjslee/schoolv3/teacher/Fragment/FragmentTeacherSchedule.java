@@ -25,7 +25,7 @@ import com.fkjslee.schoolv3.database.Database;
 import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.student.data.MsgClass;
 import com.fkjslee.schoolv3.student.function.GetSchedule;
-import com.fkjslee.schoolv3.teacher.CourseSignActivity;
+import com.fkjslee.schoolv3.teacher.activity.CourseSignActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

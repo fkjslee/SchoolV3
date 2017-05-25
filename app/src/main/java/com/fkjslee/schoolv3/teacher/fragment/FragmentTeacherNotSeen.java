@@ -1,29 +1,20 @@
 package com.fkjslee.schoolv3.teacher.fragment;
 
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.R;
-import com.fkjslee.schoolv3.counsellor.Helper;
-import com.fkjslee.schoolv3.counsellor.LeaveContent;
-import com.fkjslee.schoolv3.database.Database;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
-import com.fkjslee.schoolv3.teacher.ShowStuLeave;
 import com.fkjslee.schoolv3.teacher.TeacherLeaveContent;
-import com.fkjslee.schoolv3.teacher.TeacherLeaveDetailActivity;
+import com.fkjslee.schoolv3.teacher.activity.TeacherLeaveDetailActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,7 +84,7 @@ public class FragmentTeacherNotSeen extends Fragment implements AdapterView.OnIt
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Map<String,Object> map = (Map<String, Object>) lvNotSeen.getItemAtPosition(i);
         Intent intent = new Intent(view.getContext(), TeacherLeaveDetailActivity.class);
-        intent.putExtra("teacherLeaveDetailActivity", teacherLeaveContents.elementAt(Integer.valueOf((String)map.get("id"))));
+        intent.putExtra("teacherLeaveContent", teacherLeaveContents.elementAt(Integer.valueOf((String)map.get("id"))));
         startActivity(intent);
     }
 }

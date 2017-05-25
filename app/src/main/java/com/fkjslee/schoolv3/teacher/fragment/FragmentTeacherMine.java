@@ -1,4 +1,4 @@
-package com.fkjslee.schoolv3.student.fragment;
+package com.fkjslee.schoolv3.teacher.fragment;
 
 import android.app.ActivityManager;
 import android.app.Fragment;
@@ -13,18 +13,19 @@ import android.widget.TextView;
 
 import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.student.fragment.FragmentMine;
 
 /**
  * @author fkjslee
- * @time 2017/5/24
+ * @time 2017/5/25
  */
 
-public class FragmentMine extends Fragment implements View.OnClickListener {
+public class FragmentTeacherMine extends Fragment implements View.OnClickListener {
 
     private View view;
     private LinearLayout llChangeAccount;
     private LinearLayout llCompleteMsg;
-    private FragmentMineListener fragmentMineListener;
+    private FragmentTeacherMineListener fragmentMineListener;
     private Button btnQuit;
     private TextView tvName;
     private TextView tvIdentity;
@@ -32,7 +33,7 @@ public class FragmentMine extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_mine, container, false);
+        view = inflater.inflate(R.layout.fragment_teacher_mine, container, false);
         initView();
         return view;
     }
@@ -47,7 +48,7 @@ public class FragmentMine extends Fragment implements View.OnClickListener {
         tvName.setText("待定");
         tvIdentity.setText(LogActivity.loginIdentity);
 
-        fragmentMineListener = (FragmentMineListener)getActivity();
+        fragmentMineListener = (FragmentTeacherMineListener)getActivity();
 
         llChangeAccount.setOnClickListener(this);
         llCompleteMsg.setOnClickListener(this);
@@ -64,14 +65,14 @@ public class FragmentMine extends Fragment implements View.OnClickListener {
                 fragmentMineListener.startCompleteMsg();
                 break;
             case R.id.btn_quit:
-                fragmentMineListener.quit();
+                ActivityManager am = (ActivityManager)view.getContext().getSystemService (Context.ACTIVITY_SERVICE);
+                am.restartPackage(view.getContext().getPackageName());
                 break;
         }
     }
 
-    public interface FragmentMineListener {
+    public interface FragmentTeacherMineListener {
         void finishActivity();
         void startCompleteMsg();
-        void quit();
     }
 }

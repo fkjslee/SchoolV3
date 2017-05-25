@@ -85,10 +85,10 @@
         <activity android:name=".student.activity.SettingActivity" />
         <activity android:name=".student.activity.Location_Activity" />
         <activity
-            android:name=".teacher.TeacherActivity"
+            android:name=".teacher.activity.TeacherActivity"
             android:label="@string/title_activity_teacher" />
         <activity
-            android:name=".teacher.CourseSignActivity"
+            android:name=".teacher.activity.CourseSignActivity"
             android:label="@string/title_activity_course_sign" />
         <activity android:name=".student.activity.TakePhoto" />
         <activity
@@ -103,10 +103,10 @@
         <activity android:name=".student.activity.LeaveDetail" />
         <activity android:name=".student.activity.CompleteMsgActivity" />
         <activity android:name=".student.activity.AskLeaveActivity" />
-        <activity android:name=".teacher.AbsentStuActivity" />
-        <activity android:name=".teacher.LeaveStuActivity" />
-        <activity android:name=".teacher.CompleteMsgActivityTeacher" />
-        <activity android:name=".teacher.TeacherLeaveDetailActivity"></activity>
+        <activity android:name=".teacher.activity.AbsentStuActivity" />
+        <activity android:name=".teacher.activity.LeaveStuActivity" />
+        <activity android:name=".teacher.activity.CompleteMsgActivityTeacher" />
+        <activity android:name=".teacher.activity.TeacherLeaveDetailActivity"></activity>
     </application>
 
 </manifest>

@@ -17,10 +17,8 @@ import com.fkjslee.schoolv3.student.activity.FgtPwdActivity;
 import com.fkjslee.schoolv3.student.activity.MainActivity;
 import com.fkjslee.schoolv3.student.activity.RegisterActivity;
 import com.fkjslee.schoolv3.student.function.MyCommonFunction;
-import com.fkjslee.schoolv3.student.function.News;
-import com.fkjslee.schoolv3.student.function.SchoolNews;
 import com.fkjslee.schoolv3.student.function.TimeCount;
-import com.fkjslee.schoolv3.teacher.TeacherActivity;
+import com.fkjslee.schoolv3.teacher.activity.TeacherActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,9 +62,6 @@ public class LogActivity extends AppCompatActivity implements View.OnClickListen
 
         Database.initDatabase(getApplicationContext());
         initView();
-        for(News news : new SchoolNews().getNewsList()) {
-            Toast.makeText(this, news.getTitle(), Toast.LENGTH_LONG).show();
-        }
     }
 
     /**
