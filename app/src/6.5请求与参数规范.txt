@@ -74,20 +74,37 @@ startTime
 endTime
 applyTime
 noteId
-
+			
 辅导员批示假条：
 type:	noteHandle
 param:	noteId(假条ID) 	apply(-1：不同意， 1：同意)
 返回：	Done(处理完成)	ps: 不同意理由暂时不加
 
+type=noteHandle&noteId=4&apply=1;
+
 老师查看假条：
 type:	teacherGetNotes
-param:	telephone
+param:	telephone 		state()
 返回：	JSONArray（假条信息）
 返回示例：[{"sId":"20144567","sName":"汪鑫","content":"回家搓麻将","week":"8","weekday":"2","courseBegin":1, "length":2,"note2Id":"5", "state":0}
 			, ...]
 
+删除假条：
+type:	deleteNote
+param:	noteId
+
 老师回复假条：
 type:	teacherNoteHandle
 param:	note2Id (只要回复一下就好了,表示看过)
-返回值：Done
+返回值：Done	
+
+获取新闻：
+type:	getNews
+param:  
+返回值：JSONArray
+示例：	[{"time":"2017/5/26", "title":"jsjdjjfs", "url":"http://jwc.cqu.edu.cn"}, ...]
+
+老师控制签到时间
+type:	attendanceControl
+param:	tName(老师名字) 	 week  	weekday 	courseBegin 	length	state(-1, 表示结束签到；1 开始签到)
+返回结果：操作结果，可直接显示

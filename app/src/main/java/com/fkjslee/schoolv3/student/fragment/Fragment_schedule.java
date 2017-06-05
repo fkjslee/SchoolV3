@@ -20,15 +20,14 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.database.Database;
 import com.fkjslee.schoolv3.student.activity.ClassDetailActivity;
-import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.student.data.MsgClass;
 import com.fkjslee.schoolv3.student.function.GetSchedule;
 

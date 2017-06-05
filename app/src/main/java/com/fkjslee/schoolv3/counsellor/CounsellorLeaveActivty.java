@@ -10,10 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fkjslee.schoolv3.R;
+import com.fkjslee.schoolv3.student.activity.CompleteMsgActivity;
+import com.fkjslee.schoolv3.teacher.activity.CompleteMsgActivityTeacher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,7 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
     private List<Fragment> holder;
     //toolbar内容
     private Button handledButton,unhandledButton;
-    private ImageView backspace = null;
-    private TextView mutiChoose = null;
+    private TextView authenticate = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,25 +45,16 @@ public class CounsellorLeaveActivty extends AppCompatActivity {
     private void init(){
         toolbar = (Toolbar)findViewById(R.id.counsellor_toolbars);
         setSupportActionBar(toolbar);
-        backspace = (ImageView)findViewById(R.id.counsellor_backspace);
-        backspace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CounsellorLeaveActivty.this.finish();
-            }
-        });
         handledButton = (Button)findViewById(R.id.counsellor_leave_handled_bt);
         unhandledButton = (Button)findViewById(R.id.counsellor_leave_unhandled_bt);
         handledButton.setOnClickListener(new ButtonClick(1));
         unhandledButton.setOnClickListener(new ButtonClick(0));
 
-        mutiChoose = (TextView)findViewById(R.id.counsellor_leave_muti);
-        mutiChoose.setOnClickListener(new View.OnClickListener() {
+        authenticate = (TextView)findViewById(R.id.counsellor_leave_authenticate);
+        authenticate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CounsellorLeaveActivty.this,LeaveMutiChoose.class);
-                intent.putExtra("index",currIndex);
-                startActivity(intent);
+                startActivity(new Intent(CounsellorLeaveActivty.this, CompleteMsgActivity.class));
             }
         });
 

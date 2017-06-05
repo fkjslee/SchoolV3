@@ -11,5 +11,6 @@ package com.fkjslee.schoolv3.counsellor;
 public class Values {
     public static final String mainPath = "/sdcard/School";
     public static final String dbPath = mainPath+"/database";
+    public static final String HttpDone = "com.fkjslee.schoolv3.HTTP_DOWN";
 
 }

@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
 import com.fkjslee.schoolv3.student.fragment.FragmentMine;
 import com.fkjslee.schoolv3.student.fragment.FragmentNews;
 import com.fkjslee.schoolv3.student.fragment.Fragment_leave;
 import com.fkjslee.schoolv3.student.fragment.Fragment_schedule;
+import com.fkjslee.schoolv3.student.function.MyCommonFunction;
 
 
 public class MainActivity extends AppCompatActivity
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.ll_news:
                 transaction.replace(R.id.top_layout, fragmentNews);
                 transaction.commit();
+//                String result = MyCommonFunction.sendRequestToServer("type=getNews");
+//                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
                 break;
             case R.id.ll_mine:
                 transaction.replace(R.id.top_layout, fragmentMine);

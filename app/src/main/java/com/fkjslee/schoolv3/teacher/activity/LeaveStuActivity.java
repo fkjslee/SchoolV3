@@ -45,6 +45,7 @@ public class LeaveStuActivity extends AppCompatActivity {
     private void initView() {
         lvLeaveStudent = (ListView) findViewById(R.id.lv_leaveStudent);
 
+
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {

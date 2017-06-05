@@ -95,6 +95,13 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
     }
 
     private void submit() {
+        if (!checkPosition()) {
+            Toast.makeText(getApplicationContext(), "位置错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (photo == null) {
+            Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
+        }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         photo.compress(Bitmap.CompressFormat.PNG, 100, baos);
         String cName = msg.getName().substring(msg.getName().indexOf("|") + 1);
@@ -102,17 +109,8 @@ public class SignActivity extends CheckPermissionsActivity implements View.OnCli
                 "&telephone=" + LogActivity.logAccount + "&cName=" + cName + "&week=" + spinnerWeek +
                 "&weekday=" + msg.getWeekday() + "&courseBegin=" + msg.getStartTime() +
                 "&tName=" + msg.getTeacher() + "&length=" + msg.getLength();
-        MyCommonFunction.sendRequestToServer(requestMsg);
-        if (!checkPosition()) {
-            Toast.makeText(getApplicationContext(), "位置错误", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!checkTime()) {
-            Toast.makeText(getApplicationContext(), "时间错误", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (photo == null) {
-            Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
+        if(!MyCommonFunction.sendRequestToServer(requestMsg).equals("Done")) {
+            Toast.makeText(this, "不是正确的签到时间, 请和老师确认", Toast.LENGTH_SHORT).show();
         }
     }
 

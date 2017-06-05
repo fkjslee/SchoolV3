@@ -6,18 +6,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fkjslee.schoolv3.R;
-import com.fkjslee.schoolv3.database.Database;
+import com.fkjslee.schoolv3.counsellor.wegit.LoadDialog;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +33,21 @@ import java.util.Map;
  * Created by Xiaojun on 2017/5/7.
  */
 
-public class UnhandledFragment extends Fragment {
+/**
+ * eventBus使用测试
+ */
+public class UnhandledFragment extends Fragment{
     private View view = null;
     private ListView listViewUnhandled = null;
     private SimpleAdapter unhandledAdapter = null;
     private List<Map<String,Object>> unhandled;
+    private List<NoteForIns> noteList;
+    private JSONArray jsonArray;
+    private int chooseIndex;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
     }
 
     @Nullable
@@ -44,23 +59,73 @@ public class UnhandledFragment extends Fragment {
 
     @Override
     public void onResume() {
-        if (unhandled != null){
-            unhandled.clear();
-            unhandled.addAll(Helper.setMapList(Database.getLeaveDatas("leaves"),0));
-        }else{
-            unhandled = Helper.setMapList(Database.getLeaveDatas("leaves"),0);
-        }
-        Database.close();
-        initUnhandledView();
+        getDataFromServer();//保证每次打开这个界面数据都会刷新
         super.onResume();
     }
 
-    private void initUnhandledView(){ //初始化未处理界面
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void getDataFromServer(){
+        LoadDialog.show(getActivity());
+        HttpUtil.Request(HttpUtil.COUNSELLOR_GET_LEAVE_UNHANDLED,0);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDataGot(HttpEvent httpEvent){    //网络请求的数据回调
+        if (httpEvent.getIsError() == 1){
+            Toast.makeText(getActivity(),"网络请求失败",Toast.LENGTH_LONG).show();
+            LoadDialog.dismiss(getActivity());
+            return;
+        }
+        if (httpEvent.getType() == HttpUtil.COUNSELLOR_GET_LEAVE_UNHANDLED){
+            try {
+                jsonArray = new JSONArray(httpEvent.getMsg());
+                if (jsonArray == null) {  //有的时候会获取json数组失败，不知道原因
+                    Toast.makeText(getActivity(), "获取数据失败，请重试", Toast.LENGTH_LONG).show();
+                } else {
+                    noteList = new ArrayList<NoteForIns>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject obj = jsonArray.getJSONObject(i);
+                        NoteForIns tem = new NoteForIns(obj);
+                        noteList.add(tem);
+                    }
+                    if (unhandled == null) {
+                        unhandled = Helper.setMapList1(noteList);
+                    } else {
+                        unhandled.clear();
+                        unhandled.addAll(Helper.setMapList1(noteList));
+                    }
+                    initUnhandledView();
+                }
+            } catch(JSONException e){
+                e.printStackTrace();
+            }
+            LoadDialog.dismiss(getActivity());
+        }else if(httpEvent.getType() == HttpUtil.COUNSELLOR_AGREE_LEAVE){
+            LoadDialog.dismiss(getActivity());
+            Toast.makeText(getActivity(),"已同意",Toast.LENGTH_SHORT).show();
+            unhandled.remove(chooseIndex);
+            unhandledAdapter.notifyDataSetChanged();
+        }else if (httpEvent.getType() == HttpUtil.COUNSELLOR_REJECT_LEAVE){
+            LoadDialog.dismiss(getActivity());
+            Toast.makeText(getActivity(),"已拒绝",Toast.LENGTH_SHORT).show();
+            unhandled.remove(chooseIndex);
+            unhandledAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    //初始化未处理界面
+    private void initUnhandledView(){
         listViewUnhandled = null;
         listViewUnhandled = (ListView) view.findViewById(R.id.counsellor_leave_unhandled);
         unhandledAdapter = new SimpleAdapter(view.getContext(),unhandled,R.layout.counsellor_leave_item,
-                LeaveContent.array,
-                new int[]{R.id.counsellor_leave_student_name,R.id.counsellor_leave_student_sn,
+                new String[]{"sId","sName","content","applyTime"},
+                new int[]{R.id.counsellor_leave_student_sn,R.id.counsellor_leave_student_name,
                         R.id.counsellor_leave_reason,R.id.counsellor_leave_time});
         listViewUnhandled.setAdapter(unhandledAdapter);
 
@@ -71,67 +136,33 @@ public class UnhandledFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(UnhandledFragment.this.getActivity(),ShowLeaveDetail.class);
                 /*传递假条对象*/
-                LeaveContent leaveContent = new LeaveContent();
-                leaveContent.studentName = (String) unhandled.get(i).get("studentName");
-                leaveContent.studentNumber = (String)unhandled.get(i).get("studentNumber");
-                leaveContent.reasons = (String)unhandled.get(i).get("reasons");
-                leaveContent.startTime = (String)unhandled.get(i).get("startTime");
-                leaveContent.endTime = (String)unhandled.get(i).get("endTime");
-                intent.putExtra("leaveContent",leaveContent);
+                NoteForIns noteForIns = Helper.getNoteFromMap(unhandled.get(i));
+                intent.putExtra("note",noteForIns);
                 intent.putExtra("deal",0);//表示这些假条未处理
                 startActivity(intent);
             }
         });
 
+
+        //同意或者拒绝请假只需要提交nodeId和处理结果
         listViewUnhandled.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, final View view, int i, long l) {
-                final LeaveContent leaveTemp = new LeaveContent();
-                final int index = i;
+                chooseIndex = i;
                 //弹出菜单，询问是否要清空当前
                 new AlertDialog.Builder(view.getContext()).setTitle("同意请假？")
                         .setPositiveButton("同意", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                leaveTemp.pass = 1;
-                                leaveTemp.deal = 1;
+                                LoadDialog.show(getActivity());
+                                HttpUtil.Request(HttpUtil.COUNSELLOR_REJECT_LEAVE,Integer.parseInt((String) unhandled.get(chooseIndex).get("noteId")));
                                 dialog.dismiss();
-                                /*把当前操作假条的内容从未处理记录中删除并添加到已处理条目中，学生信息反馈*/
-                                Toast.makeText(view.getContext(),"已同意",Toast.LENGTH_SHORT).show();
-
-                                leaveTemp.studentNumber = (String)unhandled.remove(index).get("studentNumber");
-                                unhandledAdapter.notifyDataSetChanged();
-                                //从数据库更改记录
-                                Database.updateLeave(leaveTemp,"leaves");
-                                //添加记录到已处理记录里面并刷新显示,关闭数据库
-
-//                                HandledFragment.handled.clear();
-//                                HandledFragment.handled.addAll(Helper.setMapList(openOrCreateDB.getLeaveDatas("leaves"),1));
-                                Database.close();
                             }
                         })
                         .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                leaveTemp.pass = 0;
-                                leaveTemp.deal = 1;
-                                Log.e("yes",""+leaveTemp.deal);
-                                /*把当前操作假条的内容从未处理记录中删除并添加到已处理，学生信息反馈*/
-                                Toast.makeText(view.getContext(),"已拒绝",Toast.LENGTH_SHORT).show();
-
-                                Map<String,Object> map = unhandled.remove(index);
-                                map.remove("pass");
-                                map.put("pass","已拒绝");
-
-                                leaveTemp.studentNumber = (String)map.get("studentNumber");
-                                unhandledAdapter.notifyDataSetChanged();
-
-                                //从数据库更改记录
-                                Database.updateLeave(leaveTemp,"leaves");
-                                //添加记录到已处理记录里面并刷新显示,关闭数据库
-//                                HandledFragment.handled.clear();
-//                                HandledFragment.handled.addAll(Helper.setMapList(openOrCreateDB.getLeaveDatas("leaves"),1));
-                                Database.close();
+                                LoadDialog.show(getActivity());
+                                HttpUtil.Request(HttpUtil.COUNSELLOR_REJECT_LEAVE,Integer.parseInt((String) unhandled.get(chooseIndex).get("noteId")));
                                 dialog.dismiss();
-
                             }
                         }).show();
 

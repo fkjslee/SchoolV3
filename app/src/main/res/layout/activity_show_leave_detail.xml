@@ -36,10 +36,14 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_above="@+id/leave_detail_bottom"
-        android:layout_below="@+id/leave_detail_toolbars"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/leave_detail_toolbars"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="142dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginTop="14dp">
         <RelativeLayout
 
             android:layout_width="match_parent"
@@ -75,16 +79,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/item_time_size"/>
-            <TextView
-                android:id="@+id/leave_detail_endtime"
-                android:layout_below="@+id/leave_detail_starttime"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="@dimen/small_margin"
-                android:layout_marginRight="@dimen/small_margin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/item_time_size"/>
-
 
         </RelativeLayout>
     </ScrollView>
@@ -95,6 +89,22 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/leave_detail_agree"
+            android:background="@drawable/agree_focus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/agreeLeave"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/leave_detail_reject"
+            android:background="@drawable/reject_focus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rejectLeave"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 </RelativeLayout>

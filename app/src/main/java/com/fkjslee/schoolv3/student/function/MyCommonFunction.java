@@ -18,73 +18,15 @@ import java.io.IOException;
  */
 
 public class MyCommonFunction {
-    public static byte[] getBytesFromFile(File f) {
-        if (f == null) {
-            return null;
-        }
-        try {
-            FileInputStream stream = new FileInputStream(f);
-            ByteArrayOutputStream out = new ByteArrayOutputStream(1000);
-            byte[] b = new byte[1000];
-            int n;
-            while ((n = stream.read(b)) != -1)
-                out.write(b, 0, n);
-            stream.close();
-            out.close();
-            return out.toByteArray();
-        } catch (IOException e) {
-            //
-        }
-        return null;
-    }
-
-    public static void compressAndGenImage(Bitmap image, String outPath, int maxSize) {
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        // scale
-        int options = 100;
-        // Store the bitmap into output stream(no compress)
-        image.compress(Bitmap.CompressFormat.JPEG, options, os);
-        // Compress by loop
-        while ( os.toByteArray().length / 1024 > maxSize) {
-            // Clean up os
-            os.reset();
-            // interval 10
-            options -= 10;
-            image.compress(Bitmap.CompressFormat.JPEG, options, os);
-        }
-
-
-        try {
-            FileOutputStream fos = new FileOutputStream(outPath);
-            fos.write(os.toByteArray());
-            fos.flush();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static String sendRequestToServer(String param) {
         String url = LogActivity.url;
         HttpThread httpThread = new HttpThread(url, param);
         new Thread(httpThread).start();
-        if(httpThread.getResult().equals("请输入type"))
-            Toast.makeText(LogActivity.context, "参数错误 param = " + param, Toast.LENGTH_LONG).show();
+        if(httpThread.getResult().equals("请输入type")) {
+//            Toast.makeText(LogActivity.context, "参数错误 param = " + param, Toast.LENGTH_LONG).show();
+        }
         return httpThread.getResult();
     }
 
-    public static void saveImage(Bitmap bmp, String fileName) {
-        File file = new File(fileName);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush();
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

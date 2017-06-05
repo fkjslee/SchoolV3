@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.fkjslee.schoolv3.LogActivity;
 import com.fkjslee.schoolv3.R;
@@ -63,8 +64,11 @@ public class Fragment_notAgree extends Fragment implements View.OnClickListener,
 
         String param = "type=askForState&telephone=" + LogActivity.logAccount;
         String leaveNote = MyCommonFunction.sendRequestToServer(param);
+        if(leaveNote.equals("请输入type")) {
+            Toast.makeText(view.getContext(), "请先到\"我的\"->\"完善信息\"中完成信息", Toast.LENGTH_SHORT).show();
+        }
 
-        JSONArray jsonLeaveNote;//向服务器请求课表
+        JSONArray jsonLeaveNote;
         try {
             jsonLeaveNote = new JSONArray(leaveNote);
             msgLeaves.clear();

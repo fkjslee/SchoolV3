@@ -31,7 +31,8 @@
         android:layout_marginTop="47dp"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
-        android:layout_below="@id/rl_top">
+        android:layout_below="@id/rl_top"
+        android:id="@+id/gridLayout4">
 
         <ImageView
             android:layout_width="@dimen/icon_size"
@@ -77,7 +78,7 @@
             android:layout_marginStart="5dp"
             android:textSize="@dimen/detail_font_size"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/time"
+            android:text="@string/weeks"
             android:id="@+id/textView2"
             android:layout_row="1"
             android:layout_column="1"/>
@@ -173,5 +174,43 @@
             android:layout_row="4"
             android:layout_column="2"/>
     </GridLayout>
+
+    <Button
+        android:text="开始签到"
+        android:background="@drawable/btn_red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/gridLayout4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:id="@+id/btn_sign" />
+
+    <Button
+        android:id="@+id/btn_askLeave"
+        android:text="查看请假人"
+        android:background="@drawable/btn_red"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/detail_font_size"
+        android:layout_below="@+id/btn_sign"
+        android:layout_alignLeft="@+id/btn_sign"
+        android:layout_alignStart="@+id/btn_sign"
+        android:layout_marginTop="19dp" />
+
+
+    <Button
+        android:id="@+id/btn_absent"
+        android:text="查看缺勤人"
+        android:background="@drawable/btn_red"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/detail_font_size"
+        android:layout_alignBaseline="@+id/btn_askLeave"
+        android:layout_alignBottom="@+id/btn_askLeave"
+        android:layout_alignRight="@+id/btn_sign"
+        android:layout_alignEnd="@+id/btn_sign" />
 
 </RelativeLayout>

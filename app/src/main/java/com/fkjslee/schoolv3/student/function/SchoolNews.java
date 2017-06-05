@@ -58,11 +58,11 @@
 //            timeList.add(e.text());
 //        }
 //        for(int i=0;i<titleList.size();i++){
-//            News news=new News();
-//            news.setTime(timeList.get(i));
-//            news.setTitle(titleList.get(i));
-//            news.setUrl(urlList.get(i));
-//            newList.add(news);
+//            News News=new News();
+//            News.setTime(timeList.get(i));
+//            News.setTitle(titleList.get(i));
+//            News.setUrl(urlList.get(i));
+//            newList.add(News);
 //        }
 //        return newList;
 //    }
